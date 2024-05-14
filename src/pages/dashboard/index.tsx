@@ -30,7 +30,7 @@ const Dashboard = () => {
 
   return (
     <WhiteBox>
-      <div className="flex justify-between items-center">
+      <nav className="flex justify-between items-center">
         <input type="text" placeholder="Search" />
         <div className="grid ggrid-rows-4 grid-flow-col gap-5 items-center">
           <Link href="#" className="row-span-1">
@@ -85,7 +85,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-      </div>
+      </nav>
     </WhiteBox>
   );
 };
