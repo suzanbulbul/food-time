@@ -1,9 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Provider } from "react-redux";
-
-//Redux
-import store from "../redux/store";
 
 //Component
 import Layout from "../components/Layout";
@@ -15,15 +11,13 @@ const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }) {
   return (
-    <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <Layout>
-          <Component {...pageProps} />
-          <ReactQueryDevtools initialIsOpen={false} />
-        </Layout>
-      </QueryClientProvider>
-    </Provider>
-  );
+    <QueryClientProvider client={queryClient}>
+      <Layout>
+        <Component {...pageProps} />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </Layout>
+    </QueryClientProvider>
+);
 }
 
 export default MyApp;
