@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 //Icon
 import { IoHomeOutline } from "react-icons/io5";
@@ -8,11 +9,11 @@ import { FaRegUser } from "react-icons/fa6";
 import { IoIosArrowForward } from "react-icons/io";
 
 const Sidebar = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [activeMenu, setActiveMenu] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
+  const [activeMenu, setActiveMenu] = useState<number>(0);
 
   const toggleSubMenu = (itemId: any) => {
-    setActiveMenu(activeMenu === itemId ? null : itemId);
+    setActiveMenu(activeMenu === itemId ? 0 : itemId);
   };
 
   const asideData = [
@@ -49,20 +50,26 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`pr-3 relative duration-300 ${
-        isSidebarOpen ? "w-60 " : "w-24"
+      className={`pr-3 relative ease-in-out duration-500 transition-all ${
+        isSidebarOpen ? "w-72" : "w-24"
       }`}
     >
       <div className={`bg-white h-screen p-2 shadow-md`}>
         <div className="text-gray-100 text-2xl font-bold mb-3">
-          <Link className="p-2.5 flex items-center" href="/">
-            <i className="w-16 h-16 text-blue-600">L</i>
+          <Link className="p-2.5 flex justify-around items-center" href="/">
+            <Image
+              width={32}
+              height={32}
+              className="rounded-full"
+              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+              alt=""
+            />
             {isSidebarOpen && (
               <h1 className="font-bold text-2xl text-indigo-500">HiganTech</h1>
             )}
           </Link>
           <IoIosArrowForward
-            className={`bg-indigo-500 rounded-full p-1 absolute top-9 right-0 ${
+            className={`bg-indigo-500 rounded-full p-1 absolute top-6 right-0 ${
               isSidebarOpen ? "rotate-180 duration-300" : ""
             }`}
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
