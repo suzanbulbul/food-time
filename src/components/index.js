@@ -5,5 +5,7 @@ import Sidebar from './Sidebar';
 import WhiteBox from './WhiteBox';
 import Table from './Table';
 import ActionMenu from './ActionMenu';
+import Modal from './Modal';
 
-export  {  Divider, Layout, Loading, Sidebar, WhiteBox, Table, ActionMenu };
+
+export  {  Divider, Layout, Loading, Sidebar, WhiteBox, Table, ActionMenu, Modal };

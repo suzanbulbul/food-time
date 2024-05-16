@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 
 //Components
-import { Table, WhiteBox } from "../../components";
+import { Modal, Table, WhiteBox } from "../../components";
 
 //Icons
 import { TbWorld } from "react-icons/tb";
@@ -16,9 +16,11 @@ import { AiOutlineAppstore } from "react-icons/ai";
 import { PiBellRinging } from "react-icons/pi";
 import Button from "../../components/Button";
 import { CompanyApi } from "../../api/company";
+import { IoCreateOutline } from "react-icons/io5";
 
 const Companies = () => {
   const [openSettingMenu, setOpenSettingMenu] = useState<boolean>(false);
+  const [addProduct, setAddProduct] = useState<boolean>(false);
 
   const { isFetching, data, refetch } = useQuery({
     queryKey: ["company"],
@@ -161,9 +163,21 @@ const Companies = () => {
         </nav>
       </WhiteBox>
 
-      <Button onClick={() => console.log("text")} className="ml-auto">
+      <Button onClick={() => setAddProduct(true)} className="ml-auto">
         Add New User
       </Button>
+      <Modal
+        show={addProduct}
+        onClose={() => setAddProduct(false)}
+        onSave={() => {}}
+        icon={<IoCreateOutline />}
+        title="Create Company"
+        desc={"Test Modal"}
+        closeTitle={"Close"}
+        saveTitle={"Save"}
+      >
+        Create New User Desc
+      </Modal>
 
       <Table data={data2} columns={columns} tableAction={tableAction} />
     </div>
