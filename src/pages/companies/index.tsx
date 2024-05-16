@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+//Library
+import dayjs from "dayjs";
+
 //Components
 import { Table, WhiteBox } from "../../components";
 
@@ -30,13 +33,41 @@ const Companies = () => {
   ];
 
   const columns = [
-    "Name",
-    "Email",
-    "Owner",
-    "Mobile Number",
-    "Create Date",
-    "Last Update",
-    "",
+    {
+      title: "Name",
+      cell: (row: any) => (
+        <Link
+          href="/user-information"
+          className="font-bold hover:text-indigo-500"
+        >
+          {row.name}
+        </Link>
+      ),
+    },
+    {
+      title: "Email",
+      cell: (row: any) => <span>{row.email}</span>,
+    },
+    {
+      title: "Owner",
+      cell: (row: any) => <span>{row.owner}</span>,
+    },
+    {
+      title: "Mobile Number",
+      cell: (row: any) => <span>{row.phone}</span>,
+    },
+    {
+      title: "Create Date",
+      cell: (row: any) => (
+        <span>{dayjs(row.createdAt).format("DD.MM.YYYY")}</span>
+      ),
+    },
+    {
+      title: "Last Update",
+      cell: (row: any) => (
+        <span>{dayjs(row.updatedAt).format("DD.MM.YYYY")}</span>
+      ),
+    },
   ];
 
   const data = [
@@ -47,7 +78,17 @@ const Companies = () => {
       phone: "5355055555",
       createdAt: "2024-05-13T13:45:09.549143Z",
       updatedAt: "2024-05-14T00:00:00.468625Z",
-      position: "React Developer",
+    },
+  ];
+
+  const tableAction = [
+    {
+      text: "Edit",
+      onClick: () => console.log("Test"),
+    },
+    {
+      text: "Delete",
+      onClick: () => console.log("Test"),
     },
   ];
 
@@ -116,7 +157,7 @@ const Companies = () => {
         Add New User
       </Button>
 
-      <Table data={data} columns={columns} />
+      <Table data={data} columns={columns} tableAction={tableAction} />
     </div>
   );
 };
