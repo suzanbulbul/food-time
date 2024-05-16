@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { useQuery } from "@tanstack/react-query";
+
 //Library
 import dayjs from "dayjs";
 
@@ -13,9 +15,15 @@ import { TbWorld } from "react-icons/tb";
 import { AiOutlineAppstore } from "react-icons/ai";
 import { PiBellRinging } from "react-icons/pi";
 import Button from "../../components/Button";
+import { CompanyApi } from "../../api/company";
 
 const Companies = () => {
   const [openSettingMenu, setOpenSettingMenu] = useState<boolean>(false);
+
+  const { isFetching, data, refetch } = useQuery({
+    queryKey: ["company"],
+    queryFn: () => CompanyApi.getData(),
+  });
 
   const settingData = [
     {
@@ -70,7 +78,7 @@ const Companies = () => {
     },
   ];
 
-  const data = [
+  const data2 = [
     {
       name: "Ah-Jin",
       email: "e@g.co",
@@ -157,7 +165,7 @@ const Companies = () => {
         Add New User
       </Button>
 
-      <Table data={data} columns={columns} tableAction={tableAction} />
+      <Table data={data2} columns={columns} tableAction={tableAction} />
     </div>
   );
 };
