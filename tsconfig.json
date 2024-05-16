@@ -27,5 +27,6 @@
   "exclude": [
     "node_modules"
   ],
-  "types": ["mapbox-gl", "react", "react-dom"]
+  "types": ["mapbox-gl", "react", "react-dom"],
+
 }
