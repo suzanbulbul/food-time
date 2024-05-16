@@ -78,7 +78,8 @@ const Sidebar = () => {
         {asideData.map((item) => (
           <div key={item.id}>
             {item.url ? (
-              <div
+              <Link
+                href={item.url}
                 className={`h-11 rounded-md flex gap-4 items-center px-4 duration-300 cursor-pointer text-gray-600 hover:text-indigo-600 hover:bg-indigo-100 ${
                   isSidebarOpen ? "" : "justify-center"
                 }`}
@@ -86,11 +87,9 @@ const Sidebar = () => {
                 {item.icon}
 
                 {isSidebarOpen && (
-                  <a href={item.url} className="text-base font-normal">
-                    {item.name}
-                  </a>
+                  <span className="text-base font-normal">{item.name}</span>
                 )}
-              </div>
+              </Link>
             ) : (
               <div>
                 <div
@@ -113,18 +112,18 @@ const Sidebar = () => {
                 </div>
                 <div className={`${activeMenu === item.id ? "" : "hidden"}`}>
                   {item?.attributes?.map((subItem) => (
-                    <div
+                    <Link
+                      href={subItem.url}
                       key={subItem.id}
                       className="h-10 gap-4 flex items-center rounded-md px-4 duration-300 cursor-pointer text-gray-600 hover:text-indigo-600 hover:bg-indigo-100"
                     >
                       <span className="w-4 h-4"></span>
-
                       {isSidebarOpen && (
-                        <a href={subItem.url} className="text-sm font-normal">
+                        <span className="text-sm font-normal">
                           {subItem.name}
-                        </a>
+                        </span>
                       )}
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>

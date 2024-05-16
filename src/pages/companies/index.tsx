@@ -112,7 +112,7 @@ const Companies = () => {
         </nav>
       </WhiteBox>
 
-      <Button disabled onClick={() => console.log("suzan")} className="ml-auto">
+      <Button onClick={() => console.log("text")} className="ml-auto">
         Add New User
       </Button>
 
