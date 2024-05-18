@@ -2,7 +2,7 @@ import React from "react";
 import { useRouter } from "next/router";
 
 //Compopnents
-import Sidebar from "./Sidebar";
+import { Sidebar, Navbar } from "./index";
 
 const Layout = ({ children }: any) => {
   const router = useRouter();
@@ -14,7 +14,10 @@ const Layout = ({ children }: any) => {
   return (
     <div className="bg-neutral-100 h-screen flex ">
       <Sidebar />
-      <main className="p-3 w-full ">{children}</main>
+      <main className="p-3 w-full flex flex-col gap-6">
+        <Navbar />
+        {children}
+      </main>
     </div>
   );
 };

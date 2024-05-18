@@ -6,7 +6,6 @@ import WhiteBox from "./WhiteBox";
 
 //Icons
 import { HiOutlineDotsVertical } from "react-icons/hi";
-import Link from "next/link";
 
 interface TablePrpos {
   data: any[];
@@ -110,12 +109,11 @@ const Table = ({
                       <ul className="overflow-scroll absolute right-0 z-10 mt-2 origin-top-right border rounded-lg bg-white shadow-lg ">
                         {tableAction.map((item, index) => (
                           <li
+                            onClick={item.onClick}
                             key={index}
-                            className="px-6 py-2 text-sm font-normal text-center text-gray-600 hover:text-indigo-600 hover:bg-indigo-100"
+                            className="px-6 py-2 text-sm font-normal text-center text-gray-600 hover:text-indigo-600 hover:bg-indigo-100 cursor-pointer"
                           >
-                            <button key={index} onClick={item.onClick}>
-                              {item.text}
-                            </button>
+                            <button>{item.text}</button>
                           </li>
                         ))}
                       </ul>

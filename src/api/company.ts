@@ -45,4 +45,15 @@ export const CompanyApi = {
           return null;
       }
     },
+
+    deleteCompany: async (id: string) => { 
+      try {
+        const response = await axios.delete(`${apiBaseUrl}/company/${id}`, apiConfig); 
+        return response.data;
+
+    } catch (error) {
+        console.error('Error removing company:', error);
+        return null;
+    }
+  },
 }
