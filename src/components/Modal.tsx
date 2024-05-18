@@ -85,16 +85,14 @@ const Modal = ({
                   >
                     {title}
                   </h3>
-                  <div className="mt-2">
-                    <p className="text-sm text-gray-500">{desc}</p>
-                  </div>
+                  <p className="text-sm text-gray-500">{desc}</p>
                 </div>
               </div>
             </div>
             <div className="flex flex-col justify-center p-4">{children}</div>
             <div className="flex w-full gap-3 border-t px-5 py-4 ">
               <Button variant="base" className="w-full" onClick={onClose}>
-                {closeTitle}
+                {closeTitle ? closeTitle : "Cancel"}
               </Button>
 
               <Button
@@ -102,7 +100,7 @@ const Modal = ({
                 className={cn(" w-full ", `${ModalVariant[variant].bgColor}`)}
                 onClick={onSave}
               >
-                {saveTitle}
+                {saveTitle ? saveTitle : "Save"}
               </Button>
             </div>
           </div>
