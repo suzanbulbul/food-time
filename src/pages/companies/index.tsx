@@ -10,7 +10,7 @@ import { CompanyApi } from "../../api/company";
 import dayjs from "dayjs";
 
 //Components
-import { Table, Button, Modal } from "../../components/index";
+import { Table, Button, Modal, Loading } from "../../components/index";
 import AddEditModal from "./addEditModal";
 
 //Icons
@@ -19,16 +19,8 @@ import { MdDeleteOutline } from "react-icons/md";
 const Companies = () => {
   const [addProduct, setAddProduct] = useState<boolean>(false);
   const [editModal, setEditModal] = useState<string>("");
-  const [removeModal, setRemoveModal] = useState<any>({
-    type: false,
-    company: {
-      name: "",
-      email: "",
-      owner: "",
-      phone: 0,
-      dailnumber: 0,
-    },
-  });
+  const [removeModalOpen, setRemoveModalOpen] = useState<boolean>(false);
+  const [removeModal, setRemoveModal] = useState<any>({});
 
   const { isFetching, data, refetch } = useQuery({
     queryKey: ["company"],
@@ -43,21 +35,27 @@ const Companies = () => {
           href="/user-information"
           className="font-bold hover:text-indigo-500"
         >
-          {row.name}
+          {row.name ? row.name : "-"}
         </Link>
       ),
     },
     {
       title: "Email",
-      cell: (row: any) => <span>{row.email}</span>,
+      cell: (row: any) => <span>{row.email ? row.email : "-"}</span>,
     },
     {
       title: "Owner",
-      cell: (row: any) => <span>{row.owner}</span>,
+      cell: (row: any) => <span> {row.owner ? row.owner : "-"}</span>,
     },
     {
       title: "Mobile Number",
-      cell: (row: any) => <span>{row.phone}</span>,
+      cell: (row: any) => <span>{row.phone ? row.phone : "-"}</span>,
+    },
+    {
+      title: "Dail Number",
+      cell: (row: any) => (
+        <span>{row.dail_number ? row.dail_number : "-"}</span>
+      ),
     },
     {
       title: "Create Date",
@@ -73,35 +71,26 @@ const Companies = () => {
     },
   ];
 
-  const data2 = [
-    {
-      name: "Ah-Jin",
-      email: "e@g.co",
-      owner: "Enes",
-      phone: "5355055555",
-      createdAt: "2024-05-13T13:45:09.549143Z",
-      updatedAt: "2024-05-14T00:00:00.468625Z",
-    },
-  ];
-
   const tableAction = [
     {
       text: "Edit",
-      onClick: (row: any) => {
-        setEditModal(row.id);
+      onClick: (rowData: any) => {
+        setEditModal(rowData.id);
         setAddProduct(true);
       },
     },
     {
       text: "Delete",
-      onClick: (row: any) => {
-        setRemoveModal({
-          type: true,
-          company: row,
-        });
+      onClick: (rowData: any) => {
+        setRemoveModal(rowData);
+        setRemoveModalOpen(true);
       },
     },
   ];
+
+  if (!data) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -110,25 +99,18 @@ const Companies = () => {
           Add New Company
         </Button>
 
-        <Table data={data2} columns={columns} tableAction={tableAction} />
+        <Table data={data} columns={columns} tableAction={tableAction} />
       </div>
 
       <Modal
-        show={removeModal.type}
-        onClose={() =>
-          setRemoveModal({
-            type: false,
-          })
-        }
+        show={removeModalOpen}
+        onClose={() => setRemoveModalOpen(false)}
         onSave={() =>
-          removeModal.company &&
-          CompanyApi.deleteCompany(removeModal.company).then((res: any) => {
+          removeModal &&
+          CompanyApi.deleteCompany(removeModal.id).then((res: any) => {
             if (!res.error) {
               refetch();
-              setRemoveModal({
-                type: false,
-                company: null,
-              });
+              setRemoveModalOpen(false);
             }
           })
         }
@@ -138,7 +120,7 @@ const Companies = () => {
         saveTitle="Remove"
         variant="ERROR"
       >
-        <p>Are you sure you want to remove?</p>
+        <p>{removeModal.name} are you sure you want to remove?</p>
       </Modal>
 
       <AddEditModal

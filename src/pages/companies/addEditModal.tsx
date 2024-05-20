@@ -31,13 +31,19 @@ const AddEditModal = ({
   });
 
   const onSubmit = async (formData: any) => {
-    CompanyApi.createCompany(formData).then((res: any) => {
-      if (!res.error) {
+    try {
+      const res = itemId
+        ? await CompanyApi.updateCompany(formData)
+        : await CompanyApi.createCompany(formData);
+
+      if (res && !res.data.error) {
         refetch();
         onClose();
         reset();
       }
-    });
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
   };
 
   useEffect(() => {
@@ -48,7 +54,8 @@ const AddEditModal = ({
             name: res?.name,
             email: res?.email,
             owner: res?.owner,
-            phone: res?.phone,
+            mobile_number: res?.phone,
+            dail_number: res?.dail_number,
           });
         }
       });
@@ -63,8 +70,8 @@ const AddEditModal = ({
       }}
       onSave={handleSubmit(onSubmit)}
       icon={<IoCreateOutline />}
-      title="Create Company"
-      desc={"Create Company Modal"}
+      title={itemId ? "Update Company" : "Create Company"}
+      desc={itemId ? "Update Company Modal" : "Create Company Modal"}
     >
       <form
         className="flex w-full flex-col gap-1"
@@ -124,7 +131,7 @@ const AddEditModal = ({
               label="Dial Phone"
               type="number"
               placeholder="Enter Dial Phone"
-              {...register("dialPhone")}
+              {...register("dail_number")}
             />
           </div>
         </div>
