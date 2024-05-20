@@ -37,12 +37,12 @@ const Sidebar = () => {
         {
           id: 1,
           name: "Company List",
-          url: "/companies",
+          url: "/company",
         },
         {
           id: 2,
           name: "Contract List",
-          url: "/contractlist",
+          url: "/contract",
         },
       ],
     },

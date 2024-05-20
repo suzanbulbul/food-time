@@ -12,6 +12,7 @@ interface TablePrpos {
   columns: {
     title: any;
     cell: any;
+    className?: string;
   }[];
   tableAction?: {
     onClick: (rowData: any) => void;
@@ -87,7 +88,10 @@ const Table = ({
               <th
                 key={index}
                 scope="col"
-                className="px-4 py-3 text-left font-light text-xs text-gray-400 min-w-28"
+                className={cn(
+                  "px-4 py-3 text-left font-light text-xs text-gray-400 min-w-28",
+                  column.className
+                )}
               >
                 {column.title}
               </th>
@@ -118,7 +122,10 @@ const Table = ({
               {columns.map((column, index) => (
                 <td
                   key={index}
-                  className="px-4 py-3 text-left text-sm min-w-28"
+                  className={cn(
+                    "px-4 py-3 text-left text-sm min-w-28",
+                    column.className
+                  )}
                 >
                   {column.cell(item)}
                 </td>
@@ -132,7 +139,7 @@ const Table = ({
                     {action === index && (
                       <ul
                         ref={menuRef}
-                        className="overflow-scroll absolute right-0 z-10 mt-2 origin-top-right border rounded-lg bg-white shadow-lg "
+                        className="overflow-scroll absolute right-0 z-10 mt-2 origin-top-right border rounded-lg bg-white shadow-lg"
                       >
                         {tableAction.map((item, index) => (
                           <li
