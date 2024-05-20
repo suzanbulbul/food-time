@@ -12,12 +12,12 @@ import { IoCreateOutline } from "react-icons/io5";
 
 const AddEditModal = ({
   itemId,
-  shox,
+  show,
   onClose,
   refetch,
 }: {
   itemId?: string;
-  shox: boolean;
+  show: boolean;
   onClose: () => void;
   refetch: () => void;
 }) => {
@@ -63,7 +63,7 @@ const AddEditModal = ({
 
   return (
     <Modal
-      show={shox}
+      show={show}
       onClose={() => {
         onClose();
         reset();

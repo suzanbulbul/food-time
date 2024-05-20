@@ -17,7 +17,7 @@ import AddEditModal from "./addEditModal";
 import { MdDeleteOutline } from "react-icons/md";
 
 const Companies = () => {
-  const [addProduct, setAddProduct] = useState<boolean>(false);
+  const [addComany, setAddCompany] = useState<boolean>(false);
   const [editModal, setEditModal] = useState<string>("");
   const [removeModalOpen, setRemoveModalOpen] = useState<boolean>(false);
   const [removeModal, setRemoveModal] = useState<any>({});
@@ -60,13 +60,13 @@ const Companies = () => {
     {
       title: "Create Date",
       cell: (row: any) => (
-        <span>{dayjs(row.createdAt).format("DD.MM.YYYY")}</span>
+        <span>{dayjs(row.createdAt).format("DD MMM YYYY - hh:mm")}</span>
       ),
     },
     {
       title: "Last Update",
       cell: (row: any) => (
-        <span>{dayjs(row.updatedAt).format("DD.MM.YYYY")}</span>
+        <span>{dayjs(row.updatedAt).format("DD MMM YYYY - hh:mm")}</span>
       ),
     },
   ];
@@ -76,7 +76,7 @@ const Companies = () => {
       text: "Edit",
       onClick: (rowData: any) => {
         setEditModal(rowData.id);
-        setAddProduct(true);
+        setAddCompany(true);
       },
     },
     {
@@ -95,7 +95,7 @@ const Companies = () => {
   return (
     <>
       <div className="flex flex-col gap-6">
-        <Button onClick={() => setAddProduct(true)} className="ml-auto">
+        <Button onClick={() => setAddCompany(true)} className="ml-auto">
           Add New Company
         </Button>
 
@@ -125,8 +125,8 @@ const Companies = () => {
 
       <AddEditModal
         itemId={editModal}
-        shox={addProduct}
-        onClose={() => setAddProduct(false)}
+        show={addComany}
+        onClose={() => setAddCompany(false)}
         refetch={refetch}
       />
     </>

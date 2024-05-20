@@ -9,11 +9,11 @@ const apiConfig = {
   }
 };
 
-export const ContactApi = {
+export const ContractApi = {
     
     getData: async () => {
       try {
-        const response = await axios.get(`${apiBaseUrl}/contact`,  apiConfig);
+        const response = await axios.get(`${apiBaseUrl}/contract`,  apiConfig);
 
         return response.data;
 
@@ -25,24 +25,47 @@ export const ContactApi = {
 
     getDetail: async (id: string) => { 
         try {
-          const response = await axios.get(`${apiBaseUrl}/contact/${id}`,  apiConfig); 
+          const response = await axios.get(`${apiBaseUrl}/contract/${id}`,  apiConfig); 
   
           return response.data; 
   
       } catch (error) {
-          console.error('Error fetching contact detail:', error);
+          console.error('Error fetching contract detail:', error);
           return null;
       }
     },
 
-    createContact: async (data: any) => { 
+    createContract: async (data: any) => { 
         try {
-          const response = await axios.post(`${apiBaseUrl}/contact`, data, apiConfig); 
+          const response = await axios.post(`${apiBaseUrl}/contract`, data, apiConfig); 
           return response.data;
   
       } catch (error) {
-          console.error('Error creating contact:', error);
+          console.error('Error creating contract:', error);
           return null;
       }
+    },
+
+
+    updateContract: async (data: any) => { 
+      try {
+        const response = await axios.post(`${apiBaseUrl}/contract/${data.id}`, data, apiConfig); 
+        return response;
+
+    } catch (error) {
+        console.error('Error updating contract:', error);
+        return null;
+    }
+    },
+
+    deleteContract: async (id: string) => { 
+      try {
+        const response = await axios.delete(`${apiBaseUrl}/contract/${id}`, apiConfig); 
+        return response.data;
+
+    } catch (error) {
+        console.error('Error removing contract:', error);
+        return null;
+    }
     },
 }
