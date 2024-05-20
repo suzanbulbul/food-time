@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import cn from "classnames";
 
 //Components
@@ -31,11 +31,35 @@ const Table = ({
   className,
 }: TablePrpos) => {
   const [selectAll, setSelectAll] = useState(false);
-  const [action, setAction] = useState(false);
+  const [action, setAction] = useState<null | number>(null);
+  const [selectedRowData, setSelectedRowData] = useState<any>(null);
+  const menuRef = useRef<HTMLUListElement>(null);
 
   const handleSelectAll = () => {
     setSelectAll(!selectAll);
   };
+
+  const handleActionClick = (rowData: any, index: number) => {
+    setSelectedRowData(rowData);
+    setAction(index === action ? null : index);
+  };
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        action !== null
+      ) {
+        setAction(null);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [action]);
 
   return (
     <WhiteBox className={cn("relative", className)}>
@@ -72,7 +96,7 @@ const Table = ({
         </thead>
 
         <tbody>
-          {data.map((item: any) => (
+          {data.map((item: any, index) => (
             <tr key={item.id} className="bg-white ">
               {select && (
                 <td className="w-4 p-4">
@@ -102,14 +126,17 @@ const Table = ({
               {tableAction && (
                 <td className="px-4 py-3 text-right">
                   <div className="relative">
-                    <button onClick={() => setAction(!action)}>
+                    <button onClick={() => handleActionClick(item, index)}>
                       <HiOutlineDotsVertical />
                     </button>
-                    {action && (
-                      <ul className="overflow-scroll absolute right-0 z-10 mt-2 origin-top-right border rounded-lg bg-white shadow-lg ">
+                    {action === index && (
+                      <ul
+                        ref={menuRef}
+                        className="overflow-scroll absolute right-0 z-10 mt-2 origin-top-right border rounded-lg bg-white shadow-lg "
+                      >
                         {tableAction.map((item, index) => (
                           <li
-                            onClick={item.onClick}
+                            onClick={() => item.onClick(selectedRowData)}
                             key={index}
                             className="px-6 py-2 text-sm font-normal text-center text-gray-600 hover:text-indigo-600 hover:bg-indigo-100 cursor-pointer"
                           >

@@ -27,7 +27,7 @@ export const CompanyApi = {
         try {
           const response = await axios.get(`${apiBaseUrl}/company/${id}`,  apiConfig); 
   
-          return response.data; 
+          return response; 
   
       } catch (error) {
           console.error('Error fetching company detail:', error);
@@ -38,12 +38,23 @@ export const CompanyApi = {
     createCompany: async (data: any) => { 
         try {
           const response = await axios.post(`${apiBaseUrl}/company`, data, apiConfig); 
-          return response.data;
+          return response;
   
       } catch (error) {
           console.error('Error creating company:', error);
           return null;
       }
+    },
+
+    updateCompany: async (data: any) => { 
+      try {
+        const response = await axios.post(`${apiBaseUrl}/company/${data.id}`, data, apiConfig); 
+        return response;
+
+    } catch (error) {
+        console.error('Error updating company:', error);
+        return null;
+    }
     },
 
     deleteCompany: async (id: string) => { 
@@ -55,5 +66,5 @@ export const CompanyApi = {
         console.error('Error removing company:', error);
         return null;
     }
-  },
+    },
 }
