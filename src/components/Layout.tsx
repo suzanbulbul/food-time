@@ -7,8 +7,16 @@ import { Sidebar, Navbar } from "./index";
 const Layout = ({ children }: any) => {
   const router = useRouter();
 
-  if (router.pathname === "/404") {
-    return <main>{children}</main>;
+  if (
+    router.pathname === "/404" ||
+    router.pathname === "/login" ||
+    router.pathname === "/register"
+  ) {
+    return (
+      <main className="h-screen flex justify-center items-center">
+        {children}
+      </main>
+    );
   }
 
   return (

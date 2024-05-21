@@ -5,7 +5,7 @@ interface ButtonProps {
   children?: ReactNode;
   variant?: "success" | "warning" | "error" | "primary" | "base";
   className?: string;
-  onClick: () => void;
+  onClick?: () => void;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
 }
