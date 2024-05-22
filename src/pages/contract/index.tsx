@@ -22,7 +22,18 @@ const Contract = () => {
   const [removeModalOpen, setRemoveModalOpen] = useState<boolean>(false);
   const [removeModal, setRemoveModal] = useState<any>({});
 
-  const { isFetching, data, refetch } = useQuery({
+  const { isFetching, data, refetch } = useQuery<
+    {
+      company_id: number;
+      email: string;
+      mobile_number: string;
+      dail_number: string;
+      owner: string;
+      name: string;
+      created_at: string;
+      updated_at: string;
+    }[]
+  >({
     queryKey: ["company"],
     queryFn: () => ContractApi.getData(),
   });
