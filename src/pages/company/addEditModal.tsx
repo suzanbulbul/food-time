@@ -17,8 +17,8 @@ const AddEditModal = ({
   onClose,
 }: {
   itemId?: string;
+  setItemId?: (id: string) => void;
   show: boolean;
-  setItemId: (id: string) => void;
   onClose: () => void;
   refetch: () => void;
 }) => {
@@ -33,7 +33,7 @@ const AddEditModal = ({
 
   const handleClose = () => {
     onClose();
-    setItemId("");
+    setItemId && setItemId("");
     reset({});
   };
 
@@ -50,7 +50,6 @@ const AddEditModal = ({
           reset(res.data);
         }
       });
-    reset();
   }, [itemId, reset]);
 
   return (
