@@ -15,16 +15,25 @@ import AddEditModal from "./addEditModal";
 
 //Icons
 import { MdDeleteOutline } from "react-icons/md";
+import { PaginationData } from "../../util/type/data.type";
+import { CampanyData } from "./company.type";
 
 const Companies = () => {
-  const [addComany, setAddCompany] = useState<boolean>(false);
+  const [addCompany, setAddCompany] = useState<boolean>(false);
   const [editModal, setEditModal] = useState<string>("");
   const [removeModalOpen, setRemoveModalOpen] = useState<boolean>(false);
   const [removeModal, setRemoveModal] = useState<any>({});
 
-  const { isFetching, data, refetch } = useQuery({
+  const { isFetching, data, refetch } = useQuery<PaginationData<CampanyData>>({
     queryKey: ["company"],
-    queryFn: () => CompanyApi.getData(),
+    queryFn: async () => {
+      try {
+        const response = await CompanyApi.getData();
+        return response?.data;
+      } catch (error) {
+        throw new Error("Failed to fetch company data");
+      }
+    },
   });
 
   const columns = [
@@ -49,7 +58,9 @@ const Companies = () => {
     },
     {
       title: "Mobile Number",
-      cell: (row: any) => <span>{row.phone ? row.phone : "-"}</span>,
+      cell: (row: any) => (
+        <span>{row.mobile_number ? row.mobile_number : "-"}</span>
+      ),
     },
     {
       title: "Dail Number",
@@ -75,7 +86,7 @@ const Companies = () => {
     {
       text: "Edit",
       onClick: (rowData: any) => {
-        setEditModal(rowData.id);
+        setEditModal(rowData.company_id);
         setAddCompany(true);
       },
     },
@@ -99,7 +110,7 @@ const Companies = () => {
           Add New Company
         </Button>
 
-        <Table data={data} columns={columns} tableAction={tableAction} />
+        <Table data={data as any} columns={columns} tableAction={tableAction} />
       </div>
 
       <Modal
@@ -107,8 +118,8 @@ const Companies = () => {
         onClose={() => setRemoveModalOpen(false)}
         onSave={() =>
           removeModal &&
-          CompanyApi.deleteCompany(removeModal.id).then((res: any) => {
-            if (!res.error) {
+          CompanyApi.deleteCompany(removeModal.company_id).then((res: any) => {
+            if (!res?.error) {
               refetch();
               setRemoveModalOpen(false);
             }
@@ -125,7 +136,8 @@ const Companies = () => {
 
       <AddEditModal
         itemId={editModal}
-        show={addComany}
+        setItemId={setEditModal}
+        show={addCompany}
         onClose={() => setAddCompany(false)}
         refetch={refetch}
       />

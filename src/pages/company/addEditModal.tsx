@@ -12,11 +12,12 @@ import { IoCreateOutline } from "react-icons/io5";
 
 const AddEditModal = ({
   itemId,
+  setItemId,
   show,
   onClose,
-  refetch,
 }: {
   itemId?: string;
+  setItemId?: (id: string) => void;
   show: boolean;
   onClose: () => void;
   refetch: () => void;
@@ -30,33 +31,23 @@ const AddEditModal = ({
     mode: "all",
   });
 
-  const onSubmit = async (formData: any) => {
-    try {
-      const res = itemId
-        ? await CompanyApi.updateCompany(formData)
-        : await CompanyApi.createCompany(formData);
+  const handleClose = () => {
+    onClose();
+    setItemId && setItemId("");
+    reset({});
+  };
 
-      if (res && !res.data.error) {
-        refetch();
-        onClose();
-        reset();
-      }
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
+  const onSubmit = async (formData: any) => {
+    itemId
+      ? await CompanyApi.updateCompany(formData)
+      : await CompanyApi.createCompany(formData);
   };
 
   useEffect(() => {
     itemId &&
       CompanyApi.getDetail(itemId).then((res: any) => {
-        if (!res.error) {
-          reset({
-            name: res?.name,
-            email: res?.email,
-            owner: res?.owner,
-            mobile_number: res?.phone,
-            dail_number: res?.dail_number,
-          });
+        if (!res?.error) {
+          reset(res.data);
         }
       });
   }, [itemId, reset]);
@@ -65,8 +56,7 @@ const AddEditModal = ({
     <Modal
       show={show}
       onClose={() => {
-        onClose();
-        reset();
+        handleClose();
       }}
       onSave={handleSubmit(onSubmit)}
       icon={<IoCreateOutline />}
@@ -117,9 +107,9 @@ const AddEditModal = ({
           <div className="w-full">
             <Input
               label="Phone*"
-              type="number"
+              type="text"
               placeholder="Enter Phone"
-              {...register("phone", {
+              {...register("mobile_number", {
                 required: "Please enter a phone",
               })}
               hasError={!!errors.phone}
@@ -129,7 +119,7 @@ const AddEditModal = ({
           <div className="w-full">
             <Input
               label="Dial Phone"
-              type="number"
+              type="text"
               placeholder="Enter Dial Phone"
               {...register("dail_number")}
             />

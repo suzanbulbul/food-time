@@ -15,6 +15,8 @@ import AddEditModal from "./addEditModal";
 //Icons
 import { MdDeleteOutline } from "react-icons/md";
 import { IoMdCloudDownload } from "react-icons/io";
+import { ContractData } from "./contract.type";
+import { PaginationData } from "../../util/type/data.type";
 
 const Contract = () => {
   const [addContract, setAddContract] = useState<boolean>(false);
@@ -22,9 +24,15 @@ const Contract = () => {
   const [removeModalOpen, setRemoveModalOpen] = useState<boolean>(false);
   const [removeModal, setRemoveModal] = useState<any>({});
 
-  const { isFetching, data, refetch } = useQuery({
+  const { isFetching, data, refetch } = useQuery<PaginationData<ContractData>>({
     queryKey: ["company"],
-    queryFn: () => ContractApi.getData(),
+    queryFn: async () => {
+      try {
+        return await ContractApi.getData();
+      } catch (error) {
+        throw new Error("Failed to fetch company data");
+      }
+    },
   });
 
   const columns = [
@@ -85,7 +93,7 @@ const Contract = () => {
     {
       text: "Edit",
       onClick: (rowData: any) => {
-        setEditModal(rowData.id);
+        setEditModal(rowData.contract_id);
         setAddContract(true);
       },
     },
@@ -109,7 +117,11 @@ const Contract = () => {
           Add New Contract
         </Button>
         <div className="flex flex-col gap-6">
-          <Table data={data} columns={columns} tableAction={tableAction} />
+          <Table
+            data={data as any}
+            columns={columns}
+            tableAction={tableAction}
+          />
         </div>
       </div>
 
@@ -118,12 +130,14 @@ const Contract = () => {
         onClose={() => setRemoveModalOpen(false)}
         onSave={() =>
           removeModal &&
-          ContractApi.deleteContract(removeModal.id).then((res: any) => {
-            if (!res.error) {
-              refetch();
-              setRemoveModalOpen(false);
+          ContractApi.deleteContract(removeModal.contract_id).then(
+            (res: any) => {
+              if (!res.error) {
+                refetch();
+                setRemoveModalOpen(false);
+              }
             }
-          })
+          )
         }
         icon={<MdDeleteOutline />}
         title={"Delete Contract"}
@@ -136,6 +150,7 @@ const Contract = () => {
 
       <AddEditModal
         itemId={editModal}
+        setItemId={setEditModal}
         show={addContract}
         onClose={() => setAddContract(false)}
         refetch={refetch}

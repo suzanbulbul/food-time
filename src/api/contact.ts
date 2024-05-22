@@ -49,7 +49,7 @@ export const ContractApi = {
 
     updateContract: async (data: any) => { 
       try {
-        const response = await axios.post(`${apiBaseUrl}/contract/${data.id}`, data, apiConfig); 
+        const response = await axios.post(`${apiBaseUrl}/contract/${data.contract_id}`, data, apiConfig); 
         return response;
 
     } catch (error) {

@@ -12,11 +12,12 @@ import { IoCreateOutline } from "react-icons/io5";
 
 const AddEditModal = ({
   itemId,
+  setItemId,
   show,
   onClose,
-  refetch,
 }: {
   itemId?: string;
+  setItemId?: (id: string) => void;
   show: boolean;
   onClose: () => void;
   refetch: () => void;
@@ -30,27 +31,25 @@ const AddEditModal = ({
     mode: "all",
   });
 
-  const onSubmit = async (formData: any) => {
-    try {
-      const res = itemId
-        ? await ContractApi.updateContract(formData)
-        : await ContractApi.createContract(formData);
+  const handleClose = () => {
+    onClose();
+    setItemId && setItemId("");
+    reset({});
+  };
 
-      if (res && !res.data.error) {
-        refetch();
-        onClose();
-        reset();
-      }
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
+  console.log(itemId);
+
+  const onSubmit = async (formData: any) => {
+    itemId
+      ? await ContractApi.updateContract(formData)
+      : await ContractApi.createContract(formData);
   };
 
   useEffect(() => {
     itemId &&
       ContractApi.getDetail(itemId).then((res: any) => {
-        if (!res.error) {
-          reset(res);
+        if (!res?.error) {
+          reset(res?.data);
         }
       });
   }, [itemId, reset]);
@@ -59,8 +58,7 @@ const AddEditModal = ({
     <Modal
       show={show}
       onClose={() => {
-        onClose();
-        reset();
+        handleClose();
       }}
       onSave={handleSubmit(onSubmit)}
       icon={<IoCreateOutline />}
@@ -93,18 +91,6 @@ const AddEditModal = ({
             })}
             hasError={!!errors.price}
             errorMessage={errors.price?.message as any}
-          />
-        </div>
-        <div className="w-full">
-          <Input
-            label="Owner*"
-            type="text"
-            placeholder="Enter Owner"
-            {...register("owner", {
-              required: "Please enter an owner",
-            })}
-            hasError={!!errors.owner}
-            errorMessage={errors.owner?.message as any}
           />
         </div>
       </form>

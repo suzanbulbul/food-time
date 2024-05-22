@@ -15,7 +15,7 @@ export const CompanyApi = {
       try {
         const response = await axios.get(`${apiBaseUrl}/company`,  apiConfig);
 
-        return response.data;
+        return response;
 
     } catch (error) {
         console.error('Error fetching companies:', error);
@@ -25,7 +25,7 @@ export const CompanyApi = {
 
     getDetail: async (id: string) => { 
         try {
-          const response = await axios.get(`${apiBaseUrl}/company/${id}`,  apiConfig); 
+          const response = await axios.get(`${apiBaseUrl}/company/get/${id}`,  apiConfig); 
   
           return response; 
   
@@ -48,7 +48,7 @@ export const CompanyApi = {
 
     updateCompany: async (data: any) => { 
       try {
-        const response = await axios.post(`${apiBaseUrl}/company/${data.id}`, data, apiConfig); 
+        const response = await axios.post(`${apiBaseUrl}/company/${data.company_id}`, data, apiConfig); 
         return response;
 
     } catch (error) {
