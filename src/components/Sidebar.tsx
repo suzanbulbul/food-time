@@ -19,30 +19,30 @@ const Sidebar = () => {
   const asideData = [
     {
       id: 1,
-      name: "Dashboard",
+      name: "Home",
       icon: <IoHomeOutline className="w-4 h-4" />,
-      url: "/dashboard",
+      url: "/home",
     },
     {
       id: 2,
-      name: "Calendar",
+      name: "Item 1",
       icon: <FaRegCalendarAlt className="w-4 h-4" />,
-      url: "/calendar",
+      url: "/item-1",
     },
     {
       id: 3,
-      name: "Company",
+      name: "Item 2",
       icon: <FaRegUser className="w-4 h-4" />,
       attributes: [
         {
           id: 1,
-          name: "Company List",
-          url: "/company",
+          name: "Sub Item 1",
+          url: "/sub-item-1",
         },
         {
           id: 2,
-          name: "Contract List",
-          url: "/contract",
+          name: "Sub Item 2",
+          url: "/sub-item-2",
         },
       ],
     },
@@ -56,16 +56,9 @@ const Sidebar = () => {
     >
       <div className={`bg-white h-screen p-2 shadow-md`}>
         <div className="text-gray-100 text-2xl font-bold mb-3">
-          <Link className="p-2.5 flex justify-around items-center" href="/">
-            <Image
-              width={32}
-              height={32}
-              className="rounded-full"
-              src="/img/logo.jpeg"
-              alt="logo"
-            />
+          <Link className="p-2.5 flex justify-start items-center" href="/">
             {isSidebarOpen && (
-              <h1 className="font-bold text-2xl text-indigo-500">HiganTech</h1>
+              <h1 className="font-bold text-2xl text-indigo-500">Food Time</h1>
             )}
           </Link>
           <IoIosArrowForward

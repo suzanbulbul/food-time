@@ -30,8 +30,7 @@ const Navbar = () => {
 
   return (
     <WhiteBox>
-      <nav className="flex justify-between items-center">
-        <input type="text" placeholder="Search" />
+      <nav className="flex justify-end items-center">
         <div className="grid ggrid-rows-4 grid-flow-col gap-5 items-center">
           <Link href="#" className="row-span-1">
             <TbWorld className="w-5 h-5 text-gray-600 hover:text-indigo-600" />

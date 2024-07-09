@@ -6,13 +6,13 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push("/dashboard");
+    router.push("/home");
   }, []);
 
   return (
     <div>
       <Head>
-        <title>Cafe Frontendc</title>
+        <title>Food Time</title>
       </Head>
     </div>
   );
