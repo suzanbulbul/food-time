@@ -1,19 +1,16 @@
-import cn from "classnames";
 import React, {
   ForwardedRef,
   InputHTMLAttributes,
   forwardRef,
   useState,
 } from "react";
-
-//Icons
+import cn from "classnames";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   hasError?: boolean;
   errorMessage?: string;
-  hasOverlapping?: boolean;
   placeholder?: string;
   icon?: React.ReactElement | string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -26,7 +23,6 @@ const Input = forwardRef(
       label,
       hasError,
       errorMessage,
-      hasOverlapping,
       placeholder,
       icon,
       onChange,
@@ -36,13 +32,11 @@ const Input = forwardRef(
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
     return (
-      <div className="w-full h-auto">
+      <div className="h-auto w-full">
         {label && (
           <label
             htmlFor={rest.name}
-            className={cn(
-              "mb-1 inline-flex items-center bg-white px-1 text-sm font-medium text-gray-700"
-            )}
+            className="mb-1 inline-flex items-center bg-white px-1 text-sm font-medium text-gray-700"
           >
             {label.includes("*") ? label.split("*")[0] : label}
             {label.includes("*") && <span className="text-red-400">*</span>}
@@ -99,6 +93,7 @@ const Input = forwardRef(
                   "placeholder-red-300": hasError,
                 }
               )}
+              onChange={onChange}
               ref={ref}
               {...rest}
             />
