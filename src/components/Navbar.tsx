@@ -9,7 +9,7 @@ import Link from "next/link";
 import { userInfo, logoutHandle } from "../redux/Slice/authSlice";
 
 //Components
-import { WhiteBox } from ".";
+import { Button, WhiteBox } from ".";
 
 //Icons
 import { TbWorld } from "react-icons/tb";
@@ -60,9 +60,9 @@ const Navbar = () => {
     <WhiteBox>
       <nav className="flex items-center justify-between">
         <h1>Welcome {selectInfo ? selectInfo?.displayName : "Dear Geuest"}</h1>
-        {selectInfo && (
+        {selectInfo ? (
           <div className="ggrid-rows-4 grid grid-flow-col items-center gap-5">
-            <Link href="#" passHref className="row-span-1">
+            {/* <Link href="#" passHref className="row-span-1">
               <TbWorld className="h-5 w-5 text-gray-600 hover:text-indigo-600" />
             </Link>
             <Link href="#" passHref className="row-span-1">
@@ -71,14 +71,14 @@ const Navbar = () => {
 
             <Link href="#" passHref className="row-span-1">
               <PiBellRinging className="h-5 w-5 text-gray-600 hover:text-indigo-600" />
-            </Link>
+            </Link> */}
 
             <div className="relative row-span-1">
               <div className="">
                 <div>
                   <button
                     onClick={() => setOpenSettingMenu(!openSettingMenu)}
-                    className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600"
+                    className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600 "
                   >
                     <Image
                       width={32}
@@ -101,7 +101,7 @@ const Navbar = () => {
                       <a
                         key={index}
                         onClick={item.onClick}
-                        className="block cursor-pointer px-4 py-2 text-center text-sm font-normal text-gray-600 hover:bg-indigo-100 hover:text-indigo-600"
+                        className="block cursor-pointer px-4 py-2 text-center text-sm font-normal text-gray-600 hover:bg-indigo-100 hover:text-indigo-600 "
                         role="menuitem"
                         tabIndex={-1}
                         id={`user-menu-item-${index}`}
@@ -114,6 +114,8 @@ const Navbar = () => {
               </div>
             </div>
           </div>
+        ) : (
+          <Button onClick={() => router.push("/login")}>Register Now</Button>
         )}
       </nav>
     </WhiteBox>
