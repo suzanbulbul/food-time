@@ -2,9 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import router from "next/router";
 
-import Image from "next/image";
-import Link from "next/link";
-
 //Redux
 import { userInfo, logoutHandle } from "../redux/Slice/authSlice";
 
@@ -18,6 +15,7 @@ import { PiBellRinging } from "react-icons/pi";
 
 //Type
 import { User } from "../util/type/user.type";
+import { getInitials } from "../util/helper/getInitials";
 
 export type actionsType = {
   label: string;
@@ -78,15 +76,9 @@ const Navbar = () => {
                 <div>
                   <button
                     onClick={() => setOpenSettingMenu(!openSettingMenu)}
-                    className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600 "
+                    className="flex  h-9 w-9 items-center justify-center rounded-full bg-indigo-200 text-sm text-indigo-600 shadow hover:ring-2"
                   >
-                    <Image
-                      width={32}
-                      height={32}
-                      className="rounded-full"
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                      alt=""
-                    />
+                    {getInitials(selectInfo?.displayName as any)}
                   </button>
                 </div>
                 {openSettingMenu && (
