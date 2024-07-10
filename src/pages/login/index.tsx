@@ -2,18 +2,33 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Button, Input } from "../../components";
 import Link from "next/link";
+import { LoginType } from "./login.type";
+import { firebaseApi } from "../../api/firebase";
+import router from "next/router";
+import toast from "react-hot-toast";
+import { regex } from "../../util/helper";
 
 const Login = () => {
   const {
-    reset,
     register,
+    formState: { isSubmitting, errors },
     handleSubmit,
-    formState: { errors },
-  } = useForm({
+    reset,
+  } = useForm<LoginType>({
     mode: "all",
   });
 
-  const onSubmit = async (formData: any) => {};
+  const onSubmit = async (formData: LoginType) => {
+    await firebaseApi.handleLogin(formData).then((res: any) => {
+      if (res?.accessToken) {
+        toast.success("Login Successfully");
+        router.push("/home");
+        reset();
+      } else {
+        toast.error("Password or email is incorrect");
+      }
+    });
+  };
 
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -31,13 +46,17 @@ const Login = () => {
               type="email"
               placeholder="Email"
               {...register("email", {
+                pattern: {
+                  value: regex.email,
+                  message: "Entered value does not match email format",
+                },
                 required: "Please enter an email",
               })}
               hasError={!!errors.email}
               errorMessage={errors.email?.message as any}
             />
           </div>
-          <div className="w-full grid grid-col gap-1">
+          <div className="grid-col grid w-full gap-1">
             <Input
               label="Password*"
               type="password"
@@ -58,7 +77,7 @@ const Login = () => {
             </div>
           </div>
 
-          <Button type="submit" className="w-full">
+          <Button disabled={isSubmitting} type="submit" className="w-full">
             Login
           </Button>
         </form>

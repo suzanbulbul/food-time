@@ -27,7 +27,7 @@ const Register = () => {
     await firebaseApi.handleRegister(formData).then((res: any) => {
       if (res?.accessToken) {
         toast.success("Register Successfully");
-        router.push("login");
+        router.push("/login");
         reset();
       } else {
         handleRegisterError(res.error.code);

@@ -1,1 +1,1 @@
-export * from "./registerValidate";
+export * from "./authValidate";
