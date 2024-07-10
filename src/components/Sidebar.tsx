@@ -1,51 +1,131 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import router from "next/router";
+
+//Redux
+import { userInfo } from "../redux/Slice/authSlice";
+import { useSelector } from "react-redux";
+
+//Compopnents
+import Button from "./Button";
 
 //Icons
 import { IoHomeOutline } from "react-icons/io5";
-import { FaRegCalendarAlt } from "react-icons/fa";
-import { FaRegUser } from "react-icons/fa6";
+import { PiBowlFoodLight } from "react-icons/pi";
+import { CiSettings } from "react-icons/ci";
 import { IoIosArrowForward } from "react-icons/io";
+import { MdOutlineFavoriteBorder } from "react-icons/md";
+
+//Type
+import { User } from "../util/type/user.type";
+import { TooltipContent } from "./Tooltip";
+
+export type actionItemType = {
+  id: number;
+  name: string;
+  icon?: React.ReactNode;
+  onClick: () => void;
+  disable: boolean;
+  tooltip?: TooltipContent;
+  hidden: boolean;
+};
+
+export type actionsType = {
+  id: number;
+  name: string;
+  icon: React.ReactNode;
+  onClick?: () => void;
+  attributes?: actionItemType[];
+  disable?: boolean;
+  tooltip?: TooltipContent;
+  hidden?: boolean;
+};
 
 const Sidebar = () => {
+  const user = useSelector(userInfo);
+
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
   const [activeMenu, setActiveMenu] = useState<number>(0);
+  const [selectInfo, setSelectInfo] = useState<User>(undefined);
 
   const toggleSubMenu = (itemId: any) => {
     setActiveMenu(activeMenu === itemId ? 0 : itemId);
   };
 
-  const asideData = [
+  const asideData: actionsType[] = [
     {
       id: 1,
       name: "Home",
-      icon: <IoHomeOutline className="h-4 w-4" />,
-      url: "/home",
+      icon: <IoHomeOutline className="h-5 w-5" />,
+      onClick: () => {
+        router.push("/home");
+      },
+      disable: false,
     },
     {
       id: 2,
-      name: "Item 1",
-      icon: <FaRegCalendarAlt className="h-4 w-4" />,
-      url: "/item-1",
+      name: "Add Recipe",
+      icon: <PiBowlFoodLight className="h-5 w-5" />,
+      onClick: () => {
+        router.push("/recipe");
+      },
+      disable: selectInfo ? false : true,
+      tooltip: {
+        message: "Need to Login for feature",
+      },
     },
     {
       id: 3,
-      name: "Item 2",
-      icon: <FaRegUser className="h-4 w-4" />,
-      attributes: [
-        {
-          id: 1,
-          name: "Sub Item 1",
-          url: "/sub-item-1",
-        },
-        {
-          id: 2,
-          name: "Sub Item 2",
-          url: "/sub-item-2",
-        },
-      ],
+      name: "Favorite Recipes",
+      icon: <MdOutlineFavoriteBorder className="h-5 w-5" />,
+      onClick: () => {
+        router.push("/favorite-recipe");
+      },
+      disable: selectInfo ? false : true,
+      tooltip: {
+        message: "Need to Login for feature",
+      },
     },
+    {
+      id: 4,
+      name: "Settings",
+      icon: <CiSettings className="h-5 w-5" />,
+      onClick: () => {
+        router.push("/settings");
+      },
+      hidden: selectInfo ? false : true,
+      tooltip: {
+        message: "You need to Login for feature",
+      },
+    },
+    // {
+    //   id: 3,
+    //   name: "Item 2",
+    //   icon: <FaRegUser className="h-4 w-4" />,
+    //   attributes: [
+    //     {
+    //       id: 1,
+    //       name: "Sub Item 1",
+    //       onClick: () => {
+    //         router.push("/sub-item-1");
+    //       },
+    //       disable: selectInfo ? false : true,
+    //     },
+    //     {
+    //       id: 2,
+    //       name: "Sub Item 2",
+    //       onClick: () => {
+    //         router.push("/sub-item-2");
+    //       },
+    //       disable: selectInfo ? false : true,
+    //     },
+    //   ],
+    // },
   ];
+
+  useEffect(() => {
+    setSelectInfo(user);
+  }, [user]);
 
   return (
     <div
@@ -67,61 +147,76 @@ const Sidebar = () => {
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           />
         </div>
-        {asideData.map((item) => (
-          <div key={item.id}>
-            {item.url ? (
-              <Link
-                href={item.url}
-                className={`flex h-11 cursor-pointer items-center gap-4 rounded-md px-4 text-gray-600 duration-300 hover:bg-indigo-100 hover:text-indigo-600 ${
-                  isSidebarOpen ? "" : "justify-center"
-                }`}
-              >
-                {item.icon}
+        {asideData.map(
+          (item) =>
+            !item.hidden && (
+              <div key={item.id}>
+                {item.onClick ? (
+                  <Button
+                    tooltip={item.disable ? item.tooltip : undefined}
+                    justify={isSidebarOpen ? "start" : "center"}
+                    variant="transparent"
+                    disabled={item?.disable}
+                    onClick={item.onClick}
+                    className={`h-11 w-full gap-4 text-gray-600 duration-300 hover:bg-indigo-100 hover:text-indigo-600`}
+                  >
+                    {item.icon}
 
-                {isSidebarOpen && (
-                  <span className="text-base font-normal">{item.name}</span>
-                )}
-              </Link>
-            ) : (
-              <div>
-                <div
-                  className={`flex h-11 cursor-pointer items-center gap-4 rounded-md px-4 text-gray-600 duration-300 hover:bg-indigo-100 hover:text-indigo-600 ${
-                    isSidebarOpen ? "" : "justify-center"
-                  }`}
-                  onClick={() => toggleSubMenu(item.id)}
-                >
-                  {item.icon}
-                  {isSidebarOpen && (
-                    <>
+                    {isSidebarOpen && (
                       <span className="text-base font-normal">{item.name}</span>
-                      <IoIosArrowForward
-                        className={`ml-auto text-indigo-600 duration-300 ${
-                          activeMenu === item.id ? "rotate-90" : ""
-                        }`}
-                      />
-                    </>
-                  )}
-                </div>
-                <div className={`${activeMenu === item.id ? "" : "hidden"}`}>
-                  {item?.attributes?.map((subItem) => (
-                    <Link
-                      href={subItem.url}
-                      key={subItem.id}
-                      className="flex h-10 cursor-pointer items-center gap-4 rounded-md px-4 text-gray-600 duration-300 hover:bg-indigo-100 hover:text-indigo-600"
+                    )}
+                  </Button>
+                ) : (
+                  <div>
+                    <Button
+                      variant="transparent"
+                      justify={isSidebarOpen ? "start" : "center"}
+                      className={`h-11 w-full gap-4 text-gray-600 duration-300 hover:bg-indigo-100 hover:text-indigo-600`}
+                      onClick={() => toggleSubMenu(item.id)}
                     >
-                      <span className="h-4 w-4"></span>
+                      {item.icon}
                       {isSidebarOpen && (
-                        <span className="text-sm font-normal">
-                          {subItem.name}
-                        </span>
+                        <>
+                          <span className="text-base font-normal">
+                            {item.name}
+                          </span>
+                          <IoIosArrowForward
+                            className={`ml-auto text-indigo-600 duration-300 ${
+                              activeMenu === item.id ? "rotate-90" : ""
+                            }`}
+                          />
+                        </>
                       )}
-                    </Link>
-                  ))}
-                </div>
+                    </Button>
+                    <div
+                      className={`${activeMenu === item.id ? "" : "hidden"}`}
+                    >
+                      {item?.attributes?.map((subItem) => (
+                        <Button
+                          tooltip={
+                            subItem.disable ? subItem.tooltip : undefined
+                          }
+                          justify={isSidebarOpen ? "start" : "center"}
+                          variant="transparent"
+                          disabled={subItem?.disable}
+                          onClick={item.onClick}
+                          key={subItem.id}
+                          className="h-10 gap-4  text-gray-600 duration-300 hover:bg-indigo-100 hover:text-indigo-600"
+                        >
+                          <span className="h-4 w-4"></span>
+                          {isSidebarOpen && (
+                            <span className="text-sm font-normal">
+                              {subItem.name}
+                            </span>
+                          )}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        ))}
+            )
+        )}
       </div>
     </div>
   );

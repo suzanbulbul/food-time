@@ -8,6 +8,7 @@ import Input from "./Input";
 import Loading from "./Loading";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
+import Tooltip from "./Tooltip";
 import Layout from "./Layout";
 
 export {
@@ -21,5 +22,6 @@ export {
   ActionMenu,
   Modal,
   Button,
+  Tooltip,
   Input,
 };
