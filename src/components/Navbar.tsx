@@ -1,6 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+
 import Image from "next/image";
 import Link from "next/link";
+
+//Redux
+import { userInfo } from "../redux/Slice/authSlice";
 
 //Icons
 import { TbWorld } from "react-icons/tb";
@@ -11,7 +16,9 @@ import { PiBellRinging } from "react-icons/pi";
 import { WhiteBox } from ".";
 
 const Navbar = () => {
+  const user = useSelector(userInfo);
   const [openSettingMenu, setOpenSettingMenu] = useState<boolean>(false);
+  const [displayName, setDisplayNameu] = useState<string>("Dear Guest");
 
   const settingData = [
     {
@@ -28,22 +35,27 @@ const Navbar = () => {
     },
   ];
 
+  useEffect(() => {
+    user && setDisplayNameu(user.displayName);
+  }, [user]);
+
   return (
     <WhiteBox>
-      <nav className="flex justify-end items-center">
-        <div className="grid ggrid-rows-4 grid-flow-col gap-5 items-center">
+      <nav className="flex items-center justify-between">
+        <h1>Welcome {displayName}</h1>
+        <div className="ggrid-rows-4 grid grid-flow-col items-center gap-5">
           <Link href="#" className="row-span-1">
-            <TbWorld className="w-5 h-5 text-gray-600 hover:text-indigo-600" />
+            <TbWorld className="h-5 w-5 text-gray-600 hover:text-indigo-600" />
           </Link>
           <Link href="#" className="row-span-1">
-            <AiOutlineAppstore className="w-5 h-5 text-gray-600 hover:text-indigo-600" />
-          </Link>
-
-          <Link href="#" className="row-span-1">
-            <PiBellRinging className="w-5 h-5 text-gray-600 hover:text-indigo-600" />
+            <AiOutlineAppstore className="h-5 w-5 text-gray-600 hover:text-indigo-600" />
           </Link>
 
-          <div className="row-span-1 relative">
+          <Link href="#" className="row-span-1">
+            <PiBellRinging className="h-5 w-5 text-gray-600 hover:text-indigo-600" />
+          </Link>
+
+          <div className="relative row-span-1">
             <div className="">
               <div>
                 <button
@@ -71,7 +83,7 @@ const Navbar = () => {
                     <Link
                       key={index}
                       href="#"
-                      className="block text-center px-4 py-2 text-sm font-normal text-gray-600 hover:text-indigo-600 hover:bg-indigo-100"
+                      className="block px-4 py-2 text-center text-sm font-normal text-gray-600 hover:bg-indigo-100 hover:text-indigo-600"
                       role="menuitem"
                       tabIndex={-1}
                       id={`user-menu-item-${index}`}

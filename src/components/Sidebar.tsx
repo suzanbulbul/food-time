@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 
 //Icons
 import { IoHomeOutline } from "react-icons/io5";
@@ -20,19 +19,19 @@ const Sidebar = () => {
     {
       id: 1,
       name: "Home",
-      icon: <IoHomeOutline className="w-4 h-4" />,
+      icon: <IoHomeOutline className="h-4 w-4" />,
       url: "/home",
     },
     {
       id: 2,
       name: "Item 1",
-      icon: <FaRegCalendarAlt className="w-4 h-4" />,
+      icon: <FaRegCalendarAlt className="h-4 w-4" />,
       url: "/item-1",
     },
     {
       id: 3,
       name: "Item 2",
-      icon: <FaRegUser className="w-4 h-4" />,
+      icon: <FaRegUser className="h-4 w-4" />,
       attributes: [
         {
           id: 1,
@@ -50,19 +49,19 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`pr-3 relative ease-in-out duration-500 transition-all ${
+      className={`relative pr-3 transition-all duration-500 ease-in-out ${
         isSidebarOpen ? "w-72" : "w-24"
       }`}
     >
-      <div className={`bg-white h-screen p-2 shadow-md`}>
-        <div className="text-gray-100 text-2xl font-bold mb-3">
-          <Link className="p-2.5 flex justify-start items-center" href="/">
+      <div className={`h-screen bg-white p-2 shadow-md`}>
+        <div className="mb-3 text-2xl font-bold text-gray-100">
+          <Link className="flex items-center justify-start p-2.5" href="/">
             {isSidebarOpen && (
-              <h1 className="font-bold text-2xl text-indigo-500">Food Time</h1>
+              <h1 className="text-2xl font-bold text-indigo-500">Food Time</h1>
             )}
           </Link>
           <IoIosArrowForward
-            className={`bg-indigo-500 rounded-full p-1 absolute top-6 right-0 ${
+            className={`absolute right-0 top-6 rounded-full bg-indigo-500 p-1 ${
               isSidebarOpen ? "rotate-180 duration-300" : ""
             }`}
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -73,7 +72,7 @@ const Sidebar = () => {
             {item.url ? (
               <Link
                 href={item.url}
-                className={`h-11 rounded-md flex gap-4 items-center px-4 duration-300 cursor-pointer text-gray-600 hover:text-indigo-600 hover:bg-indigo-100 ${
+                className={`flex h-11 cursor-pointer items-center gap-4 rounded-md px-4 text-gray-600 duration-300 hover:bg-indigo-100 hover:text-indigo-600 ${
                   isSidebarOpen ? "" : "justify-center"
                 }`}
               >
@@ -86,7 +85,7 @@ const Sidebar = () => {
             ) : (
               <div>
                 <div
-                  className={`h-11 gap-4 flex items-center rounded-md px-4 duration-300 cursor-pointer text-gray-600 hover:text-indigo-600 hover:bg-indigo-100 ${
+                  className={`flex h-11 cursor-pointer items-center gap-4 rounded-md px-4 text-gray-600 duration-300 hover:bg-indigo-100 hover:text-indigo-600 ${
                     isSidebarOpen ? "" : "justify-center"
                   }`}
                   onClick={() => toggleSubMenu(item.id)}
@@ -108,9 +107,9 @@ const Sidebar = () => {
                     <Link
                       href={subItem.url}
                       key={subItem.id}
-                      className="h-10 gap-4 flex items-center rounded-md px-4 duration-300 cursor-pointer text-gray-600 hover:text-indigo-600 hover:bg-indigo-100"
+                      className="flex h-10 cursor-pointer items-center gap-4 rounded-md px-4 text-gray-600 duration-300 hover:bg-indigo-100 hover:text-indigo-600"
                     >
-                      <span className="w-4 h-4"></span>
+                      <span className="h-4 w-4"></span>
                       {isSidebarOpen && (
                         <span className="text-sm font-normal">
                           {subItem.name}

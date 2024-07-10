@@ -1,14 +1,28 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import { Button, Input } from "../../components";
 import Link from "next/link";
-import { LoginType } from "./login.type";
-import { firebaseApi } from "../../api/firebase";
 import router from "next/router";
-import toast from "react-hot-toast";
+
+//API
+import { firebaseApi } from "../../api/firebase";
+
+//Redux
 import { regex } from "../../util/helper";
+import { loginHandle } from "../../redux/Slice/authSlice";
+
+//Library
+import toast from "react-hot-toast";
+
+//Components
+import { Button, Input } from "../../components";
+
+//Type
+import { LoginType } from "./login.type";
 
 const Login = () => {
+  const dispatch = useDispatch();
+
   const {
     register,
     formState: { isSubmitting, errors },
@@ -22,6 +36,7 @@ const Login = () => {
     await firebaseApi.handleLogin(formData).then((res: any) => {
       if (res?.accessToken) {
         toast.success("Login Successfully");
+        dispatch(loginHandle(JSON.stringify(res)));
         router.push("/home");
         reset();
       } else {
