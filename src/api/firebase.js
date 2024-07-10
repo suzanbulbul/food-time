@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import {
   getAuth,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
 
@@ -28,6 +29,18 @@ export const firebaseApi = {
         formData.password
       );
       await updateProfile(user, { displayName: formData.name });
+      return user;
+    } catch (error) {
+      return { error: error };
+    }
+  },
+  handleLogin: async (formData) => {
+    try {
+      const { user } = await signInWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      );
       return user;
     } catch (error) {
       return { error: error };
