@@ -10,6 +10,8 @@ import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import Tooltip from "./Tooltip";
 import Layout from "./Layout";
+import Accordion from "./Accordion";
+import TextArea from "./TextArea";
 
 export {
   Layout,
@@ -24,4 +26,6 @@ export {
   Button,
   Tooltip,
   Input,
+  Accordion,
+  TextArea,
 };
