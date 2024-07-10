@@ -37,10 +37,14 @@ export const authSlice = createSlice({
       state.user = JSON.parse(action.payload);
       saveState(state);
     },
+    logoutHandle: (state) => {
+      state.user = null;
+      localStorage.removeItem("authState");
+    },
   },
 });
 
-export const { loginHandle } = authSlice.actions;
+export const { loginHandle, logoutHandle } = authSlice.actions;
 
 export const userInfo = (state) => state.auth.user;
 

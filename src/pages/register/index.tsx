@@ -1,15 +1,22 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { useForm } from "react-hook-form";
+import router from "next/router";
+
+//API
+import { firebaseApi } from "../../api/firebase";
+
+//Library
 import toast from "react-hot-toast";
 
-import { useForm } from "react-hook-form";
+//Components
 import { Button, Input } from "../../components";
 import Link from "next/link";
 
-import { RegisterType } from "./register.type";
-
-import { firebaseApi } from "../../api/firebase";
-import router from "next/router";
+//Helper
 import { handleRegisterError, regex } from "../../util/helper";
+
+//Type
+import { RegisterType } from "./register.type";
 
 const Register = () => {
   const {
