@@ -30,7 +30,9 @@ const AddRecipe = () => {
   } = useForm<RecipeType>({
     defaultValues: {
       name: "",
+      summary: "",
       category: "",
+      img: undefined,
       step: [
         { name: "", materials: "", stepRecipe: "", time: "", img: undefined },
       ],
@@ -96,6 +98,19 @@ const AddRecipe = () => {
               />
             </div>
           </div>
+          <div className="flex items-start gap-2">
+            <div className="w-full">
+              <TextArea
+                label="Food Summary"
+                placeholder="Food Summary"
+                {...register(`summary`)}
+              />
+            </div>
+
+            <div className="w-full">
+              <Input label="Food Img" type="file" {...register(`img`)} />
+            </div>
+          </div>
         </WhiteBox>
         <div className="flex flex-col gap-2.5">
           {fields.map((field, i) => (
@@ -133,7 +148,6 @@ const AddRecipe = () => {
                       <Input
                         label="Step Img"
                         type="file"
-                        placeholder="Step Img"
                         {...register(`step.${i}.img`)}
                       />
                     </div>
@@ -155,7 +169,7 @@ const AddRecipe = () => {
                       label="Step Recipe"
                       placeholder="Step Recipe"
                       {...register(`step.${i}.stepRecipe`)}
-                    ></TextArea>
+                    />
                   </div>
                 </div>
               </Accordion>

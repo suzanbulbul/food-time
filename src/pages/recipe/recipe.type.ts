@@ -8,6 +8,8 @@ export interface RecipInformationType {
 export interface RecipeType {
   id?: string;
   name: string;
+  summary?: string;
   category: string;
+  img?: FileList | null;
   step: RecipInformationType[];
 }

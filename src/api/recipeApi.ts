@@ -1,7 +1,11 @@
 import { addDoc, collection, getDocs } from "firebase/firestore";
+import { db } from "./firebase";
+
+//Helper
+import { uploadImageAndGetUrl } from "../util/helper";
+
+//Type
 import { RecipeType } from "../pages/recipe/recipe.type";
-import { db, storage } from "./firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export const recipeApi = {
   addRecipe: async (formData: RecipeType) => {
@@ -12,18 +16,23 @@ export const recipeApi = {
         }
 
         const file = img[0];
-        const storageRef = ref(storage, `recipe_images/${file.name}`);
-        await uploadBytes(storageRef, file);
-        const imageUrl = await getDownloadURL(storageRef);
-
+        const imageUrl = await uploadImageAndGetUrl(file);
         return { ...rest, imageUrl };
       });
 
       const recipeData = await Promise.all(recipeDataPromises);
 
+      let mainImageUrl = null;
+      if (formData.img && formData.img.length > 0) {
+        const mainImageFile = formData.img[0];
+        mainImageUrl = await uploadImageAndGetUrl(mainImageFile);
+      }
+
       const docRef = await addDoc(collection(db, "recipes"), {
         name: formData.name,
+        summary: formData.summary,
         category: formData.category,
+        img: mainImageUrl,
         step: recipeData,
       });
 
@@ -39,8 +48,10 @@ export const recipeApi = {
       const documentList: RecipeType[] = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         category: doc.data().category,
+        summary: doc.data().summary,
         step: doc.data().step,
         name: doc.data().name,
+        img: doc.data().img,
       }));
       return documentList;
     } catch (error) {

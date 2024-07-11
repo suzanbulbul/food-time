@@ -1,11 +1,13 @@
 import { auth } from "./firebase";
-import { RegisterType } from "../pages/register/register.type";
 import { LoginType } from "../pages/login/login.type";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
+
+//Type
+import { RegisterType } from "../pages/register/register.type";
 
 export const authApi = {
   handleRegister: async (formData: RegisterType) => {

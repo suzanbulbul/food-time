@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { recipeApi } from "../../api/recipeApi";
 
 //Components
-import { Button } from "../../components";
+import { Button, Card } from "../../components";
 
 //Type
 import { RecipeType } from "./recipe.type";
@@ -31,6 +31,10 @@ const Recipe = () => {
           Add New Recipe
         </Button>
       </div>
+      {data?.map((res, i) => {
+        console.log(res);
+        return <Card key={i} title={res.name} desc={"s"} img={"s"} />;
+      })}
     </div>
   );
 };
