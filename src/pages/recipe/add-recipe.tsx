@@ -1,34 +1,37 @@
 import React from "react";
 import { useForm, useFieldArray, FieldValues } from "react-hook-form";
-import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
+
+//API
+import { firebaseApi } from "../../api/firebase";
+
+//Components
+import { Button, Input, TextArea, WhiteBox } from "../../components";
+import Accordion from "../../components/Accordion";
+
+//Icons
 import { CiCirclePlus as Plus } from "react-icons/ci";
 import { BsTrash3 as Trash } from "react-icons/bs";
-import Accordion from "../../components/Accordion";
-import { Button, Input, TextArea } from "../../components";
 
-interface RecipeFormValues {
-  name: string;
-  recipe: {
-    name: string;
-    materials: string;
-    stepRecipe: string;
-    time: string;
-  }[];
-}
+//Type
+import { AddRecipeType } from "./recipe.type";
+import toast from "react-hot-toast";
 
 const AddRecipe = () => {
-  const dispatch = useDispatch();
   const router = useRouter();
   const {
     control,
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
-  } = useForm<RecipeFormValues>({
+  } = useForm<AddRecipeType>({
     defaultValues: {
       name: "",
-      recipe: [{ name: "", materials: "", stepRecipe: "", time: "" }],
+      category: "",
+      recipe: [
+        { name: "", materials: "", stepRecipe: "", time: "", img: undefined },
+      ],
     },
   });
 
@@ -37,8 +40,17 @@ const AddRecipe = () => {
     name: "recipe",
   });
 
-  const onSubmit = (data: FieldValues) => {
-    console.log(data);
+  const onSubmit = async (formData: AddRecipeType) => {
+    toast.loading("Loading...");
+
+    await firebaseApi.addRecipe(formData).then((res: any) => {
+      if (res?.success) {
+        toast.dismiss();
+        toast.success("Add New Recipe Successfully");
+        router.push("/recipe");
+        reset();
+      }
+    });
   };
 
   return (
@@ -47,17 +59,42 @@ const AddRecipe = () => {
       className="flex flex-col gap-9 md:p-16"
     >
       <div className="flex flex-col gap-4">
-        <div className="mx-auto max-w-max bg-white">
-          <Input
-            type="text"
-            placeholder="Food Name"
-            {...register("name", {
-              required: "Please enter a name",
-            })}
-            hasError={!!errors?.name}
-            errorMessage={errors?.name?.message}
-          />
-        </div>
+        <h1 className="text-center text-3xl font-semibold text-indigo-500">
+          Add Recipe
+        </h1>
+
+        <WhiteBox className="flex flex-col gap-2">
+          <h1 className="text-lg font-medium text-indigo-900">
+            Recipe Information
+          </h1>
+          <div className="flex items-start gap-2">
+            <div className="w-full">
+              <Input
+                type="text"
+                label="Food Name*"
+                placeholder="Food Name"
+                {...register("name", {
+                  required: "Please enter a name",
+                })}
+                hasError={!!errors?.name}
+                errorMessage={errors?.name?.message}
+              />
+            </div>
+
+            <div className="w-full">
+              <Input
+                type="text"
+                label="Food Category*"
+                placeholder="Food Category"
+                {...register("category", {
+                  required: "Please enter a category",
+                })}
+                hasError={!!errors?.category}
+                errorMessage={errors?.category?.message}
+              />
+            </div>
+          </div>
+        </WhiteBox>
         <div className="flex flex-col gap-2.5">
           {fields.map((field, i) => (
             <div key={field.id} className="flex items-center gap-4">
@@ -66,7 +103,7 @@ const AddRecipe = () => {
                   <div className="flex gap-2">
                     <div className="w-full">
                       <Input
-                        label="Name*"
+                        label="Step Name*"
                         type="text"
                         placeholder="Name"
                         {...register(`recipe.${i}.name`, {
@@ -78,7 +115,7 @@ const AddRecipe = () => {
                     </div>
                     <div className="w-full">
                       <Input
-                        label="Materials*"
+                        label="Step Materials*"
                         type="text"
                         placeholder="Materials"
                         {...register(`recipe.${i}.materials`, {
@@ -92,17 +129,15 @@ const AddRecipe = () => {
                   <div className="flex items-start gap-2">
                     <div className="w-full">
                       <Input
-                        label="Img"
+                        label="Step Img"
                         type="file"
-                        placeholder="Time"
-                        {...register(`recipe.${i}.time`, {
-                          required: "Please enter a time",
-                        })}
+                        placeholder="Step Img"
+                        {...register(`recipe.${i}.img`)}
                       />
                     </div>
                     <div className="w-full">
                       <Input
-                        label="Time*"
+                        label="Step Time*"
                         type="text"
                         placeholder="Time"
                         {...register(`recipe.${i}.time`, {
@@ -115,14 +150,9 @@ const AddRecipe = () => {
                   </div>
                   <div className="w-full">
                     <TextArea
-                      label="Step Recipe*"
-                      type="textarea"
+                      label="Step Recipe"
                       placeholder="Step Recipe"
-                      {...register(`recipe.${i}.stepRecipe`, {
-                        required: "Please enter a step recipe",
-                      })}
-                      hasError={!!errors?.recipe?.[i]?.stepRecipe}
-                      errorMessage={errors?.recipe?.[i]?.stepRecipe?.message}
+                      {...register(`recipe.${i}.stepRecipe`)}
                     ></TextArea>
                   </div>
                 </div>
@@ -139,7 +169,13 @@ const AddRecipe = () => {
         <div className="mx-auto">
           <Button
             onClick={() =>
-              append({ name: "", materials: "", stepRecipe: "", time: "" })
+              append({
+                name: "",
+                materials: "",
+                stepRecipe: "",
+                time: "",
+                img: undefined,
+              })
             }
             type="button"
             variant="success"

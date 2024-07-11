@@ -20,7 +20,7 @@ const Accordion = ({ title, children }: AccordionProps) => {
         className="relative flex cursor-pointer items-center justify-between"
         onClick={toggleAccordion}
       >
-        <h2 className="text-lg">{title}</h2>
+        <h1 className="ext-lg font-medium text-indigo-900">{title}</h1>
         <Arrow
           className={`absolute right-0 h-7 w-7 transform transition-transform duration-300 ${
             isOpen ? "rotate-180" : ""

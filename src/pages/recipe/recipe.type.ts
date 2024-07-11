@@ -3,9 +3,11 @@ export interface RecipInformationType {
   materials: string;
   stepRecipe: string;
   time: string;
+  img?: FileList | null;
 }
 
 export interface AddRecipeType {
-  recipe: string;
-  step: RecipInformationType[];
+  name: string;
+  category: string;
+  recipe: RecipInformationType[];
 }

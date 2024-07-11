@@ -8,7 +8,6 @@ import router from "next/router";
 import { firebaseApi } from "../../api/firebase";
 
 //Redux
-import { regex } from "../../util/helper";
 import { loginHandle } from "../../redux/Slice/authSlice";
 
 //Library
@@ -16,6 +15,9 @@ import toast from "react-hot-toast";
 
 //Components
 import { Button, Input } from "../../components";
+
+//Helper
+import { regex } from "../../util/helper";
 
 //Type
 import { LoginType } from "./login.type";
