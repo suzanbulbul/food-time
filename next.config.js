@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ["images.unsplash.com"],
+    domains: ["firebasestorage.googleapis.com", "v1.tailwindcss.com"],
   },
   env: {
     REACT_APP_API_KEY: process.env.REACT_APP_API_KEY,

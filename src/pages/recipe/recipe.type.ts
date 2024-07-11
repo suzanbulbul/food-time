@@ -3,13 +3,13 @@ export interface RecipInformationType {
   materials: string;
   stepRecipe?: string;
   time: string;
-  img?: FileList | null;
+  img?: string | null;
 }
 export interface RecipeType {
   id?: string;
   name: string;
   summary?: string;
   category: string;
-  img?: FileList | null;
+  img?: string | null;
   step: RecipInformationType[];
 }

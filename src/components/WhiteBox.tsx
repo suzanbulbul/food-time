@@ -4,15 +4,18 @@ import cn from "classnames";
 const WhiteBox = ({
   children,
   className,
+  onClick,
   ...rest
 }: {
   children: React.ReactNode;
   className?: string;
+  onClick?: () => void;
 }) => {
   return (
     <div
       {...rest}
-      className={cn("w-full bg-white p-4 shadow rounded-xl", className)}
+      onClick={onClick}
+      className={cn("w-full rounded-xl bg-white p-4 shadow", className)}
     >
       {children}
     </div>

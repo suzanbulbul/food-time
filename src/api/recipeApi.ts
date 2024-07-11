@@ -16,7 +16,7 @@ export const recipeApi = {
         }
 
         const file = img[0];
-        const imageUrl = await uploadImageAndGetUrl(file);
+        const imageUrl = await uploadImageAndGetUrl(file as any);
         return { ...rest, imageUrl };
       });
 
@@ -25,7 +25,7 @@ export const recipeApi = {
       let mainImageUrl = null;
       if (formData.img && formData.img.length > 0) {
         const mainImageFile = formData.img[0];
-        mainImageUrl = await uploadImageAndGetUrl(mainImageFile);
+        mainImageUrl = await uploadImageAndGetUrl(mainImageFile as any);
       }
 
       const docRef = await addDoc(collection(db, "recipes"), {
