@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import router from "next/router";
 
 //API
-import { firebaseApi } from "../../api/firebase";
+import { authApi } from "../../api/authApi";
 
 //Library
 import toast from "react-hot-toast";
@@ -31,7 +31,7 @@ const Register = () => {
   });
 
   const onSubmit = async (formData: RegisterType) => {
-    await firebaseApi.handleRegister(formData).then((res: any) => {
+    await authApi.handleRegister(formData).then((res: any) => {
       if (res?.accessToken) {
         toast.success("Register Successfully");
         router.push("/login");
