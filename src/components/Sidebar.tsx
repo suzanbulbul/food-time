@@ -64,7 +64,7 @@ const Sidebar = () => {
     },
     {
       id: 2,
-      name: "Add Recipe",
+      name: "List Recipe",
       icon: <PiBowlFoodLight className="h-5 w-5" />,
       onClick: () => {
         router.push("/recipe");

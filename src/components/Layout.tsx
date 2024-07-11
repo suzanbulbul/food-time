@@ -13,18 +13,18 @@ const Layout = ({ children }: any) => {
     router.pathname === "/register"
   ) {
     return (
-      <main className="h-screen flex justify-center items-center">
+      <main className="flex h-screen items-center justify-center">
         {children}
       </main>
     );
   }
 
   return (
-    <div className="bg-neutral-100 h-screen flex ">
+    <div className="flex h-screen bg-neutral-100 ">
       <Sidebar />
-      <main className="p-3 w-full flex flex-col gap-6">
+      <main className="flex w-full flex-col gap-6 p-3">
         <Navbar />
-        {children}
+        <div className="h-full overflow-auto">{children}</div>
       </main>
     </div>
   );

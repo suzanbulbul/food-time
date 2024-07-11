@@ -1,11 +1,12 @@
 import { initializeApp } from "firebase/app";
-
 import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -19,6 +20,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
 export const firebaseApi = {
   handleRegister: async (formData) => {
@@ -42,6 +45,36 @@ export const firebaseApi = {
         formData.password
       );
       return user;
+    } catch (error) {
+      return { error: error };
+    }
+  },
+  addRecipe: async (formData) => {
+    try {
+      const recipeDataPromises = formData.recipe.map(
+        async ({ img, ...rest }) => {
+          if (!img || img.length === 0) {
+            return { ...rest, imageUrl: null };
+          }
+
+          const file = img[0];
+          const storageRef = ref(storage, `recipe_images/${file.name}`);
+          await uploadBytes(storageRef, file);
+          const imageUrl = await getDownloadURL(storageRef);
+
+          return { ...rest, imageUrl };
+        }
+      );
+
+      const recipeData = await Promise.all(recipeDataPromises);
+
+      const docRef = await addDoc(collection(db, "recipes"), {
+        name: formData.name,
+        category: formData.category,
+        step: recipeData,
+      });
+
+      return { success: true, id: docRef.id };
     } catch (error) {
       return { error: error };
     }

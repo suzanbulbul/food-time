@@ -60,7 +60,7 @@ const Input = forwardRef(
                   "text-red-400": hasError,
                 })}
               >
-                {icon}
+                {icon} s
               </span>
             </div>
           )}

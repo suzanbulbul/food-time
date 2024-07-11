@@ -20,7 +20,7 @@ interface ButtonProps {
 }
 
 const VARIANTS = {
-  success: "text-white bg-green-500 hover:bg-green-800",
+  success: "text-white bg-green-400 hover:bg-green-500",
   warning: "text-white bg-yellow-500 hover:bg-yellow-800",
   error: "text-white bg-red-500 hover:bg-red-800",
   primary: "text-white bg-indigo-500 hover:bg-indigo-800",
