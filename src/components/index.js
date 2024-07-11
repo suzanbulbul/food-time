@@ -12,6 +12,7 @@ import Tooltip from "./Tooltip";
 import Layout from "./Layout";
 import Accordion from "./Accordion";
 import TextArea from "./TextArea";
+import Card from "./Card";
 
 export {
   Layout,
@@ -28,4 +29,5 @@ export {
   Input,
   Accordion,
   TextArea,
+  Card,
 };

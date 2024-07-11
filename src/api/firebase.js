@@ -1,12 +1,7 @@
 import { initializeApp } from "firebase/app";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  updateProfile,
-} from "firebase/auth";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -18,67 +13,9 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_ID,
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
-
-export const firebaseApi = {
-  handleRegister: async (formData) => {
-    try {
-      const { user } = await createUserWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
-      await updateProfile(user, { displayName: formData.name });
-      return user;
-    } catch (error) {
-      return { error: error };
-    }
-  },
-  handleLogin: async (formData) => {
-    try {
-      const { user } = await signInWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
-      return user;
-    } catch (error) {
-      return { error: error };
-    }
-  },
-  addRecipe: async (formData) => {
-    try {
-      const recipeDataPromises = formData.recipe.map(
-        async ({ img, ...rest }) => {
-          if (!img || img.length === 0) {
-            return { ...rest, imageUrl: null };
-          }
-
-          const file = img[0];
-          const storageRef = ref(storage, `recipe_images/${file.name}`);
-          await uploadBytes(storageRef, file);
-          const imageUrl = await getDownloadURL(storageRef);
-
-          return { ...rest, imageUrl };
-        }
-      );
-
-      const recipeData = await Promise.all(recipeDataPromises);
-
-      const docRef = await addDoc(collection(db, "recipes"), {
-        name: formData.name,
-        category: formData.category,
-        step: recipeData,
-      });
-
-      return { success: true, id: docRef.id };
-    } catch (error) {
-      return { error: error };
-    }
-  },
-};
+export const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
 
 export default app;

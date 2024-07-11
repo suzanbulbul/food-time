@@ -7,7 +7,7 @@ import animationData from "../util/animation/loading.json";
 const Loading = () => {
   return (
     <div>
-      <Lottie className="h-2/6" animationData={animationData} />
+      <Lottie className="h-1/6" animationData={animationData} />
     </div>
   );
 };

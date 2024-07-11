@@ -5,7 +5,7 @@ import Link from "next/link";
 import router from "next/router";
 
 //API
-import { firebaseApi } from "../../api/firebase";
+import { authApi } from "../../api/authApi";
 
 //Redux
 import { loginHandle } from "../../redux/Slice/authSlice";
@@ -35,7 +35,7 @@ const Login = () => {
   });
 
   const onSubmit = async (formData: LoginType) => {
-    await firebaseApi.handleLogin(formData).then((res: any) => {
+    await authApi.handleLogin(formData).then((res: any) => {
       if (res?.accessToken) {
         toast.success("Login Successfully");
         dispatch(loginHandle(JSON.stringify(res)));

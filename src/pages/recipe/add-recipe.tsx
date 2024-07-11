@@ -3,7 +3,10 @@ import { useForm, useFieldArray, FieldValues } from "react-hook-form";
 import { useRouter } from "next/router";
 
 //API
-import { firebaseApi } from "../../api/firebase";
+import { recipeApi } from "../../api/recipeApi";
+
+//Library
+import toast from "react-hot-toast";
 
 //Components
 import { Button, Input, TextArea, WhiteBox } from "../../components";
@@ -14,8 +17,7 @@ import { CiCirclePlus as Plus } from "react-icons/ci";
 import { BsTrash3 as Trash } from "react-icons/bs";
 
 //Type
-import { AddRecipeType } from "./recipe.type";
-import toast from "react-hot-toast";
+import { RecipeType } from "./recipe.type";
 
 const AddRecipe = () => {
   const router = useRouter();
@@ -25,11 +27,13 @@ const AddRecipe = () => {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<AddRecipeType>({
+  } = useForm<RecipeType>({
     defaultValues: {
       name: "",
+      summary: "",
       category: "",
-      recipe: [
+      img: undefined,
+      step: [
         { name: "", materials: "", stepRecipe: "", time: "", img: undefined },
       ],
     },
@@ -37,13 +41,13 @@ const AddRecipe = () => {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "recipe",
+    name: "step",
   });
 
-  const onSubmit = async (formData: AddRecipeType) => {
+  const onSubmit = async (formData: RecipeType) => {
     toast.loading("Loading...");
 
-    await firebaseApi.addRecipe(formData).then((res: any) => {
+    await recipeApi.addRecipe(formData).then((res: any) => {
       if (res?.success) {
         toast.dismiss();
         toast.success("Add New Recipe Successfully");
@@ -94,6 +98,19 @@ const AddRecipe = () => {
               />
             </div>
           </div>
+          <div className="flex items-start gap-2">
+            <div className="w-full">
+              <TextArea
+                label="Food Summary"
+                placeholder="Food Summary"
+                {...register(`summary`)}
+              />
+            </div>
+
+            <div className="w-full">
+              <Input label="Food Img" type="file" {...register(`img`)} />
+            </div>
+          </div>
         </WhiteBox>
         <div className="flex flex-col gap-2.5">
           {fields.map((field, i) => (
@@ -106,11 +123,11 @@ const AddRecipe = () => {
                         label="Step Name*"
                         type="text"
                         placeholder="Name"
-                        {...register(`recipe.${i}.name`, {
+                        {...register(`step.${i}.name`, {
                           required: "Please enter a name",
                         })}
-                        hasError={!!errors?.recipe?.[i]?.name}
-                        errorMessage={errors?.recipe?.[i]?.name?.message}
+                        hasError={!!errors?.step?.[i]?.name}
+                        errorMessage={errors?.step?.[i]?.name?.message}
                       />
                     </div>
                     <div className="w-full">
@@ -118,11 +135,11 @@ const AddRecipe = () => {
                         label="Step Materials*"
                         type="text"
                         placeholder="Materials"
-                        {...register(`recipe.${i}.materials`, {
+                        {...register(`step.${i}.materials`, {
                           required: "Please enter materials",
                         })}
-                        hasError={!!errors?.recipe?.[i]?.materials}
-                        errorMessage={errors?.recipe?.[i]?.materials?.message}
+                        hasError={!!errors?.step?.[i]?.materials}
+                        errorMessage={errors?.step?.[i]?.materials?.message}
                       />
                     </div>
                   </div>
@@ -131,8 +148,7 @@ const AddRecipe = () => {
                       <Input
                         label="Step Img"
                         type="file"
-                        placeholder="Step Img"
-                        {...register(`recipe.${i}.img`)}
+                        {...register(`step.${i}.img`)}
                       />
                     </div>
                     <div className="w-full">
@@ -140,11 +156,11 @@ const AddRecipe = () => {
                         label="Step Time*"
                         type="text"
                         placeholder="Time"
-                        {...register(`recipe.${i}.time`, {
+                        {...register(`step.${i}.time`, {
                           required: "Please enter a time",
                         })}
-                        hasError={!!errors?.recipe?.[i]?.time}
-                        errorMessage={errors?.recipe?.[i]?.time?.message}
+                        hasError={!!errors?.step?.[i]?.time}
+                        errorMessage={errors?.step?.[i]?.time?.message}
                       />
                     </div>
                   </div>
@@ -152,8 +168,8 @@ const AddRecipe = () => {
                     <TextArea
                       label="Step Recipe"
                       placeholder="Step Recipe"
-                      {...register(`recipe.${i}.stepRecipe`)}
-                    ></TextArea>
+                      {...register(`step.${i}.stepRecipe`)}
+                    />
                   </div>
                 </div>
               </Accordion>

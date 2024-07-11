@@ -1,13 +1,15 @@
 export interface RecipInformationType {
   name: string;
   materials: string;
-  stepRecipe: string;
+  stepRecipe?: string;
   time: string;
-  img?: FileList | null;
+  img?: string | null;
 }
-
-export interface AddRecipeType {
+export interface RecipeType {
+  id?: string;
   name: string;
+  summary?: string;
   category: string;
-  recipe: RecipInformationType[];
+  img?: string | null;
+  step: RecipInformationType[];
 }
