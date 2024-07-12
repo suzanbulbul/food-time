@@ -13,6 +13,7 @@ import Layout from "./Layout";
 import Accordion from "./Accordion";
 import TextArea from "./TextArea";
 import Card from "./Card";
+import ComboBox from "./ComboBox";
 
 export {
   Layout,
@@ -30,4 +31,5 @@ export {
   Accordion,
   TextArea,
   Card,
+  ComboBox,
 };

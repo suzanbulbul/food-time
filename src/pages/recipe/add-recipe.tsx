@@ -9,7 +9,7 @@ import { recipeApi } from "../../api/recipeApi";
 import toast from "react-hot-toast";
 
 //Components
-import { Button, Input, TextArea, WhiteBox } from "../../components";
+import { Button, ComboBox, Input, TextArea, WhiteBox } from "../../components";
 import Accordion from "../../components/Accordion";
 
 //Icons
@@ -18,6 +18,10 @@ import { BsTrash3 as Trash } from "react-icons/bs";
 
 //Type
 import { RecipeType } from "./recipe.type";
+import { Option } from "../../util/type/global.type";
+
+//Constants
+import { foodCategoryList } from "./recipe.constants";
 
 const AddRecipe = () => {
   const router = useRouter();
@@ -26,6 +30,9 @@ const AddRecipe = () => {
     register,
     handleSubmit,
     reset,
+    setValue,
+    getValues,
+    clearErrors,
     formState: { errors, isSubmitting },
   } = useForm<RecipeType>({
     defaultValues: {
@@ -86,13 +93,19 @@ const AddRecipe = () => {
             </div>
 
             <div className="w-full">
-              <Input
-                type="text"
-                label="Food Category*"
-                placeholder="Food Category"
+              <ComboBox
                 {...register("category", {
                   required: "Please enter a category",
                 })}
+                label="Food Category*"
+                placeholder="Food Category"
+                setValue={(option: Option) => {
+                  setValue("category", option?.value), clearErrors("category");
+                }}
+                getValue={foodCategoryList.find(
+                  (option: Option) => option?.value === getValues("category")
+                )}
+                options={foodCategoryList}
                 hasError={!!errors?.category}
                 errorMessage={errors?.category?.message}
               />

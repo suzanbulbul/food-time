@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import WhiteBox from "./WhiteBox";
+
+//Icons
 import { MdKeyboardArrowDown as Arrow } from "react-icons/md";
 
 interface AccordionProps {
