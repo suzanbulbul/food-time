@@ -1,4 +1,11 @@
-import { addDoc, collection, getDocs, getDoc, doc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  getDoc,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "./firebase";
 
 //Helper
@@ -73,6 +80,15 @@ export const recipeApi = {
       }
     } catch (error) {
       throw new Error("Tarif alınırken hata oluştu: " + error);
+    }
+  },
+
+  deleteRecipeById: async (id: string) => {
+    try {
+      await deleteDoc(doc(db, "recipes", id));
+      return { success: true };
+    } catch (error) {
+      throw new Error("Tarif silinirken hata oluştu: " + error);
     }
   },
 };
