@@ -22,8 +22,6 @@ import { BsTrash3 as Delete } from "react-icons/bs";
 
 //Type
 import { RecipeType, RecipInformationType } from "../../util/type/recipe.type";
-
-//Helper
 import { Option } from "../../util/type/global.type";
 
 //Constants
@@ -77,15 +75,14 @@ const AddRecipe = () => {
 
   const onSubmit = async (formData: RecipeType) => {
     toast.loading("Loading...");
+    recipeInfo
+      ? await recipeApi.editRecipeById(recipeInfo.id, formData)
+      : await recipeApi.addRecipe(formData);
 
-    await recipeApi.addRecipe(formData).then((res: any) => {
-      if (res?.success) {
-        toast.dismiss();
-        toast.success("Add New Recipe Successfully");
-        router.push("/recipe");
-        reset();
-      }
-    });
+    toast.dismiss();
+    toast.success(`${recipeInfo ? "Edit" : "Add New"} Recipe Successfully`);
+    router.push("/recipe");
+    reset();
   };
 
   return (
