@@ -20,7 +20,7 @@ import { Button, Input } from "../../components";
 import { regex } from "../../util/helper";
 
 //Type
-import { LoginType } from "./login.type";
+import { LoginType } from "../../util/type/login.type";
 
 const Login = () => {
   const dispatch = useDispatch();

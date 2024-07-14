@@ -54,7 +54,7 @@ const Button = ({
       type={type}
       onClick={onClick}
       className={cn(
-        "flex items-center gap-2 rounded-xl p-2 shadow",
+        "flex items-center gap-2 rounded-xl px-5 py-2 shadow",
         justifyPrimary,
         colorPrimary,
         className,

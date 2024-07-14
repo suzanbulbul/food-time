@@ -9,7 +9,7 @@ import { recipeApi } from "../../api/recipeApi";
 import { Button, Card, Loading } from "../../components";
 
 //Type
-import { RecipeType } from "./recipe.type";
+import { RecipeType } from "../../util/type/recipe.type";
 
 const Recipe = () => {
   const { isFetching, data, refetch } = useQuery<RecipeType[]>({
@@ -33,7 +33,6 @@ const Recipe = () => {
       </Button>
       <div className="grid grid-cols-1 gap-5 self-stretch md:grid-cols-2 xl:grid-cols-3">
         {data?.map((res, i) => {
-          console.log(res);
           return (
             <Card
               key={i}
