@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
+import { useDispatch } from "react-redux";
 
 //API
 import { recipeApi } from "../../api/recipeApi";
+
+//Redux
+import { setRecipeDetail } from "../../redux/Slice/recipeSlice";
+
+//Library
+import toast from "react-hot-toast";
 
 //Components
 import { Loading, Button } from "../../components";
@@ -14,16 +20,15 @@ import { RecipeType, TabType } from "../../util/type/recipe.type";
 
 //Helper
 import { aggregateIngredients } from "../../util/helper";
-import toast from "react-hot-toast";
 
 const RecipeDetail = () => {
+  const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
   const [tab, setTab] = useState<TabType[]>([]);
   const [currentTab, setCurrentTab] = useState<number>(0);
-  const [letsStart, setLetsStart] = useState<boolean>(false);
 
-  const { isFetching, data, refetch } = useQuery<RecipeType>({
+  const { isFetching, data } = useQuery<RecipeType>({
     queryKey: ["recipe-detail", id],
     queryFn: async () => {
       return await recipeApi.getRecipeById(id);
@@ -33,6 +38,8 @@ const RecipeDetail = () => {
 
   useEffect(() => {
     if (data) {
+      dispatch(setRecipeDetail(JSON.stringify(data)));
+
       const tabs = [
         {
           id: 0,
@@ -62,9 +69,20 @@ const RecipeDetail = () => {
   return (
     <div className="flex min-h-[calc(100vh-116px)] flex-col justify-between gap-4">
       <div className="flex flex-col gap-4">
-        <span className="mr-auto rounded-full bg-indigo-200 px-3 py-1 text-sm font-semibold text-indigo-700">
-          {data.category}
-        </span>
+        <div className="flex items-center justify-between">
+          <span className="rounded-full bg-indigo-200 px-3 py-1 text-sm font-semibold text-indigo-700">
+            {data.category}
+          </span>
+          <Button
+            className=""
+            onClick={() => {
+              router.push("add-edit");
+            }}
+            variant="base"
+          >
+            Edit Recipe
+          </Button>
+        </div>
         <div className="flex flex-col gap-2.5">
           <h1 className="text-xl font-semibold text-indigo-700">
             {data.name}
@@ -120,7 +138,6 @@ const RecipeDetail = () => {
         <Button
           onClick={() => {
             if (tab[currentTab]?.id === 0) {
-              setLetsStart(true);
               setCurrentTab(1);
             } else if (currentTab < tab.length - 1) {
               if (currentTab < tab.length - 1) {

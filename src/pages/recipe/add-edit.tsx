@@ -1,9 +1,13 @@
 import React from "react";
-import { useForm, useFieldArray, FieldValues } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
 //API
 import { recipeApi } from "../../api/recipeApi";
+
+//Redux
+import { selectRecipe } from "../../redux/Slice/recipeSlice";
 
 //Library
 import toast from "react-hot-toast";
@@ -17,7 +21,9 @@ import { CiCirclePlus as Plus } from "react-icons/ci";
 import { BsTrash3 as Trash } from "react-icons/bs";
 
 //Type
-import { RecipeType } from "../../util/type/recipe.type";
+import { RecipeType, RecipInformationType } from "../../util/type/recipe.type";
+
+//Helper
 import { Option } from "../../util/type/global.type";
 
 //Constants
@@ -25,6 +31,32 @@ import { foodCategoryList } from "../../util/constants/recipe.constants";
 
 const AddRecipe = () => {
   const router = useRouter();
+  const recipeInfo = useSelector(selectRecipe);
+
+  const defaultValues = {
+    name: recipeInfo?.name || "",
+    summary: recipeInfo?.summary || "",
+    category: recipeInfo?.category || "",
+    img: recipeInfo?.img || undefined,
+    step: recipeInfo?.step?.length
+      ? recipeInfo.step.map((step: RecipInformationType) => ({
+          name: step.name || "",
+          materials: step.materials || "",
+          stepRecipe: step.stepRecipe || "",
+          time: step.time || "",
+          imageUrl: step.imageUrl || undefined,
+        }))
+      : [
+          {
+            name: "",
+            materials: "",
+            stepRecipe: "",
+            time: "",
+            imageUrl: undefined,
+          },
+        ],
+  };
+
   const {
     control,
     register,
@@ -35,21 +67,7 @@ const AddRecipe = () => {
     clearErrors,
     formState: { errors, isSubmitting },
   } = useForm<RecipeType>({
-    defaultValues: {
-      name: "",
-      summary: "",
-      category: "",
-      img: undefined,
-      step: [
-        {
-          name: "",
-          materials: "",
-          stepRecipe: "",
-          time: "",
-          imageUrl: undefined,
-        },
-      ],
-    },
+    defaultValues: defaultValues,
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -77,7 +95,7 @@ const AddRecipe = () => {
     >
       <div className="flex flex-col gap-4">
         <h1 className="text-center text-3xl font-semibold text-indigo-500">
-          Add Recipe
+          {recipeInfo ? "Edit" : "Add"} Recipe
         </h1>
 
         <WhiteBox className="flex flex-col gap-2">
@@ -236,7 +254,7 @@ const AddRecipe = () => {
           variant="primary"
           type="submit"
         >
-          Add Recipe
+          {recipeInfo ? "Edit" : "Add"} Recipe
         </Button>
       </div>
     </form>
