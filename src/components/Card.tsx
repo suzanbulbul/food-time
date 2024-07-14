@@ -5,7 +5,7 @@ import router from "next/router";
 import cn from "classnames";
 
 //Helper
-import { truncateDescription } from "../util/helper/truncateDescription";
+import { truncateDescription, getCategoryByValue } from "../util/helper";
 
 interface CardType {
   title: string;
@@ -21,6 +21,7 @@ const Card = ({ title, desc, img, category, url }: CardType) => {
       router.push(url);
     }
   };
+
   return (
     <WhiteBox
       onClick={handleClick}
@@ -45,7 +46,7 @@ const Card = ({ title, desc, img, category, url }: CardType) => {
       </div>
       <div className="flex h-7 gap-2">
         <span className="inline-block rounded-full bg-indigo-200 px-3 py-1 text-sm font-semibold text-indigo-700">
-          {category}
+          {getCategoryByValue(category)}
         </span>
       </div>
     </WhiteBox>

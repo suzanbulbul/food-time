@@ -20,7 +20,7 @@ import { RecipeType, TabType } from "../../util/type/recipe.type";
 import { DropdownAction } from "../../components/DropDown";
 
 //Helper
-import { aggregateIngredients } from "../../util/helper";
+import { aggregateIngredients, getCategoryByValue } from "../../util/helper";
 
 //Icons
 import { BsTrash3 as Delete } from "react-icons/bs";
@@ -92,7 +92,7 @@ const RecipeDetail = () => {
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <span className="rounded-full bg-indigo-200 px-3 py-1 text-sm font-semibold text-indigo-700">
-              {data.category}
+              {getCategoryByValue(data.category)}
             </span>
             <DropDown title="Edit Recipe" actions={actions} />
           </div>
