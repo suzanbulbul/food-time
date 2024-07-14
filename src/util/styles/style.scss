@@ -26,10 +26,14 @@ a{
         text-decoration: none;
     }
 }
-li{
-    list-style-type:none;
-}
-ul,p,a{
+// li{
+//     list-style-type:none;
+// }
+// ul,p,a{
+//     padding: 0;
+//     margin: 0;
+// }
+p,a{
     padding: 0;
     margin: 0;
 }
@@ -40,4 +44,10 @@ img{
     max-width: 100%;
     height: auto;
 }
+
+// Utils
+@import 'utils/_color.module.scss';
+
+// Elements
+@import 'elements/list.module.scss';
 

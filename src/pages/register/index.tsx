@@ -16,7 +16,7 @@ import Link from "next/link";
 import { handleRegisterError, regex } from "../../util/helper";
 
 //Type
-import { RegisterType } from "./register.type";
+import { RegisterType } from "../../util/type/register.type";
 
 const Register = () => {
   const {

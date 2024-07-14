@@ -3,13 +3,15 @@ import Image from "next/image";
 import WhiteBox from "./WhiteBox";
 import router from "next/router";
 import cn from "classnames";
+
+//Helper
 import { truncateDescription } from "../util/helper/truncateDescription";
 
 interface CardType {
   title: string;
   desc?: string;
   img?: string | null;
-  category?: string;
+  category?: number | string;
   url?: string | undefined;
 }
 

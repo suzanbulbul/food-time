@@ -17,11 +17,11 @@ import { CiCirclePlus as Plus } from "react-icons/ci";
 import { BsTrash3 as Trash } from "react-icons/bs";
 
 //Type
-import { RecipeType } from "./recipe.type";
+import { RecipeType } from "../../util/type/recipe.type";
 import { Option } from "../../util/type/global.type";
 
 //Constants
-import { foodCategoryList } from "./recipe.constants";
+import { foodCategoryList } from "../../util/constants/recipe.constants";
 
 const AddRecipe = () => {
   const router = useRouter();
@@ -41,7 +41,13 @@ const AddRecipe = () => {
       category: "",
       img: undefined,
       step: [
-        { name: "", materials: "", stepRecipe: "", time: "", img: undefined },
+        {
+          name: "",
+          materials: "",
+          stepRecipe: "",
+          time: "",
+          imageUrl: undefined,
+        },
       ],
     },
   });
@@ -161,7 +167,7 @@ const AddRecipe = () => {
                       <Input
                         label="Step Img"
                         type="file"
-                        {...register(`step.${i}.img`)}
+                        {...register(`step.${i}.imageUrl`)}
                       />
                     </div>
                     <div className="w-full">
@@ -203,7 +209,7 @@ const AddRecipe = () => {
                 materials: "",
                 stepRecipe: "",
                 time: "",
-                img: undefined,
+                imageUrl: undefined,
               })
             }
             type="button"

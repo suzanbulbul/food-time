@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { RegisterErrorType } from "../../pages/register/register.type";
+import { RegisterErrorType } from "../type/register.type";
 
 export const handleRegisterError = (errorCode: string) => {
   switch (errorCode) {

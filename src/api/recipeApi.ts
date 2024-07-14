@@ -1,24 +1,26 @@
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, getDocs, getDoc, doc } from "firebase/firestore";
 import { db } from "./firebase";
 
 //Helper
 import { uploadImageAndGetUrl } from "../util/helper";
 
 //Type
-import { RecipeType } from "../pages/recipe/recipe.type";
+import { RecipeType } from "../util/type/recipe.type";
 
 export const recipeApi = {
   addRecipe: async (formData: RecipeType) => {
     try {
-      const recipeDataPromises = formData.step.map(async ({ img, ...rest }) => {
-        if (!img || img.length === 0) {
-          return { ...rest, imageUrl: null };
-        }
+      const recipeDataPromises = formData.step.map(
+        async ({ imageUrl, ...rest }) => {
+          if (!imageUrl || imageUrl.length === 0) {
+            return { ...rest, imageUrl: null };
+          }
 
-        const file = img[0];
-        const imageUrl = await uploadImageAndGetUrl(file as any);
-        return { ...rest, imageUrl };
-      });
+          const file = imageUrl[0];
+          const img = await uploadImageAndGetUrl(file as any);
+          return { ...rest, imageUrl: img };
+        }
+      );
 
       const recipeData = await Promise.all(recipeDataPromises);
 
@@ -56,6 +58,21 @@ export const recipeApi = {
       return documentList;
     } catch (error) {
       throw new Error("Tarif listesi alınırken hata oluştu: " + error);
+    }
+  },
+
+  getRecipeById: async (id: any) => {
+    try {
+      const docRef = await getDoc(doc(db, "recipes", id));
+
+      if (docRef.exists()) {
+        const recipeData = docRef.data() as RecipeType;
+        return { ...recipeData, id: docRef.id };
+      } else {
+        throw new Error("Tarif bulunamadı");
+      }
+    } catch (error) {
+      throw new Error("Tarif alınırken hata oluştu: " + error);
     }
   },
 };

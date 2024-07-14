@@ -1,0 +1,14 @@
+ul {
+    list-style-type: none; 
+
+    li{
+        display: flex;
+        gap: 20px;
+        &::before {
+            content: "•"; 
+            color: $indigo-800; 
+            font-weight: bold;
+        }
+    }
+}
+

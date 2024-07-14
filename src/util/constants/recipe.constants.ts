@@ -1,6 +1,6 @@
 //Type
-import { Option } from "../../util/type/global.type";
-import { FoodCategory } from "./recipe.type";
+import { Option } from "../type/global.type";
+import { FoodCategory } from "../type/recipe.type";
 
 export const foodCategoryList: Option[] = [
   {
