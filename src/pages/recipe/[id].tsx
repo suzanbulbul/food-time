@@ -13,10 +13,11 @@ import { setRecipeDetail } from "../../redux/Slice/recipeSlice";
 import toast from "react-hot-toast";
 
 //Components
-import { Loading, Button } from "../../components";
+import { Loading, Button, DropDown } from "../../components";
 
 //Type
 import { RecipeType, TabType } from "../../util/type/recipe.type";
+import { DropdownAction } from "../../components/DropDown";
 
 //Helper
 import { aggregateIngredients } from "../../util/helper";
@@ -35,6 +36,21 @@ const RecipeDetail = () => {
     },
     enabled: !!id,
   });
+
+  const actions: DropdownAction[] = [
+    {
+      label: "Edit Recipe",
+      onClick: () => {
+        router.push("add-edit");
+      },
+    },
+    {
+      label: "Remove Recipe",
+      onClick: () => {
+        router.push("/");
+      },
+    },
+  ];
 
   useEffect(() => {
     if (data) {
@@ -73,15 +89,7 @@ const RecipeDetail = () => {
           <span className="rounded-full bg-indigo-200 px-3 py-1 text-sm font-semibold text-indigo-700">
             {data.category}
           </span>
-          <Button
-            className=""
-            onClick={() => {
-              router.push("add-edit");
-            }}
-            variant="base"
-          >
-            Edit Recipe
-          </Button>
+          <DropDown title="Edit Recipe" actions={actions} />
         </div>
         <div className="flex flex-col gap-2.5">
           <h1 className="text-xl font-semibold text-indigo-700">

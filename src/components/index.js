@@ -14,6 +14,7 @@ import Accordion from "./Accordion";
 import TextArea from "./TextArea";
 import Card from "./Card";
 import ComboBox from "./ComboBox";
+import DropDown from "./DropDown";
 
 export {
   Layout,
@@ -32,4 +33,5 @@ export {
   TextArea,
   Card,
   ComboBox,
+  DropDown,
 };
