@@ -18,7 +18,7 @@ import Accordion from "../../components/Accordion";
 
 //Icons
 import { CiCirclePlus as Plus } from "react-icons/ci";
-import { BsTrash3 as Trash } from "react-icons/bs";
+import { BsTrash3 as Delete } from "react-icons/bs";
 
 //Type
 import { RecipeType, RecipInformationType } from "../../util/type/recipe.type";
@@ -211,7 +211,7 @@ const AddRecipe = () => {
                 </div>
               </Accordion>
               {i > 0 && (
-                <Trash
+                <Delete
                   onClick={() => remove(i)}
                   className="h-5 w-5 text-red-500"
                 />
