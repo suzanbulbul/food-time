@@ -10,8 +10,12 @@ import { Button, Card, Loading } from "../../components";
 
 //Type
 import { RecipeType } from "../../util/type/recipe.type";
+import { useDispatch } from "react-redux";
+import { clearRecipeDetail } from "../../redux/Slice/recipeSlice";
 
 const Recipe = () => {
+  const dispatch = useDispatch();
+
   const { isFetching, data, refetch } = useQuery<RecipeType[]>({
     queryKey: ["recipe-list"],
     queryFn: async () => {
@@ -26,7 +30,9 @@ const Recipe = () => {
   return (
     <div className="flex flex-col gap-4">
       <Button
-        onClick={() => router.push("recipe/add-recipe")}
+        onClick={() => {
+          dispatch(clearRecipeDetail()), router.push("recipe/add-edit");
+        }}
         className="ml-auto"
       >
         Add New Recipe
