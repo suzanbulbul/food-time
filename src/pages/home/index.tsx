@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import router from "next/router";
+
+//Redux
+import { clearRecipeDetail } from "../../redux/Slice/recipeSlice";
 
 //API
 import { recipeApi } from "../../api/recipeApi";
 
 //Components
-import { Card, Loading, DropDown } from "../../components";
+import { Card, Loading, DropDown, EmptyArea } from "../../components";
 
 //Type
 import { RecipeType } from "../../util/type/recipe.type";
@@ -72,7 +76,7 @@ const Home = () => {
             );
           })
         ) : (
-          <h1>Tarif Listesi Boş</h1>
+          <EmptyArea buttonTitle="Tarif Ekle" />
         )}
       </div>
     </div>

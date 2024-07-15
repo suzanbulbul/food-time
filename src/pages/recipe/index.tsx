@@ -10,7 +10,7 @@ import { clearRecipeDetail } from "../../redux/Slice/recipeSlice";
 import { recipeApi } from "../../api/recipeApi";
 
 //Components
-import { Button, Card, Loading, DropDown } from "../../components";
+import { Button, Card, Loading, DropDown, EmptyArea } from "../../components";
 
 //Type
 import { RecipeType } from "../../util/type/recipe.type";
@@ -84,7 +84,7 @@ const Recipe = () => {
             return <Card key={i} data={res} url={`/recipe/${res.id}`} />;
           })
         ) : (
-          <h1>Recipe Listesi Boş</h1>
+          <EmptyArea buttonTitle="Tarif Ekle"/>
         )}
       </div>
     </div>

@@ -17,6 +17,7 @@ import ComboBox from "./ComboBox";
 import DropDown from "./DropDown";
 import ProgressBar from "./ProgressBar";
 import Wrapper from "./Wrapper";
+import EmptyArea from "./EmptyArea";
 
 export {
   Layout,
@@ -38,4 +39,5 @@ export {
   DropDown,
   ProgressBar,
   Wrapper,
+  EmptyArea,
 };
