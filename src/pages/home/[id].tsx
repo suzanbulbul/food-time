@@ -135,7 +135,7 @@ const RecipeDetail = () => {
                 padding="10px"
                 onClick={(e: any) => {
                   e.preventDefault();
-                  handleToggleFavorite;
+                  handleToggleFavorite();
                 }}
                 disabled={!selectInfo}
                 tooltip={{

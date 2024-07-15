@@ -103,7 +103,7 @@ const Card = ({ data, url, favActive = false }: CardType) => {
               padding="10px"
               onClick={(e: any) => {
                 e.preventDefault();
-                handleToggleFavorite;
+                handleToggleFavorite();
               }}
               disabled={!selectInfo}
               tooltip={{
