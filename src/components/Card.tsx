@@ -82,14 +82,14 @@ const Card = ({ data, url, favActive = false }: CardType) => {
         <h1 className="text-xl font-bold">{data.name}</h1>
         {data.summary ? truncateDescription(data.summary, 60) : "-"}
       </div>
-      <div className="flex items-center justify-between">
+      <div className="flex h-9 items-center justify-between">
         <span className="inline-block rounded-full bg-indigo-200 px-3 py-1 text-sm font-semibold text-indigo-700">
           {getCategoryByValue(data.category)}
         </span>
         {favActive && (
           <div
             onClick={handleToggleFavorite}
-            className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border bg-white"
+            className="flex h-full w-9 cursor-pointer items-center justify-center rounded-full border bg-white"
           >
             <Like
               className={cn(

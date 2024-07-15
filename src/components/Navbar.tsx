@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import router from "next/router";
+import { useRouter } from "next/router";
 
 //Redux
 import { userInfo, logoutHandle } from "../redux/Slice/authSlice";
@@ -23,6 +23,7 @@ export type actionsType = {
 };
 
 const Navbar = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const user = useSelector(userInfo);
   const [openSettingMenu, setOpenSettingMenu] = useState<boolean>(false);
@@ -57,7 +58,7 @@ const Navbar = () => {
 
   useEffect(() => {
     setPath(router.pathname);
-  }, []);
+  }, [router.pathname]);
 
   return (
     <WhiteBox>
