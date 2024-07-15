@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import router from "next/router";
 
 //Redux
-import { clearRecipeDetail } from "../../redux/Slice/recipeSlice";
+import { userInfo } from "../../redux/Slice/authSlice";
 
 //API
 import { recipeApi } from "../../api/recipeApi";
@@ -14,23 +14,31 @@ import { Card, Loading, DropDown, EmptyArea } from "../../components";
 //Type
 import { RecipeType } from "../../util/type/recipe.type";
 import { DropdownAction } from "../../components/DropDown";
+import { User } from "../../util/type/user.type";
 
 //Constants
 import { foodCategoryList } from "../../util/constants/recipe.constants";
+import { useSelector } from "react-redux";
 
 const Home = () => {
+  const user = useSelector(userInfo);
+
+  const [selectInfo, setSelectInfo] = useState<User>(undefined);
   const [filterList, setFilterList] = useState<DropdownAction[]>([]);
   const [homeData, setHomeData] = useState<RecipeType[]>([]);
 
-  // BE'nin tüm recipelerin olduğu bir endpoind vermesi gerekiyor. Bunu sağlayamayacağım için getRecipeList çektim.
-  // Normalde getRecipeList'e BE'nin query eklemesi gerekiyror fakat firebasede bu işlemi göremediğim için elimle filtreledim
+  useEffect(() => {
+    setSelectInfo(user);
+  }, [user]);
+
   const { data } = useQuery<RecipeType[]>({
-    queryKey: ["recipe-list"],
+    queryKey: ["home-list"],
     queryFn: async () => {
       return await recipeApi.getRecipeList();
     },
   });
-
+  
+  // Normalde getRecipeList'e BE'nin query eklemesi gerekiyror fakat firebasede bu işlemi göremediğim için js ile filtreledim
   const handleFilterClick = async (category: string) => {
     const filteredRecipes = data?.filter(
       (recipe) => recipe.category === category

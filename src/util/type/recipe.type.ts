@@ -12,6 +12,7 @@ export interface RecipeType {
   category: number | string;
   img?: string | null;
   step: RecipInformationType[];
+  userId?: string | number;
 }
 export interface TabType {
   id: string | number;

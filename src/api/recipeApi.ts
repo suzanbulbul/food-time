@@ -44,6 +44,7 @@ export const recipeApi = {
         category: formData.category,
         img: mainImageUrl,
         step: recipeData,
+        userId: formData.userId,
       });
 
       return { success: true, id: docRef.id };
@@ -52,7 +53,7 @@ export const recipeApi = {
     }
   },
 
-  getRecipeList: async () => {
+  getRecipeList: async (userId?: string) => {
     try {
       const querySnapshot = await getDocs(collection(db, "recipes"));
       const documentList: RecipeType[] = querySnapshot.docs.map((doc) => ({
@@ -62,8 +63,14 @@ export const recipeApi = {
         step: doc.data().step,
         name: doc.data().name,
         img: doc.data().img,
+        userId: doc.data().userId,
       }));
-      return documentList;
+
+      if (!userId) {
+        return documentList;
+      }
+
+      return documentList.filter((recipe) => recipe.userId === userId);
     } catch (error) {
       throw new Error("Tarif listesi alınırken hata oluştu: " + error);
     }
@@ -112,6 +119,7 @@ export const recipeApi = {
         category: formData.category,
         img: mainImageUrl,
         step: recipeData,
+        userId: formData.userId,
       });
 
       return { success: true, id: id };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import router from "next/router";
 import { useQuery } from "@tanstack/react-query";
 
@@ -15,22 +15,32 @@ import { Button, Card, Loading, DropDown, EmptyArea } from "../../components";
 //Type
 import { RecipeType } from "../../util/type/recipe.type";
 import { DropdownAction } from "../../components/DropDown";
+import { User } from "../../util/type/user.type";
 
 //Constant
 import { foodCategoryList } from "../../util/constants/recipe.constants";
+import { userInfo } from "../../redux/Slice/authSlice";
 
 const Recipe = () => {
   const dispatch = useDispatch();
+  const user = useSelector(userInfo);
+
+  const [selectInfo, setSelectInfo] = useState<User>(undefined);
   const [filterList, setFilterList] = useState<DropdownAction[]>([]);
   const [recipeData, setRecipeData] = useState<RecipeType[]>([]);
 
-  //Normalde getRecipeList'e BE'nin query eklemesi gerekiyror fakat firebasede bu işlemi göremediğim için elimle filtreledim
+  useEffect(() => {
+    setSelectInfo(user);
+  }, [user]);
+
   const { data } = useQuery<RecipeType[]>({
-    queryKey: ["recipe-list"],
+    queryKey: ["recipe-list", selectInfo],
     queryFn: async () => {
-      return await recipeApi.getRecipeList();
+      return await recipeApi.getRecipeList(selectInfo?.uid || "");
     },
+    enabled: !!selectInfo,
   });
+  console.log(data);
 
   const handleFilterClick = async (category: string) => {
     const filteredRecipes = data?.filter(
@@ -64,12 +74,16 @@ const Recipe = () => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <DropDown
-          filter
-          title="Yemek Kategorisi"
-          actions={filterList}
-        ></DropDown>
+        {recipeData.length > 0 && (
+          <DropDown
+            filter
+            title="Yemek Kategorisi"
+            actions={filterList}
+          ></DropDown>
+        )}
+
         <Button
+          className="ml-auto"
           onClick={() => {
             dispatch(clearRecipeDetail()), router.push("recipe/add-edit");
           }}
@@ -78,15 +92,15 @@ const Recipe = () => {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 self-stretch md:grid-cols-2 xl:grid-cols-3">
-        {recipeData?.length > 0 ? (
-          recipeData?.map((res, i) => {
+      {recipeData.length > 0 ? (
+        <div className="grid grid-cols-1 gap-5 self-stretch md:grid-cols-2 xl:grid-cols-3">
+          {recipeData?.map((res: any, i: any) => {
             return <Card key={i} data={res} url={`/recipe/${res.id}`} />;
-          })
-        ) : (
-          <EmptyArea buttonTitle="Tarif Ekle"/>
-        )}
-      </div>
+          })}
+        </div>
+      ) : (
+        <EmptyArea />
+      )}
     </div>
   );
 };
