@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import router from "next/router";
+import { useRouter } from "next/router";
 
 //Redux
 import { userInfo, logoutHandle } from "../redux/Slice/authSlice";
@@ -23,26 +23,28 @@ export type actionsType = {
 };
 
 const Navbar = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const user = useSelector(userInfo);
   const [openSettingMenu, setOpenSettingMenu] = useState<boolean>(false);
   const [selectInfo, setSelectInfo] = useState<User>(undefined);
+  const [path, setPath] = useState<string>("");
 
   const settingActions: actionsType[] = [
     {
-      label: "Your Profile",
+      label: "Profilem",
       onClick: () => {
         router.push("/profile");
       },
     },
     {
-      label: "Settings",
+      label: "Ayarlar",
       onClick: () => {
         router.push("/setting");
       },
     },
     {
-      label: "Logout",
+      label: "Çıkış Yap",
       onClick: () => {
         dispatch(logoutHandle());
         router.push("/");
@@ -54,12 +56,20 @@ const Navbar = () => {
     setSelectInfo(user);
   }, [user]);
 
+  useEffect(() => {
+    setPath(router.pathname);
+  }, [router.pathname]);
+
   return (
     <WhiteBox>
       <nav className="flex items-center justify-between">
-        <h1>Welcome {selectInfo ? selectInfo?.displayName : "Dear Geuest"}</h1>
+        {path === "/home" && (
+          <h1>
+            Hoşgeldin {selectInfo ? selectInfo?.displayName : "Dear Guest"}
+          </h1>
+        )}
         {selectInfo ? (
-          <div className="ggrid-rows-4 grid grid-flow-col items-center gap-5">
+          <div className="ggrid-rows-4 ml-auto grid grid-flow-col items-center gap-5">
             {/* <Link href="#" passHref className="row-span-1">
               <TbWorld className="h-5 w-5 text-gray-600 hover:text-indigo-600" />
             </Link>
@@ -107,7 +117,9 @@ const Navbar = () => {
             </div>
           </div>
         ) : (
-          <Button onClick={() => router.push("/login")}>Register Now</Button>
+          <Button className="ml-auto" onClick={() => router.push("/login")}>
+            Kaydol veya Griş Yap
+          </Button>
         )}
       </nav>
     </WhiteBox>

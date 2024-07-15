@@ -6,8 +6,8 @@ import animationData from "../util/animation/loading.json";
 
 const Loading = () => {
   return (
-    <div>
-      <Lottie className="h-1/6" animationData={animationData} />
+    <div className="flex min-h-[calc(100vh-100px)] items-center justify-center">
+      <Lottie className="h-2/6" animationData={animationData} />
     </div>
   );
 };

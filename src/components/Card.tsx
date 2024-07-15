@@ -1,26 +1,72 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import WhiteBox from "./WhiteBox";
+import { useDispatch, useSelector } from "react-redux";
 import router from "next/router";
 import cn from "classnames";
+
+//Redux
+import { userInfo } from "../redux/Slice/authSlice";
+import {
+  addFavorite,
+  removeFavorite,
+  favoriteList,
+} from "../redux/Slice/recipeSlice";
+
+// Library
+import toast from "react-hot-toast";
+
+//Components
+import { Button, WhiteBox } from ".";
 
 //Helper
 import { truncateDescription, getCategoryByValue } from "../util/helper";
 
+//Type
+import { User } from "../util/type/user.type";
+
+import { RecipeType } from "../util/type/recipe.type";
+
+// Icons
+import { FaHeart as Like } from "react-icons/fa6";
+
 interface CardType {
-  title: string;
-  desc?: string;
-  img?: string | null;
-  category?: number | string;
+  data: RecipeType;
   url?: string | undefined;
+  favActive?: boolean;
 }
 
-const Card = ({ title, desc, img, category, url }: CardType) => {
+const Card = ({ data, url, favActive = false }: CardType) => {
+  const dispatch = useDispatch();
+  const [clickFav, setClickFav] = useState<boolean>(false);
+  const [selectInfo, setSelectInfo] = useState<User>(undefined);
+
+  const favorites = useSelector(favoriteList);
+  const user = useSelector(userInfo);
+
   const handleClick = () => {
     if (url) {
       router.push(url);
     }
   };
+
+  const handleToggleFavorite = () => {
+    if (!clickFav) {
+      dispatch(addFavorite(data));
+      toast.success("Favorilere eklendi");
+    } else {
+      dispatch(removeFavorite(data?.id));
+      toast.success("Favorilerden çıkarıldı");
+    }
+  };
+
+  useEffect(() => {
+    setSelectInfo(user);
+  }, [user]);
+
+  useEffect(() => {
+    favActive &&
+      setClickFav(favorites.some((item: any) => item.id === data?.id));
+  }, []);
 
   return (
     <WhiteBox
@@ -36,18 +82,48 @@ const Card = ({ title, desc, img, category, url }: CardType) => {
           className="w-full object-cover"
           width={600}
           height={400}
-          src={img ? img : "https://v1.tailwindcss.com/img/card-top.jpg"}
-          alt={img ? title : "dummy-img"}
+          src={
+            data.img ? data.img : "https://v1.tailwindcss.com/img/card-top.jpg"
+          }
+          alt={data.img ? data.name : "dummy-img"}
         />
       </div>
       <div className="flex h-20 flex-col gap-1 ">
-        <h1 className="text-xl font-bold">{title}</h1>
-        {desc ? truncateDescription(desc, 60) : "-"}
+        <h1 className="text-xl font-bold">{data.name}</h1>
+        {data.summary ? truncateDescription(data.summary, 60) : "-"}
       </div>
-      <div className="flex h-7 gap-2">
+      <div className="flex items-center justify-between">
         <span className="inline-block rounded-full bg-indigo-200 px-3 py-1 text-sm font-semibold text-indigo-700">
-          {getCategoryByValue(category)}
+          {getCategoryByValue(data.category)}
         </span>
+        {favActive && (
+          <span>
+            <Button
+              variant="transparent"
+              padding="10px"
+              onClick={(e: any) => {
+                e.preventDefault();
+                handleToggleFavorite();
+              }}
+              disabled={!selectInfo}
+              tooltip={{
+                message: !selectInfo
+                  ? "Bu özellik için giriş yapmanız gerekiyor."
+                  : (undefined as any),
+              }}
+              className="flex h-9  w-9 cursor-pointer items-center justify-center rounded-full border bg-white"
+            >
+              <Like
+                className={cn(
+                  "h-5 w-5 ",
+                  selectInfo
+                    ? "hover:text-red-500 focus:text-red-500"
+                    : "text-gray-500 hover:text-gray-500"
+                )}
+              />{" "}
+            </Button>
+          </span>
+        )}
       </div>
     </WhiteBox>
   );

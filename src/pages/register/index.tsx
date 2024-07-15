@@ -45,8 +45,13 @@ const Register = () => {
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+        <img
+          className="mx-auto h-10 w-auto rounded-full"
+          src="img/logo.svg"
+          alt="logo"
+        />{" "}
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Register to your account
+          Hemen Kaydol
         </h2>
       </div>
 
@@ -55,16 +60,16 @@ const Register = () => {
           <div className="w-full">
             <Input
               type="text"
-              label="Name*"
-              placeholder="Enter Name"
+              label="İsim*"
+              placeholder="İsminizi girin."
               {...register("name", {
-                required: "Name is required",
+                required: "Lütfen isminizi girin",
                 onChange: (e) => {
                   setValue("name", e.target.value.trimStart());
                 },
                 pattern: {
                   message:
-                    "Minimum of 2 characters, a maximum of 12 characters and can consist of letters A-Z.",
+                    "En az 2 karakter, en fazla 12 karakter ve A-Z harflerinden oluşabilir.",
                   value: regex.name,
                 },
               })}
@@ -74,15 +79,15 @@ const Register = () => {
           </div>
           <div className="w-full">
             <Input
-              label="Email address*"
+              label="E-posta*"
               type="email"
-              placeholder="Email"
+              placeholder="E-posta adresinizi girin."
               {...register("email", {
                 pattern: {
                   value: regex.email,
-                  message: "Entered value does not match email format",
+                  message: "Girilen değer e-posta formatına uymuyor.",
                 },
-                required: "Please enter an email",
+                required: "Lütfen e-posta adresinizi girin.",
               })}
               hasError={!!errors.email}
               errorMessage={errors.email?.message as any}
@@ -90,40 +95,40 @@ const Register = () => {
           </div>
           <div className="w-full">
             <Input
-              label="Password*"
+              label="Şifre*"
               type="password"
-              placeholder="Password"
+              placeholder="Şifrenizi girin."
               {...register("password", {
                 required: "true",
                 pattern: {
                   value: regex.password,
                   message:
-                    "Your password must contain at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character",
+                    "Şifreniz en az 8 karakter, 1 büyük harf, 1 küçük harf, 1 rakam ve 1 özel karakter içermelidir.",
                 },
               })}
               hasError={!!errors.password}
               errorMessage={
                 errors.password?.message === "true"
-                  ? "Your password must contain at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character"
+                  ? "Şifreniz en az 8 karakter, 1 büyük harf, 1 küçük harf, 1 rakam ve 1 özel karakter içermelidir."
                   : errors.password?.message
               }
             />
           </div>
           <div className="w-full">
             <Input
-              label="Repeat Password*"
+              label="Şifre Tekrarı*"
               type="password"
-              placeholder="Repeat Password"
+              placeholder="Şifrenizi tekrar girin."
               {...register("confirmPassword", {
                 required: "true",
                 validate: (val: string) => {
                   if (watch("password") != val) {
-                    return "Your passwords do not match";
+                    return "Şifreleriniz eşleşmiyor.";
                   }
                 },
               })}
               hasError={!!errors.confirmPassword}
-              errorMessage="Your passwords do not match"
+              errorMessage="Şifreleriniz eşleşmiyor."
             />
           </div>
           {/* <div className="flex gap-2">
@@ -150,19 +155,18 @@ const Register = () => {
           </div> */}
 
           <Button disabled={isSubmitting} type="submit" className="w-full">
-            Register
+            Kaydol
           </Button>
         </form>
 
         <p className="mt-10 text-center text-sm text-gray-500">
-          Are you a member?{" "}
+          Üye misin? Hemen{" "}
           <Link
             href="/login"
             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
           >
-            Login
+            Giriş Yap
           </Link>{" "}
-          now
         </p>
       </div>
     </div>

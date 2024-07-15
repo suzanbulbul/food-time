@@ -49,13 +49,13 @@ const RecipeDetail = () => {
 
   const actions: DropdownAction[] = [
     {
-      label: "Edit Recipe",
+      label: "Tarifi Düzenle",
       onClick: () => {
         router.push("add-edit");
       },
     },
     {
-      label: "Remove Recipe",
+      label: "Tarifi Sil",
       onClick: async () => {
         setClickRemove(true);
       },
@@ -112,10 +112,15 @@ const RecipeDetail = () => {
         <div className="flex flex-col gap-3">
           <ProgressBar currentStep={currentTab} totalSteps={tab.length - 1} />
           <div className="flex items-center justify-between">
-            <span className="rounded-full bg-indigo-200 px-3 py-1 text-sm font-semibold text-indigo-700">
-              {getCategoryByValue(data.category)}
-            </span>
-            <DropDown title="Edit Recipe" actions={actions} />
+            <div className="flex items-center gap-2">
+              <span className="rounded-full bg-indigo-200 px-3 py-1 text-sm font-semibold text-indigo-700">
+                {getCategoryByValue(data.category)}
+              </span>
+              <span className="text-base text-indigo-700">
+                {tab[currentTab].minute} dakika
+              </span>
+            </div>
+            <DropDown title="Özellikler" actions={actions} />
           </div>
           <div className="flex flex-col gap-1">
             <h1 className="text-xl font-semibold text-indigo-700">
@@ -141,8 +146,8 @@ const RecipeDetail = () => {
           <div>
             <h1 className="text-base font-medium text-indigo-800">
               {tab[currentTab].id === 0
-                ? "All Recipe Materials"
-                : "Recipe Materials"}
+                ? "Tüm Malzemeleri"
+                : `${tab[currentTab].name} İçin Gerekli Malzemeler`}
             </h1>
             <ul className="grid w-full grid-cols-2 gap-4 p-5">
               {tab[currentTab].materials.map((s, i) => (
@@ -163,7 +168,7 @@ const RecipeDetail = () => {
                 handleStepChange(-1);
               }}
             >
-              Back
+              Önce Adım
             </Button>
           )}
 
@@ -183,7 +188,7 @@ const RecipeDetail = () => {
               variant="success"
               className="ml-auto"
             >
-              {tab[currentTab].id === 0 ? "Hemen Başla" : "Next"}
+              {tab[currentTab].id === 0 ? "Hemen Başla" : "Sonra Adım"}
             </Button>
           )}
         </div>
@@ -193,16 +198,18 @@ const RecipeDetail = () => {
         onClose={() => setClickRemove(false)}
         onSave={async () => {
           await recipeApi.deleteRecipeById(id as string);
-          toast.success("Recipe deleted successfully");
+          toast.success("Tarif başarıyla silindi.");
           router.push("/recipe");
         }}
         icon={<Delete className="h-5 w-5 text-red-500" />}
-        title="Remove Recipe"
+        title="Tarifi Sil"
         variant="ERROR"
+        saveTitle="Kaydet"
+        closeTitle="Vazgeç"
       >
         <p>
-          Are you sure you want to remove {data.name} recipe? This action cannot
-          be undone.
+          {data.name} tarifini silmek istediğinizden emin misiniz? Bu işlem geri
+          alınamaz.
         </p>
       </Modal>
     </>

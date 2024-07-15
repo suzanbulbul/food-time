@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import cn from "classnames";
-import Tooltip, { TooltipContent } from "./Tooltip"; // Tooltip bileşeninizin yolunu uygun şekilde değiştirin
+import Tooltip, { TooltipContent } from "./Tooltip";
 
 interface ButtonProps {
   children?: ReactNode;
@@ -12,11 +12,12 @@ interface ButtonProps {
     | "base"
     | "transparent";
   className?: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
   justify?: "end" | "start" | "center";
   tooltip?: TooltipContent;
+  padding?: string;
 }
 
 const VARIANTS = {
@@ -43,6 +44,7 @@ const Button = ({
   type = "button",
   justify = "center",
   tooltip,
+  padding = "px-5 py-2",
   ...rest
 }: ButtonProps) => {
   const colorPrimary = VARIANTS[variant];
@@ -54,9 +56,10 @@ const Button = ({
       type={type}
       onClick={onClick}
       className={cn(
-        "flex items-center gap-2 rounded-xl px-5 py-2 shadow",
+        "flex items-center gap-2 rounded-xl shadow",
         justifyPrimary,
         colorPrimary,
+        padding,
         className,
         disabled ? "cursor-not-allowed" : "cursor-pointer",
         disabled && colorPrimary !== "transparent"
@@ -69,7 +72,7 @@ const Button = ({
     </button>
   );
 
-  return tooltip ? (
+  return tooltip?.message ? (
     <Tooltip
       content={{
         message: tooltip.message,

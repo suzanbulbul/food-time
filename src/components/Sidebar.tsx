@@ -47,6 +47,7 @@ const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
   const [activeMenu, setActiveMenu] = useState<number>(0);
   const [selectInfo, setSelectInfo] = useState<User>(undefined);
+  const [activeTab, setActiveTab] = useState<number>(1);
 
   const toggleSubMenu = (itemId: any) => {
     setActiveMenu(activeMenu === itemId ? 0 : itemId);
@@ -55,7 +56,7 @@ const Sidebar = () => {
   const asideData: actionsType[] = [
     {
       id: 1,
-      name: "Home",
+      name: "Ana Sayfa",
       icon: <IoHomeOutline className="h-5 w-5" />,
       onClick: () => {
         router.push("/home");
@@ -64,38 +65,38 @@ const Sidebar = () => {
     },
     {
       id: 2,
-      name: "List Recipe",
+      name: "Tariflerim",
       icon: <PiBowlFoodLight className="h-5 w-5" />,
       onClick: () => {
         router.push("/recipe");
       },
       disable: selectInfo ? false : true,
       tooltip: {
-        message: "Need to Login for feature",
+        message: "Bu özellik için giriş yapmanız gerekiyor.",
       },
     },
     {
       id: 3,
-      name: "Favorite Recipes",
+      name: "Favori Tariflerim",
       icon: <MdOutlineFavoriteBorder className="h-5 w-5" />,
       onClick: () => {
         router.push("/fav-recipe");
       },
       disable: selectInfo ? false : true,
       tooltip: {
-        message: "Need to Login for feature",
+        message: "Bu özellik için giriş yapmanız gerekiyor.",
       },
     },
     {
       id: 4,
-      name: "Settings",
+      name: "Ayarlar",
       icon: <CiSettings className="h-5 w-5" />,
       onClick: () => {
         router.push("/settings");
       },
       hidden: selectInfo ? false : true,
       tooltip: {
-        message: "You need to Login for feature",
+        message: "Bu özellik için giriş yapmanız gerekiyor.",
       },
     },
     // {
@@ -135,9 +136,13 @@ const Sidebar = () => {
     >
       <div className={`h-screen bg-white p-2 shadow-md`}>
         <div className="mb-3 text-2xl font-bold text-gray-100">
-          <Link className="flex items-center justify-start p-2.5" href="/">
+          <Link href="/" className="flex justify-center">
             {isSidebarOpen && (
-              <h1 className="text-2xl font-bold text-indigo-500">Food Time</h1>
+              <img
+                className="h-14 w-auto rounded-full"
+                src="img/logo.svg"
+                alt="logo"
+              />
             )}
           </Link>
           <IoIosArrowForward

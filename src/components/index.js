@@ -16,6 +16,7 @@ import Card from "./Card";
 import ComboBox from "./ComboBox";
 import DropDown from "./DropDown";
 import ProgressBar from "./ProgressBar";
+import Wrapper from "./Wrapper";
 
 export {
   Layout,
@@ -36,4 +37,5 @@ export {
   ComboBox,
   DropDown,
   ProgressBar,
+  Wrapper,
 };

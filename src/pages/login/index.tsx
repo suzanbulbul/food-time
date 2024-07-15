@@ -50,8 +50,13 @@ const Login = () => {
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+        <img
+          className="mx-auto h-10 w-auto rounded-full"
+          src="img/logo.svg"
+          alt="logo"
+        />{" "}
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Login to your account
+          Hesabınıza Giriş Yapın
         </h2>
       </div>
 
@@ -59,15 +64,15 @@ const Login = () => {
         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="w-full">
             <Input
-              label="Email address*"
+              label="E-posta*"
               type="email"
-              placeholder="Email"
+              placeholder="E-posta adresinizi girin."
               {...register("email", {
                 pattern: {
                   value: regex.email,
-                  message: "Entered value does not match email format",
+                  message: "Girdiğiniz e-posta formatınız yanlış.",
                 },
-                required: "Please enter an email",
+                required: "Lütfen e-posta adresinizi girin.",
               })}
               hasError={!!errors.email}
               errorMessage={errors.email?.message as any}
@@ -75,11 +80,11 @@ const Login = () => {
           </div>
           <div className="grid-col grid w-full gap-1">
             <Input
-              label="Password*"
+              label="Şifre*"
               type="password"
-              placeholder="Password"
+              placeholder="Şifrenizi girin."
               {...register("password", {
-                required: "Please enter a password",
+                required: "Lütfen şifrenizi girin.",
               })}
               hasError={!!errors.password}
               errorMessage={errors.password?.message as any}
@@ -89,25 +94,24 @@ const Login = () => {
                 href="#"
                 className="text-right text-sm font-semibold text-indigo-600 hover:text-indigo-500"
               >
-                Forgot password?
+                Şifremi unuttum?
               </Link>
             </div>
           </div>
 
           <Button disabled={isSubmitting} type="submit" className="w-full">
-            Login
+            Giriş Yap
           </Button>
         </form>
 
         <p className="mt-10 text-center text-sm text-gray-500">
-          Not a member?{" "}
+          Üye değil misin? Hemen{" "}
           <Link
             href="/register"
             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
           >
-            Register
-          </Link>{" "}
-          now
+            Kaydol
+          </Link>
         </p>
       </div>
     </div>

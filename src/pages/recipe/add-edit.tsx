@@ -80,7 +80,7 @@ const AddRecipe = () => {
       : await recipeApi.addRecipe(formData);
 
     toast.dismiss();
-    toast.success(`${recipeInfo ? "Edit" : "Add New"} Recipe Successfully`);
+    toast.success(`${recipeInfo ? "Tarif Düzenlendi." : "Yeni Tarif Eklendi"}`);
     router.push("/recipe");
     reset();
   };
@@ -92,21 +92,19 @@ const AddRecipe = () => {
     >
       <div className="flex flex-col gap-4">
         <h1 className="text-center text-3xl font-semibold text-indigo-500">
-          {recipeInfo ? "Edit" : "Add"} Recipe
+          Tarif {recipeInfo ? "Düzenle" : "Ekle"}
         </h1>
 
         <WhiteBox className="flex flex-col gap-2">
-          <h1 className="text-lg font-medium text-indigo-900">
-            Recipe Information
-          </h1>
+          <h1 className="text-lg font-medium text-indigo-900">Tarif Bilgisi</h1>
           <div className="flex items-start gap-2">
             <div className="w-full">
               <Input
                 type="text"
-                label="Food Name*"
-                placeholder="Food Name"
+                label="Yemek Adı*"
+                placeholder="Yemek adı girin."
                 {...register("name", {
-                  required: "Please enter a name",
+                  required: "Lütfen yemek adını girin.",
                 })}
                 hasError={!!errors?.name}
                 errorMessage={errors?.name?.message}
@@ -116,10 +114,10 @@ const AddRecipe = () => {
             <div className="w-full">
               <ComboBox
                 {...register("category", {
-                  required: "Please enter a category",
+                  required: "Lütfen yemek kategorisi girin.",
                 })}
-                label="Food Category*"
-                placeholder="Food Category"
+                label="Yemek Kategorisi*"
+                placeholder="Yemek kategorisi girin."
                 setValue={(option: Option) => {
                   setValue("category", option?.value), clearErrors("category");
                 }}
@@ -135,30 +133,30 @@ const AddRecipe = () => {
           <div className="flex items-start gap-2">
             <div className="w-full">
               <TextArea
-                label="Food Summary"
-                placeholder="Food Summary"
+                label="Yemek Özeti"
+                placeholder="Yemek Özeti"
                 {...register(`summary`)}
               />
             </div>
 
             <div className="w-full">
-              <Input label="Food Img" type="file" {...register(`img`)} />
+              <Input label="Yemek Görseli" type="file" {...register(`img`)} />
             </div>
           </div>
         </WhiteBox>
         <div className="flex flex-col gap-2.5">
           {fields.map((field, i) => (
             <div key={field.id} className="flex items-center gap-4">
-              <Accordion title={`Step ${i + 1}`}>
+              <Accordion title={`Adım ${i + 1}`}>
                 <div className="flex flex-col gap-4">
                   <div className="flex gap-2">
                     <div className="w-full">
                       <Input
-                        label="Step Name*"
+                        label="Yemek Adımı İsmi*"
+                        placeholder="Yemek adımı ismini girin."
                         type="text"
-                        placeholder="Name"
                         {...register(`step.${i}.name`, {
-                          required: "Please enter a name",
+                          required: "Lütfen yemek adımı isminiı girin.",
                         })}
                         hasError={!!errors?.step?.[i]?.name}
                         errorMessage={errors?.step?.[i]?.name?.message}
@@ -166,11 +164,11 @@ const AddRecipe = () => {
                     </div>
                     <div className="w-full">
                       <Input
-                        label="Step Materials*"
+                        label="Yemek Adımı Malzemeleri*"
                         type="text"
-                        placeholder="Materials"
+                        placeholder="Yemek adımı malzemelerini girin."
                         {...register(`step.${i}.materials`, {
-                          required: "Please enter materials",
+                          required: "Lütfen yemek adımı malzemelerini girin.",
                         })}
                         hasError={!!errors?.step?.[i]?.materials}
                         errorMessage={errors?.step?.[i]?.materials?.message}
@@ -180,25 +178,26 @@ const AddRecipe = () => {
                   <div className="flex items-start gap-2">
                     <div className="w-full">
                       <Input
-                        label="Step Img"
+                        label="Yemek Adımı Görseli"
                         type="file"
                         {...register(`step.${i}.imageUrl`)}
                       />
                     </div>
                     <div className="w-full">
                       <Input
-                        label="Step Minute*"
+                        label="Yemek Adımı Dakikası*"
                         type="number"
-                        placeholder="Minute Recipe"
+                        placeholder="Yemek adımı dakikasını girin."
                         {...register(`step.${i}.time`, {
-                          required: "Please enter a minute",
+                          required: "Lütfen yemek adımı dakikasını girin.",
                           min: {
                             value: 1,
-                            message: "Please enter a valid minute",
+                            message:
+                              "Yemek adımı süresi 1 dakikadan kısa olamaz.",
                           },
                           pattern: {
                             value: /^[1-9]\d*$/,
-                            message: "Please enter a valid minute",
+                            message: "Lütfen sayı girin.",
                           },
                         })}
                         hasError={!!errors?.step?.[i]?.time}
@@ -208,8 +207,8 @@ const AddRecipe = () => {
                   </div>
                   <div className="w-full">
                     <TextArea
-                      label="Step Recipe"
-                      placeholder="Step Recipe"
+                      label="Yemek Adımı Tarifi"
+                      placeholder="Yemek adımı tarifini girin."
                       {...register(`step.${i}.stepRecipe`)}
                     />
                   </div>
@@ -240,7 +239,7 @@ const AddRecipe = () => {
             className="max-w-max text-center"
           >
             <Plus className="h-6 w-6" />
-            Add New Step
+            Yeni Bölüm Ekle
           </Button>
         </div>
       </div>
@@ -251,7 +250,7 @@ const AddRecipe = () => {
           variant="base"
           type="button"
         >
-          Cancel
+          Vazgeç
         </Button>
         <Button
           disabled={isSubmitting}
@@ -259,7 +258,7 @@ const AddRecipe = () => {
           variant="primary"
           type="submit"
         >
-          {recipeInfo ? "Edit" : "Add"} Recipe
+          Tarifi {recipeInfo ? "Düzenle" : "Ekle"}
         </Button>
       </div>
     </form>

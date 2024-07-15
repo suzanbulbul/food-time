@@ -27,6 +27,8 @@ const saveState = (state) => {
 
 const initialState = loadState() || {
   user: null,
+  recipe: null,
+  favoriteList: [],
 };
 
 export const authSlice = createSlice({
@@ -39,7 +41,10 @@ export const authSlice = createSlice({
     },
     logoutHandle: (state) => {
       state.user = null;
+      state.recipe = null;
+      state.favoriteList = null;
       localStorage.removeItem("authState");
+      localStorage.removeItem("recipeState");
     },
   },
 });

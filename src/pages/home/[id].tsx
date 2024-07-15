@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
+import { useDispatch, useSelector } from "react-redux";
 import cn from "classnames";
 
 // Redux
-import { useDispatch, useSelector } from "react-redux";
 import {
   setRecipeDetail,
   addFavorite,
   removeFavorite,
   favoriteList,
 } from "../../redux/Slice/recipeSlice";
+
+//Redux
+import { userInfo } from "../../redux/Slice/authSlice";
 
 // API
 import { recipeApi } from "../../api/recipeApi";
@@ -29,6 +32,7 @@ import { FaHeart as Like } from "react-icons/fa6";
 
 //Helper
 import { aggregateIngredients, getCategoryByValue } from "../../util/helper";
+import { User } from "../../util/type/user.type";
 
 const RecipeDetail = () => {
   const dispatch = useDispatch();
@@ -37,8 +41,14 @@ const RecipeDetail = () => {
   const [tab, setTab] = useState<TabType[]>([]);
   const [currentTab, setCurrentTab] = useState<number>(0);
   const [clickFav, setClickFav] = useState<boolean>(false);
+  const [selectInfo, setSelectInfo] = useState<User | null>(null);
 
   const favorites = useSelector(favoriteList);
+  const user = useSelector(userInfo);
+
+  useEffect(() => {
+    setSelectInfo(user);
+  }, [user]);
 
   const { isFetching, data } = useQuery<RecipeType>({
     queryKey: ["recipe-detail", id],
@@ -111,20 +121,42 @@ const RecipeDetail = () => {
         <div className="flex flex-col gap-3">
           <ProgressBar currentStep={currentTab} totalSteps={tab.length - 1} />
           <div className="flex items-center justify-between">
-            <span className="rounded-full bg-indigo-200 px-3 py-1 text-sm font-semibold text-indigo-700">
-              {getCategoryByValue(data.category)}
-            </span>
-            <div
-              onClick={handleToggleFavorite}
-              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border bg-white"
-            >
-              <Like
-                className={cn(
-                  "h-5 w-5  hover:text-red-500 focus:text-red-500",
-                  clickFav && "text-red-500"
-                )}
-              />
+            <div className="flex items-center gap-2">
+              <span className="rounded-full bg-indigo-200 px-3 py-1 text-sm font-semibold text-indigo-700">
+                {getCategoryByValue(data.category)}
+              </span>
+              <span className="text-base text-indigo-700">
+                {tab[currentTab].minute} dakika
+              </span>
             </div>
+            <span>
+              <Button
+                variant="transparent"
+                padding="10px"
+                onClick={(e: any) => {
+                  e.preventDefault();
+                  handleToggleFavorite();
+                }}
+                disabled={!selectInfo}
+                tooltip={{
+                  message: !selectInfo
+                    ? "Bu özellik için giriş yapmanız gerekiyor."
+                    : (undefined as any),
+                  direction: "bottomRight",
+                }}
+                className="flex h-9  w-9 cursor-pointer items-center justify-center rounded-full border bg-white"
+              >
+                <Like
+                  className={cn(
+                    "h-5 w-5 ",
+                    selectInfo
+                      ? "hover:text-red-500 focus:text-red-500"
+                      : "text-gray-500 hover:text-gray-500",
+                    clickFav && "text-red-500"
+                  )}
+                />{" "}
+              </Button>
+            </span>
           </div>
           <div className="flex flex-col gap-1">
             <h1 className="text-xl font-semibold text-indigo-700">
@@ -150,8 +182,8 @@ const RecipeDetail = () => {
           <div>
             <h1 className="text-base font-medium text-indigo-800">
               {tab[currentTab].id === 0
-                ? "All Recipe Materials"
-                : "Recipe Materials"}
+                ? "Tüm Malzemeleri"
+                : `${tab[currentTab].name} İçin Gerekli Malzemeler`}
             </h1>
             <ul className="grid w-full grid-cols-2 gap-4 p-5">
               {tab[currentTab].materials.map((s, i) => (
@@ -172,19 +204,26 @@ const RecipeDetail = () => {
                 handleStepChange(-1);
               }}
             >
-              Back
+              Önceki Adım
             </Button>
           )}
 
           {currentTab < tab.length - 1 && (
             <Button
+              disabled={!selectInfo}
+              tooltip={{
+                message: !selectInfo
+                  ? "Bu özellik için giriş yapmanız gerekiyor."
+                  : (undefined as any),
+                direction: "topRight",
+              }}
               onClick={() => {
                 handleStepChange(1);
               }}
               variant="success"
               className="ml-auto"
             >
-              {tab[currentTab].id === 0 ? "Hemen Başla" : "Next"}
+              {tab[currentTab].id === 0 ? "Hemen Başla" : "Sonraki Adım"}
             </Button>
           )}
         </div>
