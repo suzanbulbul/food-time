@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import router from "next/router";
+import { useRouter } from "next/router";
 
-//Redux
+// Redux
 import { userInfo } from "../redux/Slice/authSlice";
 import { useSelector } from "react-redux";
 
-//Compopnents
+// Components
 import Button from "./Button";
 
-//Icons
+// Icons
 import { IoHomeOutline } from "react-icons/io5";
 import { PiBowlFoodLight } from "react-icons/pi";
 import { CiSettings } from "react-icons/ci";
 import { IoIosArrowForward } from "react-icons/io";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 
-//Type
+// Type
 import { User } from "../util/type/user.type";
 import { TooltipContent } from "./Tooltip";
 
@@ -31,7 +31,7 @@ export type actionItemType = {
 };
 
 export type actionsType = {
-  id: number;
+  id: number | string;
   name: string;
   icon: React.ReactNode;
   onClick?: () => void;
@@ -42,12 +42,13 @@ export type actionsType = {
 };
 
 const Sidebar = () => {
+  const router = useRouter();
   const user = useSelector(userInfo);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
   const [activeMenu, setActiveMenu] = useState<number>(0);
   const [selectInfo, setSelectInfo] = useState<User>(undefined);
-  const [activeTab, setActiveTab] = useState<number>(1);
+  const [path, setPath] = useState<string>("home");
 
   const toggleSubMenu = (itemId: any) => {
     setActiveMenu(activeMenu === itemId ? 0 : itemId);
@@ -55,7 +56,7 @@ const Sidebar = () => {
 
   const asideData: actionsType[] = [
     {
-      id: 1,
+      id: "home",
       name: "Ana Sayfa",
       icon: <IoHomeOutline className="h-5 w-5" />,
       onClick: () => {
@@ -64,7 +65,7 @@ const Sidebar = () => {
       disable: false,
     },
     {
-      id: 2,
+      id: "recipe",
       name: "Tariflerim",
       icon: <PiBowlFoodLight className="h-5 w-5" />,
       onClick: () => {
@@ -76,7 +77,7 @@ const Sidebar = () => {
       },
     },
     {
-      id: 3,
+      id: "fav-recipe",
       name: "Favori Tariflerim",
       icon: <MdOutlineFavoriteBorder className="h-5 w-5" />,
       onClick: () => {
@@ -88,7 +89,7 @@ const Sidebar = () => {
       },
     },
     {
-      id: 4,
+      id: "settings",
       name: "Ayarlar",
       icon: <CiSettings className="h-5 w-5" />,
       onClick: () => {
@@ -99,30 +100,11 @@ const Sidebar = () => {
         message: "Bu özellik için giriş yapmanız gerekiyor.",
       },
     },
-    // {
-    //   id: 3,
-    //   name: "Item 2",
-    //   icon: <FaRegUser className="h-4 w-4" />,
-    //   attributes: [
-    //     {
-    //       id: 1,
-    //       name: "Sub Item 1",
-    //       onClick: () => {
-    //         router.push("/sub-item-1");
-    //       },
-    //       disable: selectInfo ? false : true,
-    //     },
-    //     {
-    //       id: 2,
-    //       name: "Sub Item 2",
-    //       onClick: () => {
-    //         router.push("/sub-item-2");
-    //       },
-    //       disable: selectInfo ? false : true,
-    //     },
-    //   ],
-    // },
   ];
+
+  useEffect(() => {
+    setPath(router.pathname.slice(1));
+  }, [router, router.pathname]);
 
   useEffect(() => {
     setSelectInfo(user);
@@ -163,7 +145,10 @@ const Sidebar = () => {
                     variant="transparent"
                     disabled={item?.disable}
                     onClick={item.onClick}
-                    className={`h-11 w-full gap-4 text-gray-600 duration-300 hover:bg-indigo-100 hover:text-indigo-600`}
+                    className={`
+                      h-11 w-full gap-4 text-gray-600 duration-300 hover:bg-indigo-100 hover:text-indigo-600
+                      ${path === item.id ? " text-indigo-600" : ""}
+                    `}
                   >
                     {item.icon}
 
@@ -206,7 +191,10 @@ const Sidebar = () => {
                           disabled={subItem?.disable}
                           onClick={item.onClick}
                           key={subItem.id}
-                          className="h-10 gap-4  text-gray-600 duration-300 hover:bg-indigo-100 hover:text-indigo-600"
+                          className={`
+                            h-11 w-full gap-4 text-gray-600 duration-300 hover:bg-indigo-100 hover:text-indigo-600
+                            ${path === item.id ? " text-indigo-600" : ""}
+                          `}
                         >
                           <span className="h-4 w-4"></span>
                           {isSidebarOpen && (
