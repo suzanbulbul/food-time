@@ -68,14 +68,7 @@ const Home = () => {
         {homeData?.length > 0 ? (
           homeData?.map((res, i) => {
             return (
-              <Card
-                key={i}
-                title={res.name}
-                desc={res.summary}
-                category={res.category}
-                img={res?.img || null}
-                url={`/home/${res.id}`}
-              />
+              <Card key={i} data={res} url={`/home/${res.id}`} favActive />
             );
           })
         ) : (

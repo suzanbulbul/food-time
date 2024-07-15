@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
+import { useDispatch, useSelector } from "react-redux";
 import cn from "classnames";
 
 // Redux
-import { useDispatch, useSelector } from "react-redux";
 import {
   setRecipeDetail,
   addFavorite,

@@ -49,16 +49,7 @@ const FavRecipe = () => {
         <div className="grid grid-cols-1 gap-5 self-stretch md:grid-cols-2 xl:grid-cols-3">
           {favList.length > 0 ? (
             favorites?.map((res: any, i: any) => {
-              return (
-                <Card
-                  key={i}
-                  title={res.name}
-                  desc={res.summary}
-                  category={res.category}
-                  img={res?.img || null}
-                  url={`/home/${res.id}`}
-                />
-              );
+              return <Card key={i} data={res} url={`/home/${res.id}`} />;
             })
           ) : (
             <h1>Favorites Listesi Boş</h1>

@@ -81,16 +81,7 @@ const Recipe = () => {
       <div className="grid grid-cols-1 gap-5 self-stretch md:grid-cols-2 xl:grid-cols-3">
         {recipeData?.length > 0 ? (
           recipeData?.map((res, i) => {
-            return (
-              <Card
-                key={i}
-                title={res.name}
-                desc={res.summary}
-                category={res.category}
-                img={res?.img || null}
-                url={`/recipe/${res.id}`}
-              />
-            );
+            return <Card key={i} data={res} url={`/recipe/${res.id}`} />;
           })
         ) : (
           <h1>Recipe Listesi Boş</h1>
