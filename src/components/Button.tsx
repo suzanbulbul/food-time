@@ -72,7 +72,7 @@ const Button = ({
     </button>
   );
 
-  return tooltip ? (
+  return tooltip?.message ? (
     <Tooltip
       content={{
         message: tooltip.message,
