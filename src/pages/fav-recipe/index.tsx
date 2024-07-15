@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import router from "next/router";
 
 //Redux
 import { favoriteList, removeAllFavorite } from "../../redux/Slice/recipeSlice";
@@ -8,7 +9,7 @@ import { favoriteList, removeAllFavorite } from "../../redux/Slice/recipeSlice";
 import toast from "react-hot-toast";
 
 //Components
-import { Button, Card, Loading, Modal } from "../../components";
+import { Button, Card, Loading, Modal, EmptyArea } from "../../components";
 
 //Type
 import { RecipeType } from "../../util/type/recipe.type";
@@ -45,16 +46,19 @@ const FavRecipe = () => {
             Hepsini Temizle
           </Button>
         )}
-
-        <div className="grid grid-cols-1 gap-5 self-stretch md:grid-cols-2 xl:grid-cols-3">
-          {favList.length > 0 ? (
-            favorites?.map((res: any, i: any) => {
+        {favList.length > 0 ? (
+          <div className="grid grid-cols-1 gap-5 self-stretch md:grid-cols-2 xl:grid-cols-3">
+            {favorites?.map((res: any, i: any) => {
               return <Card key={i} data={res} url={`/home/${res.id}`} />;
-            })
-          ) : (
-            <h1>Favorites Listesi Boş</h1>
-          )}
-        </div>
+            })}
+          </div>
+        ) : (
+          <EmptyArea
+            onClick={() => {
+              router.push("/home");
+            }}
+          />
+        )}
       </div>
       <Modal
         show={clickRemove}
