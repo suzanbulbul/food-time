@@ -16,6 +16,7 @@ export interface RecipeType {
 export interface TabType {
   id: string | number;
   name?: string;
+  minute: string;
   summary?: string;
   materials: string[];
   img?: string | null;
