@@ -79,7 +79,7 @@ const Home = () => {
             );
           })
         ) : (
-          <h1>Recipe Listesi Boş</h1>
+          <h1>Tarif Listesi Boş</h1>
         )}
       </div>
     </div>

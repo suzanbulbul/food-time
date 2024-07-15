@@ -4,7 +4,7 @@ export function truncateDescription(desc: string, maxLength: number) {
       {desc.slice(0, maxLength)}
       {desc.length > maxLength && (
         <span className="text-indigo-700 hover:underline">
-          {""} Read more...
+          {""} daha fazlası...
         </span>
       )}
     </p>

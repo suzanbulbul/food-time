@@ -34,7 +34,7 @@ const FavRecipe = () => {
           onClick={() => dispatch(removeAllFavorite())}
           className="ml-auto"
         >
-          All Remove Recipe
+          Hepsini Temizle
         </Button>
       )}
 

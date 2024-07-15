@@ -74,7 +74,7 @@ const Recipe = () => {
             dispatch(clearRecipeDetail()), router.push("recipe/add-edit");
           }}
         >
-          Add New Recipe
+          Yeni Tarif Ekle
         </Button>
       </div>
 

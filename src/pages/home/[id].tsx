@@ -150,8 +150,8 @@ const RecipeDetail = () => {
           <div>
             <h1 className="text-base font-medium text-indigo-800">
               {tab[currentTab].id === 0
-                ? "All Recipe Materials"
-                : "Recipe Materials"}
+                ? "Tüm Malzemeleri"
+                : `${tab[currentTab].name} İçin Gerekli Malzemeler`}
             </h1>
             <ul className="grid w-full grid-cols-2 gap-4 p-5">
               {tab[currentTab].materials.map((s, i) => (
@@ -172,7 +172,7 @@ const RecipeDetail = () => {
                 handleStepChange(-1);
               }}
             >
-              Back
+              Önceki Adım
             </Button>
           )}
 
@@ -184,7 +184,7 @@ const RecipeDetail = () => {
               variant="success"
               className="ml-auto"
             >
-              {tab[currentTab].id === 0 ? "Hemen Başla" : "Next"}
+              {tab[currentTab].id === 0 ? "Hemen Başla" : "Sonraki Adım"}
             </Button>
           )}
         </div>

@@ -55,7 +55,7 @@ const Sidebar = () => {
   const asideData: actionsType[] = [
     {
       id: 1,
-      name: "Home",
+      name: "Ana Sayfa",
       icon: <IoHomeOutline className="h-5 w-5" />,
       onClick: () => {
         router.push("/home");
@@ -64,38 +64,38 @@ const Sidebar = () => {
     },
     {
       id: 2,
-      name: "List Recipe",
+      name: "Tarifimlerim",
       icon: <PiBowlFoodLight className="h-5 w-5" />,
       onClick: () => {
         router.push("/recipe");
       },
       disable: selectInfo ? false : true,
       tooltip: {
-        message: "Need to Login for feature",
+        message: "Bu özellik için giriş yapmanız veya kayıt olmanız gerekiyor.",
       },
     },
     {
       id: 3,
-      name: "Favorite Recipes",
+      name: "Favori Tarifler",
       icon: <MdOutlineFavoriteBorder className="h-5 w-5" />,
       onClick: () => {
         router.push("/fav-recipe");
       },
       disable: selectInfo ? false : true,
       tooltip: {
-        message: "Need to Login for feature",
+        message: "Bu özellik için giriş yapmanız veya kayıt olmanız gerekiyor.",
       },
     },
     {
       id: 4,
-      name: "Settings",
+      name: "Ayarlar",
       icon: <CiSettings className="h-5 w-5" />,
       onClick: () => {
         router.push("/settings");
       },
       hidden: selectInfo ? false : true,
       tooltip: {
-        message: "You need to Login for feature",
+        message: "Bu özellik için giriş yapmanız veya kayıt olmanız gerekiyor.",
       },
     },
     // {
@@ -137,7 +137,9 @@ const Sidebar = () => {
         <div className="mb-3 text-2xl font-bold text-gray-100">
           <Link className="flex items-center justify-start p-2.5" href="/">
             {isSidebarOpen && (
-              <h1 className="text-2xl font-bold text-indigo-500">Food Time</h1>
+              <h1 className="text-2xl font-bold text-indigo-500">
+                Yemek Zamanı
+              </h1>
             )}
           </Link>
           <IoIosArrowForward
