@@ -47,6 +47,7 @@ const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
   const [activeMenu, setActiveMenu] = useState<number>(0);
   const [selectInfo, setSelectInfo] = useState<User>(undefined);
+  const [activeTab, setActiveTab] = useState<number>(1);
 
   const toggleSubMenu = (itemId: any) => {
     setActiveMenu(activeMenu === itemId ? 0 : itemId);
@@ -135,11 +136,13 @@ const Sidebar = () => {
     >
       <div className={`h-screen bg-white p-2 shadow-md`}>
         <div className="mb-3 text-2xl font-bold text-gray-100">
-          <Link className="flex items-center justify-start p-2.5" href="/">
+          <Link href="/" className="flex justify-center">
             {isSidebarOpen && (
-              <h1 className="text-2xl font-bold text-indigo-500">
-                Yemek Zamanı
-              </h1>
+              <img
+                className="h-14 w-auto rounded-full"
+                src="img/logo.svg"
+                alt="logo"
+              />
             )}
           </Link>
           <IoIosArrowForward
