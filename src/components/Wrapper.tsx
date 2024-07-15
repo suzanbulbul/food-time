@@ -22,6 +22,11 @@ const Wrapper = ({ children }: any) => {
       !["/login", "/register", "/home", "/home/[id]"].includes(router.pathname)
     ) {
       router.push("/login");
+    } else if (
+      selectInfo !== null &&
+      ["/login", "/register"].includes(router.pathname)
+    ) {
+      router.push("/home");
     }
   }, [selectInfo, router]);
 
