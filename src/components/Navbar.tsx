@@ -117,7 +117,9 @@ const Navbar = () => {
             </div>
           </div>
         ) : (
-          <Button onClick={() => router.push("/login")}>Register Now</Button>
+          <Button className="ml-auto" onClick={() => router.push("/login")}>
+            Kaydol veya Griş Yap
+          </Button>
         )}
       </nav>
     </WhiteBox>

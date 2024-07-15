@@ -6,7 +6,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
 
 //Components
-import Layout from "../components/Layout";
+import { Layout, Wrapper } from "../components";
 
 //Redux
 import { wrapper } from "../redux/store";
@@ -22,11 +22,13 @@ function MyApp({ Component, pageProps }) {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
-        <Layout>
-          <Component {...pageProps} />
-          <ReactQueryDevtools initialIsOpen={false} />
-          <Toaster />
-        </Layout>
+        <Wrapper>
+          <Layout>
+            <Component {...pageProps} />
+            <ReactQueryDevtools initialIsOpen={false} />
+            <Toaster />
+          </Layout>
+        </Wrapper>
       </Provider>
     </QueryClientProvider>
   );

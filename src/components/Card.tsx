@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import WhiteBox from "./WhiteBox";
+import { useDispatch, useSelector } from "react-redux";
 import router from "next/router";
 import cn from "classnames";
 
 //Redux
+import { userInfo } from "../redux/Slice/authSlice";
 import {
-  setRecipeDetail,
   addFavorite,
   removeFavorite,
   favoriteList,
@@ -15,15 +15,19 @@ import {
 // Library
 import toast from "react-hot-toast";
 
+//Components
+import { Button, WhiteBox } from ".";
+
 //Helper
 import { truncateDescription, getCategoryByValue } from "../util/helper";
 
 //Type
+import { User } from "../util/type/user.type";
+
 import { RecipeType } from "../util/type/recipe.type";
 
 // Icons
 import { FaHeart as Like } from "react-icons/fa6";
-import { useDispatch, useSelector } from "react-redux";
 
 interface CardType {
   data: RecipeType;
@@ -34,8 +38,10 @@ interface CardType {
 const Card = ({ data, url, favActive = false }: CardType) => {
   const dispatch = useDispatch();
   const [clickFav, setClickFav] = useState<boolean>(false);
+  const [selectInfo, setSelectInfo] = useState<User>(undefined);
 
   const favorites = useSelector(favoriteList);
+  const user = useSelector(userInfo);
 
   const handleClick = () => {
     if (url) {
@@ -52,6 +58,10 @@ const Card = ({ data, url, favActive = false }: CardType) => {
       toast.success("Favorilerden çıkarıldı");
     }
   };
+
+  useEffect(() => {
+    setSelectInfo(user);
+  }, [user]);
 
   useEffect(() => {
     favActive &&
@@ -82,22 +92,48 @@ const Card = ({ data, url, favActive = false }: CardType) => {
         <h1 className="text-xl font-bold">{data.name}</h1>
         {data.summary ? truncateDescription(data.summary, 60) : "-"}
       </div>
-      <div className="flex h-9 items-center justify-between">
+      <div className="flex items-center justify-between">
         <span className="inline-block rounded-full bg-indigo-200 px-3 py-1 text-sm font-semibold text-indigo-700">
           {getCategoryByValue(data.category)}
         </span>
         {favActive && (
-          <div
-            onClick={handleToggleFavorite}
-            className="flex h-full w-9 cursor-pointer items-center justify-center rounded-full border bg-white"
-          >
-            <Like
-              className={cn(
-                "h-5 w-5  hover:text-red-500 focus:text-red-500",
-                clickFav && "text-red-500"
-              )}
-            />
-          </div>
+          <span>
+            {selectInfo ? (
+              <Button
+                variant="transparent"
+                padding="10px"
+                onClick={(e: any) => {
+                  e.preventDefault();
+                  handleToggleFavorite;
+                }}
+                className="flex h-9  w-9 cursor-pointer items-center justify-center rounded-full border bg-white"
+              >
+                <Like
+                  className={cn(
+                    "h-5 w-5  hover:text-red-500 focus:text-red-500",
+                    clickFav && "text-red-500"
+                  )}
+                />
+              </Button>
+            ) : (
+              <Button
+                variant="transparent"
+                padding="10px"
+                disabled={!selectInfo}
+                tooltip={{
+                  message: !selectInfo
+                    ? "Bu özellik için giriş yapmanız gerekiyor."
+                    : "test",
+                }}
+                onClick={handleToggleFavorite}
+                className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border bg-white"
+              >
+                <Like
+                  className={cn("h-5 w-5  text-gray-500 hover:text-gray-500")}
+                />
+              </Button>
+            )}
+          </span>
         )}
       </div>
     </WhiteBox>

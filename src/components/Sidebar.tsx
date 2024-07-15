@@ -71,7 +71,7 @@ const Sidebar = () => {
       },
       disable: selectInfo ? false : true,
       tooltip: {
-        message: "Bu özellik için giriş yapmanız veya kayıt olmanız gerekiyor.",
+        message: "Bu özellik için giriş yapmanız gerekiyor.",
       },
     },
     {
@@ -83,7 +83,7 @@ const Sidebar = () => {
       },
       disable: selectInfo ? false : true,
       tooltip: {
-        message: "Bu özellik için giriş yapmanız veya kayıt olmanız gerekiyor.",
+        message: "Bu özellik için giriş yapmanız gerekiyor.",
       },
     },
     {
@@ -95,7 +95,7 @@ const Sidebar = () => {
       },
       hidden: selectInfo ? false : true,
       tooltip: {
-        message: "Bu özellik için giriş yapmanız veya kayıt olmanız gerekiyor.",
+        message: "Bu özellik için giriş yapmanız gerekiyor.",
       },
     },
     // {
