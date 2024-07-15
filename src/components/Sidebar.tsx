@@ -79,7 +79,7 @@ const Sidebar = () => {
       name: "Favorite Recipes",
       icon: <MdOutlineFavoriteBorder className="h-5 w-5" />,
       onClick: () => {
-        router.push("/favorite-recipe");
+        router.push("/fav-recipe");
       },
       disable: selectInfo ? false : true,
       tooltip: {

@@ -27,6 +27,7 @@ const saveState = (state) => {
 
 const initialState = loadState() || {
   recipe: null,
+  favoriteList: [],
 };
 
 export const recipeSlice = createSlice({
@@ -41,11 +42,32 @@ export const recipeSlice = createSlice({
       state.recipe = null;
       localStorage.removeItem("recipeState");
     },
+    addFavorite: (state, action) => {
+      state.favoriteList.push(action.payload);
+      saveState(state);
+    },
+    removeFavorite: (state, action) => {
+      state.favoriteList = state.favoriteList.filter(
+        (item) => item.id !== action.payload
+      );
+      saveState(state);
+    },
+    removeAllFavorite: (state) => {
+      state.favoriteList = [];
+      saveState(state);
+    },
   },
 });
 
-export const { setRecipeDetail, clearRecipeDetail } = recipeSlice.actions;
+export const {
+  setRecipeDetail,
+  clearRecipeDetail,
+  addFavorite,
+  removeFavorite,
+  removeAllFavorite,
+} = recipeSlice.actions;
 
 export const selectRecipe = (state) => state.recipe.recipe;
+export const favoriteList = (state) => state.recipe.favoriteList;
 
 export default recipeSlice.reducer;
