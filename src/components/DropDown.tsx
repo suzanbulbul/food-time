@@ -1,5 +1,6 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { useState } from "react";
+import cn from "classnames";
 
 //Icons
 import { MdKeyboardArrowDown as Arrow } from "react-icons/md";
@@ -7,32 +8,40 @@ import { MdKeyboardArrowDown as Arrow } from "react-icons/md";
 interface PropsType {
   actions: DropdownAction[];
   title?: string;
+  filter?: boolean;
+  className?: string;
 }
 
 export interface DropdownAction {
   label: string;
   onClick: () => void;
 }
-const DropDown = ({ actions, title }: PropsType) => {
-  const [isOpen, setIsOpen] = useState(false);
+const DropDown = ({ actions, className, title, filter = false }: PropsType) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isTitle, setIsTtitle] = useState<string>(title ? title : "Action");
+
+  const handleActionClick = (action: DropdownAction) => {
+    if (filter) {
+      setIsTtitle(action.label);
+    }
+    action.onClick();
+  };
 
   return (
-    <Menu as="div" className="relative inline-block text-left">
+    <Menu as="div" className={cn("relative inline-block text-left", className)}>
       <div>
         <MenuButton
           onClick={() => setIsOpen(!isOpen)}
-          className="inline-flex min-w-24 items-center justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-          title={title ? title : "Action"}
+          className="inline-flex w-auto min-w-36 items-center justify-between gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          title={isTitle}
         >
-          <span className="flex items-center">
-            {title}
-            <Arrow
-              aria-hidden="true"
-              className={`text-icon-soft-400 h-5 w-5 transform transition-transform duration-300 ${
-                isOpen ? "rotate-180" : ""
-              }`}
-            />
-          </span>
+          {isTitle}
+          <Arrow
+            aria-hidden="true"
+            className={`text-icon-soft-400 h-5 w-5 transform transition-transform duration-300 ${
+              isOpen ? "rotate-180" : ""
+            }`}
+          />
         </MenuButton>
       </div>
 
@@ -45,7 +54,7 @@ const DropDown = ({ actions, title }: PropsType) => {
             <MenuItem key={index}>
               <button
                 type="button"
-                onClick={action.onClick}
+                onClick={() => handleActionClick(action)}
                 className="block w-full cursor-pointer truncate px-4 py-2 text-center text-sm font-normal text-gray-700 data-[focus]:bg-indigo-100 data-[focus]:text-indigo-600"
               >
                 {action.label}
