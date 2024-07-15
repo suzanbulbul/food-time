@@ -65,7 +65,7 @@ const Navbar = () => {
       <nav className="flex items-center justify-between">
         {path === "/home" && (
           <h1>
-            Hoşgeldin {selectInfo ? selectInfo?.displayName : "Dear Geuest"}
+            Hoşgeldin {selectInfo ? selectInfo?.displayName : "Dear Guest"}
           </h1>
         )}
         {selectInfo ? (

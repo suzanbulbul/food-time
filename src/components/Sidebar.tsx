@@ -65,7 +65,7 @@ const Sidebar = () => {
     },
     {
       id: 2,
-      name: "Tarifimlerim",
+      name: "Tariflerim",
       icon: <PiBowlFoodLight className="h-5 w-5" />,
       onClick: () => {
         router.push("/recipe");
@@ -77,7 +77,7 @@ const Sidebar = () => {
     },
     {
       id: 3,
-      name: "Favori Tarifler",
+      name: "Favori Tariflerim",
       icon: <MdOutlineFavoriteBorder className="h-5 w-5" />,
       onClick: () => {
         router.push("/fav-recipe");
