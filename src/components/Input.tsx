@@ -14,7 +14,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string;
   icon?: React.ReactElement | string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  type: "text" | "email" | "password" | "number" | "file";
+  type: "text" | "email" | "password" | "number" | "file" | "number";
 }
 
 const Input = forwardRef(
@@ -69,6 +69,21 @@ const Input = forwardRef(
             <input
               type="file"
               accept="image/*"
+              placeholder={placeholder}
+              className={cn(
+                "block w-full flex-1 appearance-none border-0 px-0 py-2 text-sm outline-none focus:border-none focus:ring-0",
+                {
+                  "placeholder-gray-500": !hasError,
+                  "placeholder-red-300": hasError,
+                }
+              )}
+              onChange={onChange}
+              ref={ref}
+              {...rest}
+            />
+          ) : type === "number" ? (
+            <input
+              type="number"
               placeholder={placeholder}
               className={cn(
                 "block w-full flex-1 appearance-none border-0 px-0 py-2 text-sm outline-none focus:border-none focus:ring-0",

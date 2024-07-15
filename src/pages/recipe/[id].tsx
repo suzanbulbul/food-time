@@ -13,7 +13,13 @@ import { setRecipeDetail } from "../../redux/Slice/recipeSlice";
 import toast from "react-hot-toast";
 
 //Components
-import { Loading, Button, DropDown, Modal } from "../../components";
+import {
+  Loading,
+  Button,
+  DropDown,
+  Modal,
+  ProgressBar,
+} from "../../components";
 
 //Type
 import { RecipeType, TabType } from "../../util/type/recipe.type";
@@ -56,19 +62,33 @@ const RecipeDetail = () => {
     },
   ];
 
+  const handleStepChange = (increment: number) => {
+    const newTab = currentTab + increment;
+    if (newTab >= 0 && newTab < tab.length) {
+      setCurrentTab(newTab);
+    }
+  };
+
   useEffect(() => {
     if (data) {
       dispatch(setRecipeDetail(JSON.stringify(data)));
 
+      const totalMinutes = data.step
+        .map((step) => parseInt(step.time, 10))
+        .reduce((total, time) => total + time, 0);
+
       const tabs = [
         {
           id: 0,
+          minute: totalMinutes.toString(),
+          name: data.name,
           summary: data.summary,
           materials: aggregateIngredients(data.step),
           img: data.img,
         },
         ...data.step.map((step, index) => ({
           id: index + 1,
+          minute: step.time,
           name: step.name,
           summary: step.stepRecipe,
           materials: step.materials
@@ -88,17 +108,19 @@ const RecipeDetail = () => {
 
   return (
     <>
-      <div className="flex min-h-[calc(100vh-116px)] flex-col justify-between gap-4">
-        <div className="flex flex-col gap-4">
+      <div className="flex min-h-[calc(100vh-120px)] flex-col justify-between gap-4 overflow-hidden">
+        <div className="flex flex-col gap-3">
+          <ProgressBar currentStep={currentTab} totalSteps={tab.length - 1} />
           <div className="flex items-center justify-between">
             <span className="rounded-full bg-indigo-200 px-3 py-1 text-sm font-semibold text-indigo-700">
               {getCategoryByValue(data.category)}
             </span>
             <DropDown title="Edit Recipe" actions={actions} />
           </div>
-          <div className="flex flex-col gap-2.5">
+          <div className="flex flex-col gap-1">
             <h1 className="text-xl font-semibold text-indigo-700">
-              {tab[currentTab].name && ` -  ${tab[currentTab].name}`}
+              {tab[0].name}
+              {currentTab !== 0 && ` -  ${tab[currentTab].name}`}
             </h1>
             <div className="flex flex-col items-start justify-start gap-4 sm:flex-row">
               {tab[currentTab].img && (
@@ -138,36 +160,32 @@ const RecipeDetail = () => {
             <Button
               variant="base"
               onClick={() => {
-                if (currentTab > 0) {
-                  setCurrentTab((prevTab) => prevTab - 1);
-                }
+                handleStepChange(-1);
               }}
             >
               Back
             </Button>
           )}
 
-          <Button
-            onClick={() => {
-              if (tab[currentTab]?.id === 0) {
-                setCurrentTab(1);
-              } else if (currentTab < tab.length - 1) {
-                if (currentTab < tab.length - 1) {
-                  setCurrentTab((prevTab) => prevTab + 1);
+          {currentTab < tab.length - 1 && (
+            <Button
+              onClick={() => {
+                if (tab[currentTab]?.id === 0) {
+                  setCurrentTab(1);
+                } else if (currentTab < tab.length - 1) {
+                  if (currentTab < tab.length - 1) {
+                    setCurrentTab((prevTab) => prevTab + 1);
+                  }
+                } else {
+                  toast.success("All steps completed");
                 }
-              } else {
-                toast.success("All steps completed");
-              }
-            }}
-            variant="success"
-            className="ml-auto"
-          >
-            {tab[currentTab].id === 0
-              ? "Hemen Başla"
-              : currentTab < tab.length - 1
-              ? "Next"
-              : "Tamamlandı"}
-          </Button>
+              }}
+              variant="success"
+              className="ml-auto"
+            >
+              {tab[currentTab].id === 0 ? "Hemen Başla" : "Next"}
+            </Button>
+          )}
         </div>
       </div>
       <Modal

@@ -187,11 +187,19 @@ const AddRecipe = () => {
                     </div>
                     <div className="w-full">
                       <Input
-                        label="Step Time*"
-                        type="text"
-                        placeholder="Time"
+                        label="Step Minute*"
+                        type="number"
+                        placeholder="Minute Recipe"
                         {...register(`step.${i}.time`, {
-                          required: "Please enter a time",
+                          required: "Please enter a minute",
+                          min: {
+                            value: 1,
+                            message: "Please enter a valid minute",
+                          },
+                          pattern: {
+                            value: /^[1-9]\d*$/,
+                            message: "Please enter a valid minute",
+                          },
                         })}
                         hasError={!!errors?.step?.[i]?.time}
                         errorMessage={errors?.step?.[i]?.time?.message}

@@ -15,6 +15,7 @@ import TextArea from "./TextArea";
 import Card from "./Card";
 import ComboBox from "./ComboBox";
 import DropDown from "./DropDown";
+import ProgressBar from "./ProgressBar";
 
 export {
   Layout,
@@ -34,4 +35,5 @@ export {
   Card,
   ComboBox,
   DropDown,
+  ProgressBar,
 };
