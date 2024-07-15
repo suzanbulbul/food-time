@@ -3,7 +3,7 @@ import classNames from "classnames";
 
 export type TooltipContent = {
   message: string;
-  direction?: "top" | "bottom" | "left" | "right";
+  direction?: "top" | "bottom" | "left" | "right" | "topRight" | "bottomRight";
   variant?: "primary" | "secondary" | "danger" | "warning";
 };
 
@@ -24,6 +24,8 @@ const DIRECTIONS = {
   bottom: "top-full mt-2",
   left: "right-full mr-2",
   right: "left-full ml-2",
+  topRight: "bottom-full right-0 mb-2",
+  bottomRight: "top-full right-0 mb-2",
 };
 
 const Tooltip = ({
@@ -53,7 +55,7 @@ const Tooltip = ({
       >
         {children}
       </div>
-      {visible && <div className={tooltipClasses}>{message}</div>}
+      {visible && message && <div className={tooltipClasses}>{message}</div>}
     </div>
   );
 };

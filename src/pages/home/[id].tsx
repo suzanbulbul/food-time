@@ -12,6 +12,9 @@ import {
   favoriteList,
 } from "../../redux/Slice/recipeSlice";
 
+//Redux
+import { userInfo } from "../../redux/Slice/authSlice";
+
 // API
 import { recipeApi } from "../../api/recipeApi";
 
@@ -29,6 +32,7 @@ import { FaHeart as Like } from "react-icons/fa6";
 
 //Helper
 import { aggregateIngredients, getCategoryByValue } from "../../util/helper";
+import { User } from "../../util/type/user.type";
 
 const RecipeDetail = () => {
   const dispatch = useDispatch();
@@ -37,8 +41,14 @@ const RecipeDetail = () => {
   const [tab, setTab] = useState<TabType[]>([]);
   const [currentTab, setCurrentTab] = useState<number>(0);
   const [clickFav, setClickFav] = useState<boolean>(false);
+  const [selectInfo, setSelectInfo] = useState<User | null>(null);
 
   const favorites = useSelector(favoriteList);
+  const user = useSelector(userInfo);
+
+  useEffect(() => {
+    setSelectInfo(user);
+  }, [user]);
 
   const { isFetching, data } = useQuery<RecipeType>({
     queryKey: ["recipe-detail", id],
@@ -119,17 +129,34 @@ const RecipeDetail = () => {
                 {tab[currentTab].minute} dakika
               </span>
             </div>
-            <div
-              onClick={handleToggleFavorite}
-              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border bg-white"
-            >
-              <Like
-                className={cn(
-                  "h-5 w-5  hover:text-red-500 focus:text-red-500",
-                  clickFav && "text-red-500"
-                )}
-              />
-            </div>
+            <span>
+              <Button
+                variant="transparent"
+                padding="10px"
+                onClick={(e: any) => {
+                  e.preventDefault();
+                  handleToggleFavorite;
+                }}
+                disabled={!selectInfo}
+                tooltip={{
+                  message: !selectInfo
+                    ? "Bu özellik için giriş yapmanız gerekiyor."
+                    : (undefined as any),
+                  direction: "bottomRight",
+                }}
+                className="flex h-9  w-9 cursor-pointer items-center justify-center rounded-full border bg-white"
+              >
+                <Like
+                  className={cn(
+                    "h-5 w-5 ",
+                    selectInfo
+                      ? "hover:text-red-500 focus:text-red-500"
+                      : "text-gray-500 hover:text-gray-500",
+                    clickFav && "text-red-500"
+                  )}
+                />{" "}
+              </Button>
+            </span>
           </div>
           <div className="flex flex-col gap-1">
             <h1 className="text-xl font-semibold text-indigo-700">
@@ -183,6 +210,13 @@ const RecipeDetail = () => {
 
           {currentTab < tab.length - 1 && (
             <Button
+              disabled={!selectInfo}
+              tooltip={{
+                message: !selectInfo
+                  ? "Bu özellik için giriş yapmanız gerekiyor."
+                  : (undefined as any),
+                direction: "topRight",
+              }}
               onClick={() => {
                 handleStepChange(1);
               }}

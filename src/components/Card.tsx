@@ -98,41 +98,30 @@ const Card = ({ data, url, favActive = false }: CardType) => {
         </span>
         {favActive && (
           <span>
-            {selectInfo ? (
-              <Button
-                variant="transparent"
-                padding="10px"
-                onClick={(e: any) => {
-                  e.preventDefault();
-                  handleToggleFavorite;
-                }}
-                className="flex h-9  w-9 cursor-pointer items-center justify-center rounded-full border bg-white"
-              >
-                <Like
-                  className={cn(
-                    "h-5 w-5  hover:text-red-500 focus:text-red-500",
-                    clickFav && "text-red-500"
-                  )}
-                />
-              </Button>
-            ) : (
-              <Button
-                variant="transparent"
-                padding="10px"
-                disabled={!selectInfo}
-                tooltip={{
-                  message: !selectInfo
-                    ? "Bu özellik için giriş yapmanız gerekiyor."
-                    : "test",
-                }}
-                onClick={handleToggleFavorite}
-                className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border bg-white"
-              >
-                <Like
-                  className={cn("h-5 w-5  text-gray-500 hover:text-gray-500")}
-                />
-              </Button>
-            )}
+            <Button
+              variant="transparent"
+              padding="10px"
+              onClick={(e: any) => {
+                e.preventDefault();
+                handleToggleFavorite;
+              }}
+              disabled={!selectInfo}
+              tooltip={{
+                message: !selectInfo
+                  ? "Bu özellik için giriş yapmanız gerekiyor."
+                  : (undefined as any),
+              }}
+              className="flex h-9  w-9 cursor-pointer items-center justify-center rounded-full border bg-white"
+            >
+              <Like
+                className={cn(
+                  "h-5 w-5 ",
+                  selectInfo
+                    ? "hover:text-red-500 focus:text-red-500"
+                    : "text-gray-500 hover:text-gray-500"
+                )}
+              />{" "}
+            </Button>
           </span>
         )}
       </div>

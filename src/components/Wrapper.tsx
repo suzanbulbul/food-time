@@ -19,7 +19,7 @@ const Wrapper = ({ children }: any) => {
   useEffect(() => {
     if (
       selectInfo === null &&
-      !["/login", "/register", "/home"].includes(router.pathname)
+      !["/login", "/register", "/home", "/home/[id]"].includes(router.pathname)
     ) {
       router.push("/login");
     }
