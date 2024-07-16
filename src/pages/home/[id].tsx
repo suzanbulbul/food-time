@@ -208,24 +208,34 @@ const RecipeDetail = () => {
             </Button>
           )}
 
-          {currentTab < tab.length - 1 && (
-            <Button
-              disabled={!selectInfo}
-              tooltip={{
-                message: !selectInfo
-                  ? "Bu özellik için giriş yapmanız gerekiyor."
-                  : (undefined as any),
-                direction: "topRight",
-              }}
-              onClick={() => {
-                handleStepChange(1);
-              }}
-              variant="success"
-              className="ml-auto"
-            >
-              {tab[currentTab].id === 0 ? "Hemen Başla" : "Sonraki Adım"}
-            </Button>
-          )}
+          <Button
+            disabled={!selectInfo}
+            tooltip={{
+              message: !selectInfo
+                ? "Bu özellik için giriş yapmanız gerekiyor."
+                : (undefined as any),
+              direction: "topRight",
+            }}
+            onClick={() => {
+              if (tab[currentTab]?.id === 0) {
+                setCurrentTab(1);
+              } else if (currentTab < tab.length - 1) {
+                if (currentTab < tab.length - 1) {
+                  setCurrentTab((prevTab) => prevTab + 1);
+                }
+              } else {
+                router.push("/home");
+              }
+            }}
+            variant="success"
+            className="ml-auto"
+          >
+            {tab[currentTab].id === 0
+              ? "Hemen Başla"
+              : currentTab < tab.length - 1
+              ? " Sonra Adım"
+              : "Diğer Tarihlere Göz At"}{" "}
+          </Button>
         </div>
       </div>
     </>
