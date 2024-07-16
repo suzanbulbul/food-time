@@ -17,7 +17,9 @@ const Wrapper = ({ children }: any) => {
   }, [user]);
 
   useEffect(() => {
-    if (
+    if (router.pathname === "/404") {
+      router.push("/404");
+    } else if (
       selectInfo === null &&
       !["/login", "/register", "/home", "/home/[id]"].includes(router.pathname)
     ) {
