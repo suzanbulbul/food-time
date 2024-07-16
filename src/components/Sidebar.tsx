@@ -147,7 +147,11 @@ const Sidebar = () => {
                     onClick={item.onClick}
                     className={`
                       h-11 w-full gap-4 text-gray-600 duration-300 hover:bg-indigo-100 hover:text-indigo-600
-                      ${path === item.id ? " text-indigo-600" : ""}
+                      ${
+                        path === item.id || path.includes(`${item?.id}/` as any)
+                          ? " text-indigo-600"
+                          : ""
+                      }
                     `}
                   >
                     {item.icon}

@@ -120,7 +120,9 @@ const RecipeDetail = () => {
                 {tab[currentTab].minute} dakika
               </span>
             </div>
-            <DropDown title="Özellikler" actions={actions} />
+            {tab[currentTab].id === 0 && (
+              <DropDown title="Özellikler" actions={actions} />
+            )}
           </div>
           <div className="flex flex-col gap-1">
             <h1 className="text-xl font-semibold text-indigo-700">
@@ -172,25 +174,27 @@ const RecipeDetail = () => {
             </Button>
           )}
 
-          {currentTab < tab.length - 1 && (
-            <Button
-              onClick={() => {
-                if (tab[currentTab]?.id === 0) {
-                  setCurrentTab(1);
-                } else if (currentTab < tab.length - 1) {
-                  if (currentTab < tab.length - 1) {
-                    setCurrentTab((prevTab) => prevTab + 1);
-                  }
-                } else {
-                  toast.success("All steps completed");
+          <Button
+            onClick={() => {
+              if (tab[currentTab]?.id === 0) {
+                setCurrentTab(1);
+              } else if (currentTab < tab.length - 1) {
+                if (currentTab < tab.length - 1) {
+                  setCurrentTab((prevTab) => prevTab + 1);
                 }
-              }}
-              variant="success"
-              className="ml-auto"
-            >
-              {tab[currentTab].id === 0 ? "Hemen Başla" : "Sonra Adım"}
-            </Button>
-          )}
+              } else {
+                router.push("/home");
+              }
+            }}
+            variant="success"
+            className="ml-auto"
+          >
+            {tab[currentTab].id === 0
+              ? "Hemen Başla"
+              : currentTab < tab.length - 1
+              ? " Sonra Adım"
+              : "Diğer Tarihlere Göz At"}
+          </Button>
         </div>
       </div>
       <Modal
