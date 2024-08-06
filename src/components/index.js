@@ -18,6 +18,7 @@ import DropDown from "./DropDown";
 import ProgressBar from "./ProgressBar";
 import Wrapper from "./Wrapper";
 import EmptyArea from "./EmptyArea";
+import FileInput from "./FileInput";
 
 export {
   Layout,
@@ -40,4 +41,5 @@ export {
   ProgressBar,
   Wrapper,
   EmptyArea,
+  FileInput,
 };

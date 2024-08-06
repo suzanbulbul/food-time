@@ -28,6 +28,7 @@ const saveState = (state) => {
 const initialState = loadState() || {
   user: null,
   recipe: null,
+  settings: false,
   favoriteList: [],
 };
 
@@ -46,11 +47,16 @@ export const authSlice = createSlice({
       localStorage.removeItem("authState");
       localStorage.removeItem("recipeState");
     },
+    settingClickHandle: (state, action) => {
+      state.settings = action.payload;
+    },
   },
 });
 
-export const { loginHandle, logoutHandle } = authSlice.actions;
+export const { loginHandle, logoutHandle, settingClickHandle } =
+  authSlice.actions;
 
 export const userInfo = (state) => (state.auth.user ? state.auth.user : null);
+export const settingsState = (state) => state.auth.settings;
 
 export default authSlice.reducer;

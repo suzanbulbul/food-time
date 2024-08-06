@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import { useDispatch } from "react-redux";
+
+//Redux
+import { settingClickHandle } from "../redux/Slice/authSlice";
 
 // Components
 import Button from "./Button";
@@ -9,7 +13,7 @@ import Button from "./Button";
 // Icons
 import { IoHomeOutline } from "react-icons/io5";
 import { PiBowlFoodLight } from "react-icons/pi";
-import { CiSettings } from "react-icons/ci";
+import { CiSettings as Settings } from "react-icons/ci";
 import { IoIosArrowForward } from "react-icons/io";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 
@@ -40,6 +44,7 @@ export type actionsType = {
 
 const Sidebar = ({ user }: { user: User }) => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
   const [activeMenu, setActiveMenu] = useState<number>(0);
@@ -86,9 +91,9 @@ const Sidebar = ({ user }: { user: User }) => {
     {
       id: "settings",
       name: "Ayarlar",
-      icon: <CiSettings className="h-5 w-5" />,
+      icon: <Settings className="h-5 w-5" />,
       onClick: () => {
-        router.push("/settings");
+        dispatch(settingClickHandle(true));
       },
       hidden: user ? false : true,
       tooltip: {

@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { logoutHandle } from "../redux/Slice/authSlice";
+import Image from "next/image";
+
+//Redux
+import { logoutHandle, settingClickHandle } from "../redux/Slice/authSlice";
+
+//components
 import { Button, WhiteBox } from ".";
+
+//Type
 import { User } from "../util/type/user.type";
+
+//Helpers
 import { getInitials } from "../util/helper/getInitials";
 
 export type actionsType = {
@@ -28,7 +37,7 @@ const Navbar = ({ user }: { user: User }) => {
     {
       label: "Ayarlar",
       onClick: () => {
-        router.push("/setting");
+        dispatch(settingClickHandle(true));
       },
     },
     {
@@ -42,6 +51,7 @@ const Navbar = ({ user }: { user: User }) => {
   useEffect(() => {
     setPath(router.pathname);
   }, [router.pathname]);
+
   return (
     <WhiteBox>
       <nav className="flex items-center justify-between">
@@ -57,7 +67,17 @@ const Navbar = ({ user }: { user: User }) => {
                     onClick={() => setOpenSettingMenu(!openSettingMenu)}
                     className="flex  h-9 w-9 items-center justify-center rounded-full bg-indigo-200 text-sm text-indigo-600 shadow hover:ring-2"
                   >
-                    {getInitials(user.displayName as any)}
+                    {user.photoURL ? (
+                      <Image
+                        className="h-full rounded-full object-cover"
+                        src={user.photoURL}
+                        alt="detail-img"
+                        width={56}
+                        height={56}
+                      />
+                    ) : (
+                      getInitials(user.displayName as any)
+                    )}
                   </button>
                 </div>
                 {openSettingMenu && (
