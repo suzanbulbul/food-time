@@ -4,58 +4,56 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 
 //API
-import { recipeApi } from "../../api/recipeApi";
+import { recipeApi } from "../../../api/recipeApi";
 
 //Redux
-import { selectRecipe } from "../../redux/Slice/recipeSlice";
-import { userInfo } from "../../redux/Slice/authSlice";
+import { selectRecipe } from "../../../redux/Slice/recipeSlice";
+import { userInfo } from "../../../redux/Slice/authSlice";
 
 //Library
 import toast from "react-hot-toast";
 
 //Components
-import { Button, ComboBox, Input, TextArea, WhiteBox } from "../../components";
-import Accordion from "../../components/Accordion";
+import {
+  Button,
+  ComboBox,
+  Input,
+  TextArea,
+  WhiteBox,
+} from "../../../components";
+import Accordion from "../../../components/Accordion";
 
 //Icons
 import { CiCirclePlus as Plus } from "react-icons/ci";
 import { BsTrash3 as Delete } from "react-icons/bs";
 
 //Type
-import { RecipeType, RecipInformationType } from "../../util/type/recipe.type";
-import { Option } from "../../util/type/global.type";
+import {
+  RecipeType,
+  RecipInformationType,
+} from "../../../util/type/recipe.type";
+import { Option } from "../../../util/type/global.type";
 
 //Constants
-import { foodCategoryList } from "../../util/constants/recipe.constants";
+import { foodCategoryList } from "../../../util/constants/recipe.constants";
 
-const AddRecipe = () => {
+const CommonAddEdit = ({ recipeInfo }: { recipeInfo?: RecipeType }) => {
   const router = useRouter();
-
   const user = useSelector(userInfo);
-  const recipeInfo = useSelector(selectRecipe);
 
-  const defaultValues = {
-    name: recipeInfo?.name || "",
-    summary: recipeInfo?.summary || "",
-    category: recipeInfo?.category || "",
-    img: recipeInfo?.img || undefined,
-    step: recipeInfo?.step?.length
-      ? recipeInfo.step.map((step: RecipInformationType) => ({
-          name: step.name || "",
-          materials: step.materials || "",
-          stepRecipe: step.stepRecipe || "",
-          time: step.time || "",
-          imageUrl: step.imageUrl || undefined,
-        }))
-      : [
-          {
-            name: "",
-            materials: "",
-            stepRecipe: "",
-            time: "",
-            imageUrl: undefined,
-          },
-        ],
+  const editData = {
+    userId: recipeInfo?.userId,
+    name: recipeInfo?.name,
+    summary: recipeInfo?.summary,
+    category: recipeInfo?.category,
+    img: recipeInfo?.img,
+    step: recipeInfo?.step.map((step: RecipInformationType) => ({
+      name: step.name,
+      materials: step.materials,
+      stepRecipe: step.stepRecipe,
+      time: step.time,
+      imageUrl: step.imageUrl,
+    })),
   };
 
   const {
@@ -68,7 +66,7 @@ const AddRecipe = () => {
     clearErrors,
     formState: { errors, isSubmitting },
   } = useForm<RecipeType>({
-    defaultValues: defaultValues,
+    defaultValues: recipeInfo ? editData : {},
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -82,8 +80,8 @@ const AddRecipe = () => {
       userId: user?.uid,
     };
     toast.loading("Loading...");
-    recipeInfo
-      ? await recipeApi.editRecipeById(recipeInfo.id, formatData)
+    recipeInfo?.id
+      ? await recipeApi.editRecipeById(recipeInfo?.id as any, formatData)
       : await recipeApi.addRecipe(formatData);
 
     toast.dismiss();
@@ -272,4 +270,4 @@ const AddRecipe = () => {
   );
 };
 
-export default AddRecipe;
+export default CommonAddEdit;
