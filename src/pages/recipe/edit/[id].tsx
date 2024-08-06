@@ -7,6 +7,9 @@ import { recipeApi } from "../../../api/recipeApi";
 //Common
 import CommonAddEdit from "../common/add-edit";
 
+//Type
+import { RecipeType } from "../../../util/type/recipe.type";
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.params as { id: string };
 
@@ -18,7 +21,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 };
 
-const EditRecipe = ({ data }: { data: any }) => {
+const EditRecipe = ({ data }: { data: RecipeType }) => {
   return <CommonAddEdit recipeInfo={data} />;
 };
 

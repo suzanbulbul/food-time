@@ -142,8 +142,8 @@ const RecipeDetail = ({ data }: { data: RecipeType }) => {
                     "https://v1.tailwindcss.com/img/card-top.jpg"
                   }
                   alt="detail-img"
-                  width={250}
-                  height={250}
+                  width={56}
+                  height={56}
                 />
               )}
               <p className="text-base font-medium text-gray-700">

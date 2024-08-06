@@ -1,6 +1,7 @@
 import React from "react";
 import router from "next/router";
 import { useDispatch } from "react-redux";
+import Image from "next/image";
 
 //Redux
 import { clearRecipeDetail } from "../redux/Slice/recipeSlice";
@@ -20,10 +21,12 @@ const EmptyArea = ({ title, buttonTitle, onClick }: PropsType) => {
   return (
     <div className="flex items-center justify-center pt-20">
       <div className="flex flex-col items-center gap-3">
-        <img
+        <Image
           className="h-full w-60 rounded-lg object-cover"
-          src="img/empty-img.png"
+          src="/img/empty-img.png"
           alt="detail-img"
+          width={56}
+          height={56}
         />
         <p className="font-base text-center text-2xl text-indigo-500">
           {title ? (

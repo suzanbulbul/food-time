@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import { recipeApi } from "../../../api/recipeApi";
 
 //Redux
-import { selectRecipe } from "../../../redux/Slice/recipeSlice";
 import { userInfo } from "../../../redux/Slice/authSlice";
 
 //Library
@@ -20,8 +19,8 @@ import {
   Input,
   TextArea,
   WhiteBox,
+  Accordion,
 } from "../../../components";
-import Accordion from "../../../components/Accordion";
 
 //Icons
 import { CiCirclePlus as Plus } from "react-icons/ci";
@@ -32,6 +31,8 @@ import {
   RecipeType,
   RecipInformationType,
 } from "../../../util/type/recipe.type";
+
+//Utils
 import { Option } from "../../../util/type/global.type";
 
 //Constants
