@@ -39,7 +39,13 @@ const Login = () => {
     await authApi.handleLogin(formData).then((res: any) => {
       if (res?.accessToken) {
         toast.success("Login Successfully");
-        dispatch(loginHandle(JSON.stringify(res)));
+        const formatData = {
+          uid: res?.uid,
+          email: res?.email,
+          displayName: res?.displayName,
+          photoURL: res?.photoURL,
+        };
+        dispatch(loginHandle(JSON.stringify(formatData)));
         router.push("/home");
         reset();
       } else {

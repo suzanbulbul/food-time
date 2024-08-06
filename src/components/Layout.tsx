@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
 //Compopnents
 import { Sidebar, Navbar } from "./index";
-import { useSelector } from "react-redux";
+
+//Redux
 import { userInfo } from "../redux/Slice/authSlice";
+
+//Type
 import { User } from "../util/type/user.type";
+
+//Section
+import SettingsModal from "../sections/SettingsModal";
 
 const Layout = ({ children }: any) => {
   const router = useRouter();
@@ -36,6 +43,7 @@ const Layout = ({ children }: any) => {
         <Navbar user={clientUser} />
         <div className="h-full overflow-auto">{children}</div>
       </main>
+      <SettingsModal user={clientUser} />
     </div>
   );
 };
