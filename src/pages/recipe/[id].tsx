@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
 import { useDispatch } from "react-redux";
+import { GetServerSideProps } from "next";
 
 //API
 import { recipeApi } from "../../api/recipeApi";
@@ -31,21 +32,23 @@ import { aggregateIngredients, getCategoryByValue } from "../../util/helper";
 //Icons
 import { BsTrash3 as Delete } from "react-icons/bs";
 
-const RecipeDetail = () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { id } = context.params as { id: string };
+
+  try {
+    const data = await recipeApi.getRecipeById(id);
+    return { props: { data } };
+  } catch (error) {
+    return { props: { data: [] } };
+  }
+};
+
+const RecipeDetail = ({ data }: { data: RecipeType }) => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { id } = router.query;
   const [tab, setTab] = useState<TabType[]>([]);
   const [currentTab, setCurrentTab] = useState<number>(0);
   const [clickRemove, setClickRemove] = useState<boolean>(false);
-
-  const { isFetching, data } = useQuery<RecipeType>({
-    queryKey: ["recipe-detail", id],
-    queryFn: async () => {
-      return await recipeApi.getRecipeById(id);
-    },
-    enabled: !!id,
-  });
 
   const actions: DropdownAction[] = [
     {
@@ -100,9 +103,9 @@ const RecipeDetail = () => {
       ];
       setTab(tabs);
     }
-  }, [data]);
+  }, [data, dispatch]);
 
-  if (isFetching || !data || tab.length === 0) {
+  if (!data || tab.length === 0) {
     return <Loading />;
   }
 
@@ -131,13 +134,15 @@ const RecipeDetail = () => {
             </h1>
             <div className="flex flex-col items-start justify-start gap-4 sm:flex-row">
               {tab[currentTab].img && (
-                <img
+                <Image
                   className="h-32 w-[250px] rounded-lg object-cover"
                   src={
                     tab[currentTab].img ||
                     "https://v1.tailwindcss.com/img/card-top.jpg"
                   }
                   alt="detail-img"
+                  width={250}
+                  height={250}
                 />
               )}
               <p className="text-base font-medium text-gray-700">
@@ -201,7 +206,7 @@ const RecipeDetail = () => {
         show={clickRemove}
         onClose={() => setClickRemove(false)}
         onSave={async () => {
-          await recipeApi.deleteRecipeById(id as string);
+          await recipeApi.deleteRecipeById(router.query.toString());
           toast.success("Tarif başarıyla silindi.");
           router.push("/recipe");
         }}

@@ -1,36 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-
-//Compopnents
-import { Sidebar, Navbar, Loading } from "./index";
 import { useSelector } from "react-redux";
 import { userInfo } from "../redux/Slice/authSlice";
 import { User } from "../util/type/user.type";
 
-const Wrapper = ({ children }: any) => {
+const Wrapper = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  const [selectInfo, setSelectInfo] = useState<User | null>(null);
   const user = useSelector(userInfo);
 
   useEffect(() => {
-    setSelectInfo(user);
-  }, [user]);
+    if (typeof window !== "undefined") {
+      const pathname = router.pathname;
 
-  useEffect(() => {
-    if (router.pathname === "/404") {
-      router.push("/404");
-    } else if (
-      selectInfo === null &&
-      !["/login", "/register", "/home", "/home/[id]"].includes(router.pathname)
-    ) {
-      router.push("/login");
-    } else if (
-      selectInfo !== null &&
-      ["/login", "/register"].includes(router.pathname)
-    ) {
-      router.push("/home");
+      if (
+        user === null &&
+        !["/login", "/register", "/home", "/home/[id]"].includes(pathname)
+      ) {
+        router.push("/login");
+      } else if (user !== null && ["/login", "/register"].includes(pathname)) {
+        router.push("/home");
+      }
     }
-  }, [selectInfo, router]);
+  }, [user, router]);
 
   return <div>{children}</div>;
 };

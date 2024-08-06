@@ -1,19 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-
-//Redux
-import { userInfo, logoutHandle } from "../redux/Slice/authSlice";
-
-//Components
+import { logoutHandle } from "../redux/Slice/authSlice";
 import { Button, WhiteBox } from ".";
-
-//Icons
-import { TbWorld } from "react-icons/tb";
-import { AiOutlineAppstore } from "react-icons/ai";
-import { PiBellRinging } from "react-icons/pi";
-
-//Type
 import { User } from "../util/type/user.type";
 import { getInitials } from "../util/helper/getInitials";
 
@@ -22,12 +11,11 @@ export type actionsType = {
   onClick: () => void;
 };
 
-const Navbar = () => {
+const Navbar = ({ user }: { user: User }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const user = useSelector(userInfo);
+
   const [openSettingMenu, setOpenSettingMenu] = useState<boolean>(false);
-  const [selectInfo, setSelectInfo] = useState<User>(undefined);
   const [path, setPath] = useState<string>("");
 
   const settingActions: actionsType[] = [
@@ -51,36 +39,17 @@ const Navbar = () => {
       },
     },
   ];
-
-  useEffect(() => {
-    setSelectInfo(user);
-  }, [user]);
-
   useEffect(() => {
     setPath(router.pathname);
   }, [router.pathname]);
-
   return (
     <WhiteBox>
       <nav className="flex items-center justify-between">
         {path === "/home" && (
-          <h1>
-            Hoşgeldin {selectInfo ? selectInfo?.displayName : "Dear Guest"}
-          </h1>
+          <h1>Hoşgeldin {user ? user.displayName : "Dear Guest"}</h1>
         )}
-        {selectInfo ? (
+        {user ? (
           <div className="ggrid-rows-4 ml-auto grid grid-flow-col items-center gap-5">
-            {/* <Link href="#" passHref className="row-span-1">
-              <TbWorld className="h-5 w-5 text-gray-600 hover:text-indigo-600" />
-            </Link>
-            <Link href="#" passHref className="row-span-1">
-              <AiOutlineAppstore className="h-5 w-5 text-gray-600 hover:text-indigo-600" />
-            </Link>
-
-            <Link href="#" passHref className="row-span-1">
-              <PiBellRinging className="h-5 w-5 text-gray-600 hover:text-indigo-600" />
-            </Link> */}
-
             <div className="relative row-span-1">
               <div className="">
                 <div>
@@ -88,7 +57,7 @@ const Navbar = () => {
                     onClick={() => setOpenSettingMenu(!openSettingMenu)}
                     className="flex  h-9 w-9 items-center justify-center rounded-full bg-indigo-200 text-sm text-indigo-600 shadow hover:ring-2"
                   >
-                    {getInitials(selectInfo?.displayName as any)}
+                    {getInitials(user.displayName as any)}
                   </button>
                 </div>
                 {openSettingMenu && (

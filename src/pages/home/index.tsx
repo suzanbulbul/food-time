@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import router from "next/router";
-
-//Redux
-import { userInfo } from "../../redux/Slice/authSlice";
+import { GetServerSideProps } from "next";
 
 //API
 import { recipeApi } from "../../api/recipeApi";
@@ -14,30 +10,23 @@ import { Card, Loading, DropDown, EmptyArea } from "../../components";
 //Type
 import { RecipeType } from "../../util/type/recipe.type";
 import { DropdownAction } from "../../components/DropDown";
-import { User } from "../../util/type/user.type";
 
 //Constants
 import { foodCategoryList } from "../../util/constants/recipe.constants";
-import { useSelector } from "react-redux";
 
-const Home = () => {
-  const user = useSelector(userInfo);
+export const getServerSideProps: GetServerSideProps = async () => {
+  try {
+    const data = await recipeApi.getRecipeList();
+    return { props: { data } };
+  } catch (error) {
+    return { props: { data: [] } };
+  }
+};
 
-  const [selectInfo, setSelectInfo] = useState<User>(undefined);
+const Home = ({ data }: { data: RecipeType[] }) => {
   const [filterList, setFilterList] = useState<DropdownAction[]>([]);
   const [homeData, setHomeData] = useState<RecipeType[]>([]);
 
-  useEffect(() => {
-    setSelectInfo(user);
-  }, [user]);
-
-  const { data } = useQuery<RecipeType[]>({
-    queryKey: ["home-list"],
-    queryFn: async () => {
-      return await recipeApi.getRecipeList();
-    },
-  });
-  
   // Normalde getRecipeList'e BE'nin query eklemesi gerekiyror fakat firebasede bu işlemi göremediğim için js ile filtreledim
   const handleFilterClick = async (category: string) => {
     const filteredRecipes = data?.filter(

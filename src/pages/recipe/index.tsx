@@ -15,7 +15,6 @@ import { Button, Card, Loading, DropDown, EmptyArea } from "../../components";
 //Type
 import { RecipeType } from "../../util/type/recipe.type";
 import { DropdownAction } from "../../components/DropDown";
-import { User } from "../../util/type/user.type";
 
 //Constant
 import { foodCategoryList } from "../../util/constants/recipe.constants";
@@ -25,22 +24,16 @@ const Recipe = () => {
   const dispatch = useDispatch();
   const user = useSelector(userInfo);
 
-  const [selectInfo, setSelectInfo] = useState<User>(undefined);
   const [filterList, setFilterList] = useState<DropdownAction[]>([]);
   const [recipeData, setRecipeData] = useState<RecipeType[]>([]);
 
-  useEffect(() => {
-    setSelectInfo(user);
-  }, [user]);
-
   const { data } = useQuery<RecipeType[]>({
-    queryKey: ["recipe-list", selectInfo],
+    queryKey: ["recipe-list", user],
     queryFn: async () => {
-      return await recipeApi.getRecipeList(selectInfo?.uid || "");
+      return await recipeApi.getRecipeList(user?.uid || "");
     },
-    enabled: !!selectInfo,
+    enabled: !!user,
   });
-  console.log(data);
 
   const handleFilterClick = async (category: string) => {
     const filteredRecipes = data?.filter(

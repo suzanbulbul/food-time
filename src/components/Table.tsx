@@ -73,7 +73,7 @@ const Table = ({
                   <input
                     id="checkbox-all-search"
                     type="checkbox"
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 "
+                    className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800 "
                     checked={selectAll}
                     onChange={handleSelectAll}
                   />
@@ -89,7 +89,7 @@ const Table = ({
                 key={index}
                 scope="col"
                 className={cn(
-                  "px-4 py-3 text-left font-light text-xs text-gray-400 min-w-28",
+                  "min-w-28 px-4 py-3 text-left text-xs font-light text-gray-400",
                   column.className
                 )}
               >
@@ -108,7 +108,7 @@ const Table = ({
                     <input
                       id={`checkbox-table-search-${item.id}`}
                       type="checkbox"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 "
+                      className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800 "
                     />
                     <label
                       htmlFor={`checkbox-table-search-${item.id}`}
@@ -123,7 +123,7 @@ const Table = ({
                 <td
                   key={index}
                   className={cn(
-                    "px-4 py-3 text-left text-sm min-w-28",
+                    "min-w-28 px-4 py-3 text-left text-sm",
                     column.className
                   )}
                 >
@@ -139,13 +139,13 @@ const Table = ({
                     {action === index && (
                       <ul
                         ref={menuRef}
-                        className="overflow-scroll absolute right-0 z-10 mt-2 origin-top-right border rounded-lg bg-white shadow-lg"
+                        className="absolute right-0 z-10 mt-2 origin-top-right overflow-scroll rounded-lg border bg-white shadow-lg"
                       >
                         {tableAction.map((item, index) => (
                           <li
                             onClick={() => item.onClick(selectedRowData)}
                             key={index}
-                            className="px-6 py-2 text-sm font-normal text-center text-gray-600 hover:text-indigo-600 hover:bg-indigo-100 cursor-pointer"
+                            className="cursor-pointer px-6 py-2 text-center text-sm font-normal text-gray-600 hover:bg-indigo-100 hover:text-indigo-600"
                           >
                             <button>{item.text}</button>
                           </li>

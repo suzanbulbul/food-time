@@ -25,4 +25,5 @@ export type User =
       apiKey: string;
       appName: string;
     }
-  | undefined;
+  | undefined
+  | null;

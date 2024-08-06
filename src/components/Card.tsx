@@ -38,7 +38,6 @@ interface CardType {
 const Card = ({ data, url, favActive = false }: CardType) => {
   const dispatch = useDispatch();
   const [clickFav, setClickFav] = useState<boolean>(false);
-  const [selectInfo, setSelectInfo] = useState<User>(undefined);
 
   const favorites = useSelector(favoriteList);
   const user = useSelector(userInfo);
@@ -58,10 +57,6 @@ const Card = ({ data, url, favActive = false }: CardType) => {
       toast.success("Favorilerden çıkarıldı");
     }
   };
-
-  useEffect(() => {
-    setSelectInfo(user);
-  }, [user]);
 
   useEffect(() => {
     favActive &&
@@ -105,20 +100,22 @@ const Card = ({ data, url, favActive = false }: CardType) => {
                 e.preventDefault();
                 handleToggleFavorite();
               }}
-              disabled={!selectInfo}
+              disabled={!user}
               tooltip={{
-                message: !selectInfo
+                message: !user
                   ? "Bu özellik için giriş yapmanız gerekiyor."
                   : (undefined as any),
+                direction: "bottomRight",
               }}
               className="flex h-9  w-9 cursor-pointer items-center justify-center rounded-full border bg-white"
             >
               <Like
                 className={cn(
                   "h-5 w-5 ",
-                  selectInfo
+                  user
                     ? "hover:text-red-500 focus:text-red-500"
-                    : "text-gray-500 hover:text-gray-500"
+                    : "text-gray-500 hover:text-gray-500",
+                  clickFav && "text-red-500"
                 )}
               />{" "}
             </Button>

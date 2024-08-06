@@ -1,13 +1,11 @@
-import React from "react";
+import dynamic from "next/dynamic";
 
-//Library
-import Lottie from "lottie-react";
-import animationData from "../util/animation/loading.json";
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 const Loading = () => {
   return (
     <div className="flex min-h-[calc(100vh-100px)] items-center justify-center">
-      <Lottie className="h-2/6" animationData={animationData} />
+      <Lottie animationData={require("../util/animation/loading.json")} />
     </div>
   );
 };
