@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
+import Image from "next/image";
 
 import { useDispatch, useSelector } from "react-redux";
 import cn from "classnames";
@@ -161,13 +162,15 @@ const RecipeDetail = ({ data }: { data: RecipeType }) => {
             </h1>
             <div className="flex flex-col items-start justify-start gap-4 sm:flex-row">
               {tab[currentTab].img && (
-                <img
+                <Image
                   className="h-32 w-[250px] rounded-lg object-cover"
                   src={
                     tab[currentTab].img ||
                     "https://v1.tailwindcss.com/img/card-top.jpg"
                   }
                   alt="detail-img"
+                  width={56}
+                  height={56}
                 />
               )}
               <p className="text-base font-medium text-gray-700">
