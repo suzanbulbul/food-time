@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
@@ -27,15 +27,12 @@ import { Option } from "../../util/type/global.type";
 
 //Constants
 import { foodCategoryList } from "../../util/constants/recipe.constants";
-import { User } from "../../util/type/user.type";
 
 const AddRecipe = () => {
   const router = useRouter();
-  
+
   const user = useSelector(userInfo);
   const recipeInfo = useSelector(selectRecipe);
-
-  const [selectInfo, setSelectInfo] = useState<User>(undefined);
 
   const defaultValues = {
     name: recipeInfo?.name || "",
@@ -61,10 +58,6 @@ const AddRecipe = () => {
         ],
   };
 
-  useEffect(() => {
-    setSelectInfo(user);
-  }, [user]);
-
   const {
     control,
     register,
@@ -86,7 +79,7 @@ const AddRecipe = () => {
   const onSubmit = async (formData: RecipeType) => {
     const formatData = {
       ...formData,
-      userId: selectInfo?.uid,
+      userId: user?.uid,
     };
     toast.loading("Loading...");
     recipeInfo

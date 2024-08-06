@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
-// Redux
-import { userInfo } from "../redux/Slice/authSlice";
-import { useSelector } from "react-redux";
+import Image from "next/image";
 
 // Components
 import Button from "./Button";
@@ -41,13 +38,11 @@ export type actionsType = {
   hidden?: boolean;
 };
 
-const Sidebar = () => {
+const Sidebar = ({ user }: { user: User }) => {
   const router = useRouter();
-  const user = useSelector(userInfo);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
   const [activeMenu, setActiveMenu] = useState<number>(0);
-  const [selectInfo, setSelectInfo] = useState<User>(undefined);
   const [path, setPath] = useState<string>("home");
 
   const toggleSubMenu = (itemId: any) => {
@@ -71,7 +66,7 @@ const Sidebar = () => {
       onClick: () => {
         router.push("/recipe");
       },
-      disable: selectInfo ? false : true,
+      disable: user ? false : true,
       tooltip: {
         message: "Bu özellik için giriş yapmanız gerekiyor.",
       },
@@ -83,7 +78,7 @@ const Sidebar = () => {
       onClick: () => {
         router.push("/fav-recipe");
       },
-      disable: selectInfo ? false : true,
+      disable: user ? false : true,
       tooltip: {
         message: "Bu özellik için giriş yapmanız gerekiyor.",
       },
@@ -95,7 +90,7 @@ const Sidebar = () => {
       onClick: () => {
         router.push("/settings");
       },
-      hidden: selectInfo ? false : true,
+      hidden: user ? false : true,
       tooltip: {
         message: "Bu özellik için giriş yapmanız gerekiyor.",
       },
@@ -105,10 +100,6 @@ const Sidebar = () => {
   useEffect(() => {
     setPath(router.pathname.slice(1));
   }, [router, router.pathname]);
-
-  useEffect(() => {
-    setSelectInfo(user);
-  }, [user]);
 
   return (
     <div
@@ -120,10 +111,12 @@ const Sidebar = () => {
         <div className="mb-3 text-2xl font-bold text-gray-100">
           <Link href="/" className="flex justify-center">
             {isSidebarOpen && (
-              <img
+              <Image
                 className="h-14 w-auto rounded-full"
-                src="img/logo.svg"
+                src="/img/logo.svg"
                 alt="logo"
+                width={56}
+                height={56}
               />
             )}
           </Link>

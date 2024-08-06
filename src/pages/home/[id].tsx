@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useQuery } from "@tanstack/react-query";
+import { GetServerSideProps } from "next";
+
 import { useDispatch, useSelector } from "react-redux";
 import cn from "classnames";
 
@@ -32,36 +33,31 @@ import { FaHeart as Like } from "react-icons/fa6";
 
 //Helper
 import { aggregateIngredients, getCategoryByValue } from "../../util/helper";
-import { User } from "../../util/type/user.type";
 
-const RecipeDetail = () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { id } = context.params as { id: string };
+
+  try {
+    const data = await recipeApi.getRecipeById(id);
+    return { props: { data } };
+  } catch (error) {
+    return { props: { data: [] } };
+  }
+};
+const RecipeDetail = ({ data }: { data: RecipeType }) => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { id } = router.query;
   const [tab, setTab] = useState<TabType[]>([]);
   const [currentTab, setCurrentTab] = useState<number>(0);
   const [clickFav, setClickFav] = useState<boolean>(false);
-  const [selectInfo, setSelectInfo] = useState<User | null>(null);
 
   const favorites = useSelector(favoriteList);
   const user = useSelector(userInfo);
 
   useEffect(() => {
-    setSelectInfo(user);
-  }, [user]);
+    setClickFav(favorites.some((item: any) => item.id === data?.id));
 
-  const { isFetching, data } = useQuery<RecipeType>({
-    queryKey: ["recipe-detail", id],
-    queryFn: async () => {
-      return await recipeApi.getRecipeById(id);
-    },
-    enabled: !!id,
-  });
-
-  useEffect(() => {
     if (data) {
-      setClickFav(favorites.some((item: any) => item.id === data?.id));
-
       // BE'nin endpoind vermesi gerekiyor.
       dispatch(setRecipeDetail(JSON.stringify(data)));
 
@@ -111,7 +107,7 @@ const RecipeDetail = () => {
     }
   };
 
-  if (isFetching || !data || tab.length === 0) {
+  if (!data || tab.length === 0) {
     return <Loading />;
   }
 
@@ -137,9 +133,9 @@ const RecipeDetail = () => {
                   e.preventDefault();
                   handleToggleFavorite();
                 }}
-                disabled={!selectInfo}
+                disabled={!user}
                 tooltip={{
-                  message: !selectInfo
+                  message: !user
                     ? "Bu özellik için giriş yapmanız gerekiyor."
                     : (undefined as any),
                   direction: "bottomRight",
@@ -149,7 +145,7 @@ const RecipeDetail = () => {
                 <Like
                   className={cn(
                     "h-5 w-5 ",
-                    selectInfo
+                    user
                       ? "hover:text-red-500 focus:text-red-500"
                       : "text-gray-500 hover:text-gray-500",
                     clickFav && "text-red-500"
@@ -209,9 +205,9 @@ const RecipeDetail = () => {
           )}
 
           <Button
-            disabled={!selectInfo}
+            disabled={!user}
             tooltip={{
-              message: !selectInfo
+              message: !user
                 ? "Bu özellik için giriş yapmanız gerekiyor."
                 : (undefined as any),
               direction: "topRight",

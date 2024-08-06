@@ -1,24 +1,22 @@
-import React from 'react';
+import React from "react";
 import Head from "next/head";
+import dynamic from "next/dynamic";
 
-//Library
-import Lottie from 'lottie-react';
-import ComingSonn from '../util/animation/coming-coon.json'
-// import NotFound from '../util/animation/not-found.json';
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
+
+import ComingSoon from "../util/animation/coming-coon.json";
 
 const Custom404 = () => {
   return (
-    <div className='not-found'>
-      <Head >
-          <title>Coming Soon</title>
+    <div className="not-found">
+      <Head>
+        <title>Coming Soon</title>
       </Head>
-      <div className="h-screen flex justify-center items-center">
-      <Lottie className="h-2/6" animationData={ComingSonn} />
-    </div>
+      <div className="flex h-screen items-center justify-center">
+        <Lottie animationData={ComingSoon} />
+      </div>
     </div>
   );
 };
 
 export default Custom404;
-
-  
