@@ -46,6 +46,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const RecipeDetail = ({ data }: { data: RecipeType }) => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const { id } = router.query;
   const [tab, setTab] = useState<TabType[]>([]);
   const [currentTab, setCurrentTab] = useState<number>(0);
   const [clickRemove, setClickRemove] = useState<boolean>(false);
@@ -54,7 +55,7 @@ const RecipeDetail = ({ data }: { data: RecipeType }) => {
     {
       label: "Tarifi Düzenle",
       onClick: () => {
-        router.push("add-edit");
+        router.push(`edit/${id}`);
       },
     },
     {
@@ -206,7 +207,7 @@ const RecipeDetail = ({ data }: { data: RecipeType }) => {
         show={clickRemove}
         onClose={() => setClickRemove(false)}
         onSave={async () => {
-          await recipeApi.deleteRecipeById(router.query.toString());
+          await recipeApi.deleteRecipeById(id as any);
           toast.success("Tarif başarıyla silindi.");
           router.push("/recipe");
         }}

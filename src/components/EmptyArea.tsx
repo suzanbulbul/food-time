@@ -39,8 +39,7 @@ const EmptyArea = ({ title, buttonTitle, onClick }: PropsType) => {
             onClick
               ? onClick
               : () => {
-                  dispatch(clearRecipeDetail()),
-                    router.push("/recipe/add-edit");
+                  dispatch(clearRecipeDetail()), router.push("/recipe/add");
                 }
           }
         >

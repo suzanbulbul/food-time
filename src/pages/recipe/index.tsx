@@ -78,7 +78,7 @@ const Recipe = () => {
         <Button
           className="ml-auto"
           onClick={() => {
-            dispatch(clearRecipeDetail()), router.push("recipe/add-edit");
+            dispatch(clearRecipeDetail()), router.push("recipe/add");
           }}
         >
           Yeni Tarif Ekle
